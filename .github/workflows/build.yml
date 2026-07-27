@@ -24,6 +24,10 @@ jobs:
           # Compose.pre, dotXCompose, emoji-test.txt, Blocks.txt), so a shallow
           # checkout without them fails in the CompressResources target.
           submodules: recursive
+          # language.csproj builds with GitVersion.MsBuild, which walks branch
+          # history to derive a version. On the default grafted checkout it dies
+          # with a NullReferenceException in LibGit2Sharp, so it needs the lot.
+          fetch-depth: 0
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
