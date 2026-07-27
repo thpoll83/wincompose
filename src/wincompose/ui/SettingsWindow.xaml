@@ -444,16 +444,18 @@
 
                         <TextBlock Margin="0,16,0,4" FontWeight="SemiBold"
                                    Text="{x:Static i18n:Text.Authors}"/>
-                        <!-- Fixed height: a WebBrowser inside a ScrollViewer is
-                             measured with infinite height and would collapse. -->
-                        <WebBrowser Height="220" wc:AboutBox.WebContent="{Binding AuthorsDocument}"/>
+                        <TextBlock Text="{Binding AuthorsText}" TextWrapping="Wrap"
+                                   Margin="0,0,0,4"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
 
             <TabItem Header="{x:Static i18n:Text.License}">
                 <TabItem.DataContext><wc:AboutBoxViewModel/></TabItem.DataContext>
-                <WebBrowser Margin="8" wc:AboutBox.WebContent="{Binding LicenseDocument}"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <TextBlock Text="{Binding LicenseText}" TextWrapping="Wrap"
+                               FontFamily="Consolas, Courier New" Margin="12"/>
+                </ScrollViewer>
             </TabItem>
 
         </TabControl>

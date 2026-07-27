@@ -13,6 +13,8 @@
 
 using System;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace WinCompose
@@ -43,6 +45,44 @@ namespace WinCompose
 
         public Stream LicenseDocument
             => Application.GetResourceStream(new Uri("pack://application:,,,/res/copying.html")).Stream;
+
+        // Rendered as plain text rather than through a WebBrowser: that control
+        // is an HwndHost, so it paints over neighbouring WPF content and ignores
+        // the surrounding ScrollViewer's clipping.
+        public string AuthorsText => HtmlToText(AuthorsDocument);
+
+        public string LicenseText => HtmlToText(LicenseDocument);
+
+        private static string HtmlToText(Stream stream)
+        {
+            using (var reader = new StreamReader(stream))
+            {
+                var text = reader.ReadToEnd();
+
+                text = Regex.Replace(text, "<li>", "• ", RegexOptions.IgnoreCase);
+                text = Regex.Replace(text, "<br ?/?>", "\n", RegexOptions.IgnoreCase);
+                text = Regex.Replace(text, "<[^>]+>", "");
+
+                // &amp; last, so an escaped entity is not decoded twice.
+                text = text.Replace("&lt;", "<").Replace("&gt;", ">")
+                           .Replace("&quot;", "\"").Replace("&#39;", "'")
+                           .Replace("&amp;", "&");
+
+                // Stripping the tags leaves the runs of blank lines they sat on.
+                var lines = text.Replace("\r", "").Split('\n')
+                                .Select(line => line.TrimEnd());
+                var result = new System.Text.StringBuilder();
+                var blank = 0;
+                foreach (var line in lines)
+                {
+                    blank = line.Length == 0 ? blank + 1 : 0;
+                    if (blank > 1)
+                        continue;
+                    result.AppendLine(line);
+                }
+                return result.ToString().Trim('\n');
+            }
+        }
 
         public string Version => Settings.Version;
 
