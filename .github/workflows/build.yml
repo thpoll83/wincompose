@@ -17,6 +17,16 @@ jobs:
   build:
     runs-on: windows-latest
 
+    # Mapped to env because a step's `if` cannot read the secrets context. While
+    # these are unset the signing step is skipped and builds stay green unsigned.
+    env:
+      SIGNING_CLIENT_ID: ${{ secrets.AZURE_SIGNING_CLIENT_ID }}
+      SIGNING_TENANT_ID: ${{ secrets.AZURE_SIGNING_TENANT_ID }}
+      SIGNING_CLIENT_SECRET: ${{ secrets.AZURE_SIGNING_CLIENT_SECRET }}
+      SIGNING_ENDPOINT: ${{ secrets.AZURE_SIGNING_ENDPOINT }}
+      SIGNING_ACCOUNT: ${{ secrets.AZURE_SIGNING_ACCOUNT }}
+      SIGNING_PROFILE: ${{ secrets.AZURE_SIGNING_PROFILE }}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,6 +53,26 @@ jobs:
 
       - name: Build (Release)
         run: msbuild src\wincompose\wincompose.csproj -restore -p:Configuration=Release -v:minimal
+
+      # Dormant until a code-signing certificate exists. Azure Artifact Signing
+      # (formerly Trusted Signing) is available to organisations in the EU, so
+      # this waits on the business entity rather than on any code change. It runs
+      # before packaging so the archive we publish hashes the signed binary.
+      - name: Sign binaries
+        if: env.SIGNING_CLIENT_ID != ''
+        uses: azure/trusted-signing-action@v0
+        with:
+          azure-tenant-id: ${{ env.SIGNING_TENANT_ID }}
+          azure-client-id: ${{ env.SIGNING_CLIENT_ID }}
+          azure-client-secret: ${{ env.SIGNING_CLIENT_SECRET }}
+          endpoint: ${{ env.SIGNING_ENDPOINT }}
+          trusted-signing-account-name: ${{ env.SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ env.SIGNING_PROFILE }}
+          files-folder: src/wincompose/bin/Release
+          files-folder-filter: exe,dll
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
 
       # The raw bin directory is NOT runnable as a portable install: Utils
       # decides it is "debugging" when a .pdb sits next to the exe, which sends
@@ -72,9 +102,31 @@ jobs:
           if (Test-Path "$out/wincompose.pdb") { throw 'pdb survived' }
           if (-not (Test-Path "$out/rules/Emoji.txt")) { throw 'rules missing' }
 
+      # Until the builds are signed, a published checksum is the only way for
+      # someone to confirm the download matches what CI produced. Hash our own
+      # archive rather than the artifact zip, whose bytes GitHub controls.
+      - name: Build release archive and checksums
+        shell: pwsh
+        run: |
+          $ver = (Get-Item 'portable/wincompose.exe').VersionInfo.FileVersion
+          $zip = "WinCompose-NoInstall-$ver.zip"
+          Compress-Archive -Path 'portable/*' -DestinationPath $zip
+          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
+          New-Item -ItemType Directory -Path 'release' | Out-Null
+          Move-Item $zip 'release/'
+          "$hash  $zip" | Set-Content 'release/SHA256SUMS.txt' -Encoding ascii
+          Get-Content 'release/SHA256SUMS.txt'
+
       - name: Upload portable build
         uses: actions/upload-artifact@v4
         with:
           name: wincompose-portable
           path: portable/
+          if-no-files-found: error
+
+      - name: Upload release assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: wincompose-release-assets
+          path: release/
           if-no-files-found: error
