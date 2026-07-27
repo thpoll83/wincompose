@@ -56,6 +56,7 @@ namespace WinCompose
 
             TrayMouseDoubleClick += NotifyiconDoubleclicked;
 
+            Settings.DisableIcon.ValueChanged += MarkIconDirty;
             Settings.ComposeKeys.ValueChanged += MarkIconDirty;
             Settings.UseXComposeRules.ValueChanged += MarkIconDirty;
             Settings.UseEmojiRules.ValueChanged += MarkIconDirty;
@@ -74,6 +75,7 @@ namespace WinCompose
             GC.SuppressFinalize(this);
             CompositionTarget.Rendering -= UpdateNotificationIcon;
 
+            Settings.DisableIcon.ValueChanged -= MarkIconDirty;
             Settings.ComposeKeys.ValueChanged -= MarkIconDirty;
             Settings.UseXComposeRules.ValueChanged -= MarkIconDirty;
             Settings.UseEmojiRules.ValueChanged -= MarkIconDirty;
@@ -166,7 +168,46 @@ namespace WinCompose
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //private static System.Drawing.Icon[] m_icon_cache;
+        private System.Drawing.Icon GetCurrentIcon()
+        {
+            return GetIcon((Composer.IsComposing?    0x1 : 0x0) |
+                           (Updater.HasNewerVersion? 0x2 : 0x0));
+        }
+
+        public static System.Drawing.Icon GetIcon(int index)
+        {
+            if (m_icon_cache == null)
+                m_icon_cache = new System.Drawing.Icon[8];
+
+            if (m_icon_cache[index] == null)
+            {
+                bool is_composing = (index & 0x1) != 0;
+                bool has_update = (index & 0x2) != 0;
+
+                // XXX: if you create new bitmap images here instead of using bitmaps from
+                // resources, make sure the DPI settings match. Our PNGs are 72 DPI whereas
+                // new Bitmap objects appear to use 96 by default (even if copy-constructed).
+                // A reasonable workaround might be to use Clone().
+                using (Bitmap bitmap = Properties.Resources.KeyEmpty)
+                using (Graphics canvas = Graphics.FromImage(bitmap))
+                {
+                    // LED status: on or off
+                    canvas.DrawImage(is_composing ? Properties.Resources.DecalActive
+                                                  : Properties.Resources.DecalIdle, 0, 0);
+
+                    // Tiny yellow exclamation mark to advertise updates
+                    if (has_update)
+                        canvas.DrawImage(Properties.Resources.DecalUpdate, 0, 0);
+
+                    canvas.Save();
+                    m_icon_cache[index] = System.Drawing.Icon.FromHandle(bitmap.GetHicon());
+                }
+            }
+
+            return m_icon_cache[index];
+        }
+
+        private static System.Drawing.Icon[] m_icon_cache;
 
         private misc.AtomicFlag m_dirty;
 
@@ -176,6 +217,9 @@ namespace WinCompose
         {
             if (m_dirty.Get())
             {
+                Visibility = Settings.DisableIcon.Value ? Visibility.Collapsed
+                                                        : Visibility.Visible;
+                Icon = GetCurrentIcon();
                 CurrentToolTip = GetCurrentToolTip();
             }
         }
