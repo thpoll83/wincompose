@@ -35,8 +35,11 @@ jobs:
       # wincompose.csproj has an InsertIcons target that runs this tool after the
       # build. The solution builds it as a sibling project; building the project
       # on its own does not, so build it explicitly first.
+      # Built outside the solution, MSBuild picks Platform=x86, for which this
+      # old-style project defines no OutputPath. Pin both, with forward slashes
+      # so the trailing separator survives PowerShell argument parsing.
       - name: Build InsertIcons
-        run: msbuild src\3rdparty\inserticons\inserticons.csproj -restore -p:Configuration=Release -v:minimal
+        run: msbuild src\3rdparty\inserticons\inserticons.csproj -restore -p:Configuration=Release -p:Platform=AnyCPU -p:OutputPath=bin/Release/ -v:minimal
 
       - name: Build (Release)
         run: msbuild src\wincompose\wincompose.csproj -restore -p:Configuration=Release -v:minimal
