@@ -168,11 +168,9 @@ namespace WinCompose
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private System.Drawing.Icon GetCurrentIcon()
-        {
-            return GetIcon((Composer.IsComposing?    0x1 : 0x0) |
-                           (Updater.HasNewerVersion? 0x2 : 0x0));
-        }
+        private static int CurrentIconIndex
+            => (Composer.IsComposing?    0x1 : 0x0) |
+               (Updater.HasNewerVersion? 0x2 : 0x0);
 
         public static System.Drawing.Icon GetIcon(int index)
         {
@@ -209,6 +207,8 @@ namespace WinCompose
 
         private static System.Drawing.Icon[] m_icon_cache;
 
+        private int m_icon_index = -1;
+
         private misc.AtomicFlag m_dirty;
 
         private void MarkIconDirty() => m_dirty.Set();
@@ -225,7 +225,14 @@ namespace WinCompose
                 if (Visibility != wanted)
                     Visibility = wanted;
 
-                Icon = GetCurrentIcon();
+                // Assigning Icon replaces the tray icon, so only do it when the
+                // composing/update state actually changed.
+                var index = CurrentIconIndex;
+                if (index != m_icon_index)
+                {
+                    m_icon_index = index;
+                    Icon = GetIcon(index);
+                }
                 CurrentToolTip = GetCurrentToolTip();
             }
         }

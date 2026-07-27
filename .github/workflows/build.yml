@@ -51,7 +51,12 @@ jobs:
       - name: Package portable
         shell: pwsh
         run: |
-          $bin = 'src/wincompose/bin/Release/net481'
+          # Locate the target-framework directory rather than hardcoding the
+          # moniker, but insist on exactly one so a stale folder from a previous
+          # TFM cannot be packaged silently.
+          $tfm = @(Get-ChildItem 'src/wincompose/bin/Release' -Directory)
+          if ($tfm.Count -ne 1) { throw "expected one TFM directory under bin/Release, found $($tfm.Count)" }
+          $bin = $tfm[0].FullName
           $out = 'portable'
           New-Item -ItemType Directory -Path $out | Out-Null
           Copy-Item "$bin/*" $out -Recurse
