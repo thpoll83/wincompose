@@ -43,6 +43,11 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Panel.ZIndex" Value="100" />
+                            <!-- The content area draws a 1px line along its top,
+                                 which otherwise runs underneath the selected tab
+                                 and visually detaches it. Drop the tab a pixel so
+                                 it covers that line and the two read as one shape. -->
+                            <Setter TargetName="Border" Property="Margin" Value="0,0,0,-1" />
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundSelected}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource TabViewSelectedItemBorderBrush}" />
                             <Setter Property="Foreground" Value="{DynamicResource TabViewItemForegroundSelected}" />

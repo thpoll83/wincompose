@@ -73,12 +73,21 @@
     </Window.InputBindings>
 
 
-    <StackPanel Orientation="Vertical" >
-        <ui:TitleBar Title="{x:Static i18n:Text.Options}" CanMaximize="False" ShowMaximize="False" ShowMinimize="False" FontSize="14" Height="38">
+    <!-- A Grid, not a StackPanel: a vertical StackPanel measures its children
+         with infinite height, so the TabControl was never constrained and the
+         ScrollViewers inside it had nothing to scroll against. -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ui:TitleBar Grid.Row="0" Title="{x:Static i18n:Text.Options}" CanMaximize="False" ShowMaximize="False" ShowMinimize="False" FontSize="14" Height="38">
             <ui:TitleBar.Icon>
                 <ui:ImageIcon Source="/WinCompose;component/res/icon_settings.png"/>
             </ui:TitleBar.Icon></ui:TitleBar>
-        <TabControl Margin="6" >
+        <TabControl Grid.Row="1" Margin="6" >
 
             <!-- The Settings group -->
             <TabItem Header="{x:Static i18n:Text.General}">
@@ -413,11 +422,11 @@
         </TabControl>
 
         <!-- The Close button and the restart warning message -->
-        <TextBlock Foreground="Red" Text="{x:Static i18n:Text.NeedRestart}" HorizontalAlignment="Left"
+        <TextBlock Grid.Row="2" Foreground="Red" Text="{x:Static i18n:Text.NeedRestart}" HorizontalAlignment="Left"
                  Margin="0, 0, 0, 4" Visibility="{Binding WarnMessageVisibility}" TextWrapping="Wrap"/>
-        <Button DockPanel.Dock="Bottom" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="80"
+        <Button Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="80"
               Margin="10,0,10,10" Content="{Binding CloseButtonText}" Command="{Binding CloseButtonCommand}"
               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
 
-    </StackPanel>
+    </Grid>
 </wc:BaseWindow>
