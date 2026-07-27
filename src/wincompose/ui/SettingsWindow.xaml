@@ -80,7 +80,7 @@
         <TabControl Margin="6" >
 
             <!-- The Settings group -->
-            <TabItem Header="{x:Static i18n:Text.General}" MinWidth="125" Width="149">
+            <TabItem Header="{x:Static i18n:Text.General}">
                 <DockPanel Margin="2">
                     <!--<DockPanel Margin="8" Height="{Binding ElementName=MasterPanel, Path=ActualHeight}">-->
                     <GroupBox DockPanel.Dock="Top" >
@@ -179,7 +179,7 @@
             </TabItem>
 
             <!-- The Composing tab -->
-            <TabItem Header="{x:Static i18n:Text.Composing}" MinWidth="125" Width="149">
+            <TabItem Header="{x:Static i18n:Text.Composing}">
                 <DockPanel Margin="2" x:Name="MasterPanel">
 
                     <GroupBox DockPanel.Dock="Top" Padding="0,0,0,0">
@@ -291,7 +291,7 @@
             </TabItem>
 
             <!-- The Tweaks tab -->
-            <TabItem Header="{x:Static i18n:Text.Tweaks}" MinWidth="125" Width="149">
+            <TabItem Header="{x:Static i18n:Text.Tweaks}">
                 <DockPanel Margin="2">
 
                     <!-- The Invalid Sequences group -->
