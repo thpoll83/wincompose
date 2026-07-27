@@ -22,7 +22,7 @@
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
-        Width="540" Height="560" MinWidth="390" MinHeight="420" MaxWidth="900"
+        Width="460" Height="560" MinWidth="390" MinHeight="420" MaxWidth="900"
         Title="{x:Static i18n:Text.Options}"
         Icon="/WinCompose;component/res/icon_settings.png" ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen" SizeToContent="Manual" WindowCornerPreference="Round"
@@ -441,13 +441,14 @@
                                 Content="{x:Static i18n:Text.DonationPage}" Command="{Binding OpenDonateCommand}"/>
                         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,2,0,0"
                                    Text="Donations go to Sam Hocevar, the original author."/>
+
+                        <TextBlock Margin="0,16,0,4" FontWeight="SemiBold"
+                                   Text="{x:Static i18n:Text.Authors}"/>
+                        <!-- Fixed height: a WebBrowser inside a ScrollViewer is
+                             measured with infinite height and would collapse. -->
+                        <WebBrowser Height="220" wc:AboutBox.WebContent="{Binding AuthorsDocument}"/>
                     </StackPanel>
                 </ScrollViewer>
-            </TabItem>
-
-            <TabItem Header="{x:Static i18n:Text.Authors}">
-                <TabItem.DataContext><wc:AboutBoxViewModel/></TabItem.DataContext>
-                <WebBrowser Margin="8" wc:AboutBox.WebContent="{Binding AuthorsDocument}"/>
             </TabItem>
 
             <TabItem Header="{x:Static i18n:Text.License}">
