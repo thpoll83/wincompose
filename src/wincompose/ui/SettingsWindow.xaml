@@ -40,7 +40,7 @@
             <DrawingImage emoji:Image.Source="🚀" x:Key="AdvancedIcon"/>
 
             <!-- display tooltips for 30 seconds; they’re supposed to be helpful -->
-            <Style TargetType="TextBlock">
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="ToolTipService.ShowDuration" Value="30000"/>
             </Style>
            <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}" >
@@ -82,6 +82,7 @@
 
             <!-- The Settings group -->
             <TabItem Header="{x:Static i18n:Text.General}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <DockPanel Margin="2">
                     <!--<DockPanel Margin="8" Height="{Binding ElementName=MasterPanel, Path=ActualHeight}">-->
                     <GroupBox DockPanel.Dock="Top" >
@@ -177,10 +178,12 @@
                     </GroupBox>
 
                 </DockPanel>
+                </ScrollViewer>
             </TabItem>
 
             <!-- The Composing tab -->
             <TabItem Header="{x:Static i18n:Text.Composing}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <DockPanel Margin="2" x:Name="MasterPanel">
 
                     <GroupBox DockPanel.Dock="Top" Padding="0,0,0,0">
@@ -289,10 +292,12 @@
                         </StackPanel>
                     </GroupBox>
                 </DockPanel>
+                </ScrollViewer>
             </TabItem>
 
             <!-- The Tweaks tab -->
             <TabItem Header="{x:Static i18n:Text.Tweaks}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <DockPanel Margin="2">
 
                     <!-- The Invalid Sequences group -->
@@ -402,6 +407,7 @@
                         </StackPanel>
                     </GroupBox>
                 </DockPanel>
+                </ScrollViewer>
             </TabItem>
 
         </TabControl>

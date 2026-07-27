@@ -10,12 +10,47 @@
         <Setter Property="FontSize" Value="12" />
     </Style>
 
-    <!-- WPF-UI sizes every tab to MinWidth 180, meant for wide navigation tabs.
-         Three of those need 540px and our settings window is 400 wide, so they
-         wrapped onto a second row. Let them size to their text instead. -->
+    <!-- WPF-UI hardcodes MinWidth 180 on the border *inside* the TabItem
+         template, so a style setter cannot reach it and three tabs demand
+         540px, wrapping onto a second row and leaving each tab mostly empty.
+         This is the theme's own template, verbatim, with that one value bound
+         to the control's MinWidth so the setter below governs it. -->
     <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
         <Setter Property="MinWidth" Value="0" />
-        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Grid x:Name="Root">
+                        <Border
+                            x:Name="Border"
+                            MinWidth="{TemplateBinding MinWidth}"
+                            MinHeight="36"
+                            Margin="0"
+                            Padding="12,6"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1,1,1,0"
+                            CornerRadius="8,8,0,0">
+                            <ContentPresenter
+                                x:Name="ContentSite"
+                                Margin="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                ContentSource="Header"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Panel.ZIndex" Value="100" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundSelected}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource TabViewSelectedItemBorderBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource TabViewItemForegroundSelected}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- The check box glyph is a 22x22 box the theme hardcodes via StaticResource,
@@ -25,6 +60,9 @@
     <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}">
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Padding" Value="8,1,8,2" />
+        <!-- No focus frame around the box and its label. Note this also removes
+             the only cue for keyboard users tabbing through the dialog. -->
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
     </Style>
 
     <!-- WPF-UI draws the keyboard focus ring as a rectangle with no margin, so
