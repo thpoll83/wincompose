@@ -161,10 +161,11 @@
     </Style>
 
     <!-- WPF-UI draws the keyboard focus ring as a rectangle with no margin, so
-         on a check box it sits flush against the box and its label. Same ring
-         and brush, pushed outwards. Overriding the theme's key works because
-         the control styles reference it with DynamicResource and this
-         dictionary is merged last. -->
+         it sits flush against the control it marks. Same ring and brush, pushed
+         outwards. Overriding the theme's key works because the control styles
+         reference it with DynamicResource and this dictionary is merged last.
+         Note this no longer affects check boxes: their style above opts out of
+         the focus visual entirely. -->
     <Style x:Key="DefaultControlFocusVisualStyle">
         <Setter Property="Control.Template">
             <Setter.Value>
