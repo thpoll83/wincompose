@@ -1,0 +1,4 @@
+# This fork tags releases as PK-<version>, e.g. PK-0.9.16. GitVersion's default
+# prefix is [vV], so without this it ignores our tags entirely and falls back to
+# a computed 0.1.0 — which is what happened while the repo had no tags at all.
+tag-prefix: 'PK-'
