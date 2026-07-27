@@ -217,8 +217,14 @@ namespace WinCompose
         {
             if (m_dirty.Get())
             {
-                Visibility = Settings.DisableIcon.Value ? Visibility.Collapsed
+                // Only assign on an actual change: this runs on every dirty
+                // tick, and each assignment makes the tray icon be removed and
+                // re-added.
+                var wanted = Settings.DisableIcon.Value ? Visibility.Collapsed
                                                         : Visibility.Visible;
+                if (Visibility != wanted)
+                    Visibility = wanted;
+
                 Icon = GetCurrentIcon();
                 CurrentToolTip = GetCurrentToolTip();
             }

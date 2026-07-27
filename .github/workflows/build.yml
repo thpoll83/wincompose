@@ -44,9 +44,28 @@ jobs:
       - name: Build (Release)
         run: msbuild src\wincompose\wincompose.csproj -restore -p:Configuration=Release -v:minimal
 
-      - name: Upload build output
+      # The raw bin directory is NOT runnable as a portable install: Utils
+      # decides it is "debugging" when a .pdb sits next to the exe, which sends
+      # the rule lookup to ../../../rules and loses Emoji.txt/WinCompose.txt.
+      # Mirror what src/Makefile assembles for the portable zip instead.
+      - name: Package portable
+        shell: pwsh
+        run: |
+          $bin = 'src/wincompose/bin/Release/net481'
+          $out = 'portable'
+          New-Item -ItemType Directory -Path $out | Out-Null
+          Copy-Item "$bin/*" $out -Recurse
+          Get-ChildItem $out -Recurse -Include *.pdb | Remove-Item -Force
+          New-Item -ItemType Directory -Path "$out/rules" | Out-Null
+          Copy-Item 'src/wincompose/rules/DefaultUserSequences.txt', `
+                    'src/wincompose/rules/Emoji.txt', `
+                    'src/wincompose/rules/WinCompose.txt' "$out/rules/"
+          if (Test-Path "$out/wincompose.pdb") { throw 'pdb survived' }
+          if (-not (Test-Path "$out/rules/Emoji.txt")) { throw 'rules missing' }
+
+      - name: Upload portable build
         uses: actions/upload-artifact@v4
         with:
-          name: wincompose-release
-          path: src/wincompose/bin/Release/net481/
+          name: wincompose-portable
+          path: portable/
           if-no-files-found: error
