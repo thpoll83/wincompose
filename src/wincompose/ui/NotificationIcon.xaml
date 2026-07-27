@@ -75,17 +75,10 @@
             <MenuItem Header="{x:Static i18n:Text.ShowOptions}" Command="{Binding MenuItemCommand}"
                       Icon="{StaticResource OptionsEmoji}" CommandParameter="{x:Static wc:MenuCommand.ShowOptions}"/>
 
-            <MenuItem Header="{x:Static i18n:Text.Help}">
-                <MenuItem Header="{x:Static i18n:Text.About}" Command="{Binding MenuItemCommand}"
-                          Icon="{StaticResource AboutEmoji}" CommandParameter="{x:Static wc:MenuCommand.About}"/>
-                <MenuItem Header="{x:Static i18n:Text.VisitWebsite}" Command="{Binding MenuItemCommand}"
-                          Icon="{StaticResource WebsiteEmoji}" CommandParameter="{x:Static wc:MenuCommand.VisitWebsite}"/>
-                <MenuItem Header="{x:Static i18n:Text.DonationPage}" Command="{Binding MenuItemCommand}"
-                          Icon="{StaticResource DonateEmoji}" CommandParameter="{x:Static wc:MenuCommand.DonationPage}"/>
-                <Separator/>
-                <MenuItem Header="{x:Static i18n:Text.DebugWindow}" Command="{Binding MenuItemCommand}"
-                          Icon="{StaticResource DebugEmoji}" CommandParameter="{x:Static wc:MenuCommand.DebugWindow}"/>
-            </MenuItem>
+            <!-- About, the website and the donation page all live in the options
+                 dialog now, so the tray menu is one flat list of actions. -->
+            <MenuItem Header="{x:Static i18n:Text.DebugWindow}" Command="{Binding MenuItemCommand}"
+                      Icon="{StaticResource DebugEmoji}" CommandParameter="{x:Static wc:MenuCommand.DebugWindow}"/>
 
             <MenuItem Command="{Binding MenuItemCommand}"
                       Visibility="{Binding Path=HasNewerVersion, Mode=OneWay, Converter={StaticResource booleanToVisibilityConverter}}"

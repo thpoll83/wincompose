@@ -22,7 +22,7 @@
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
-        Width="420" Height="560" MinWidth="380" MinHeight="420" MaxWidth="900"
+        Width="540" Height="560" MinWidth="390" MinHeight="420" MaxWidth="900"
         Title="{x:Static i18n:Text.Options}"
         Icon="/WinCompose;component/res/icon_settings.png" ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen" SizeToContent="Manual" WindowCornerPreference="Round"
@@ -417,6 +417,42 @@
                     </GroupBox>
                 </DockPanel>
                 </ScrollViewer>
+            </TabItem>
+
+            <!-- Moved out of the separate About window so everything the app can
+                 show lives in one dialog. Each tab builds its own view model. -->
+            <TabItem Header="{x:Static i18n:Text.About}">
+                <TabItem.DataContext><wc:AboutBoxViewModel/></TabItem.DataContext>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="12">
+                        <TextBlock HorizontalAlignment="Center" Text="WinCompose" FontSize="20"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Version}"/>
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,10,0,2"
+                                   Text="PolyKybd fork of WinCompose"/>
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,10"
+                                   Text="Based on the original WinCompose by Sam Hocevar and contributors."/>
+                        <Button Margin="4" Width="260" HorizontalAlignment="Center"
+                                Content="{x:Static i18n:Text.VisitWebsite}" Command="{Binding OpenWebsiteCommand}"/>
+                        <Button Margin="4" Width="260" HorizontalAlignment="Center"
+                                Content="Visit the original project" Command="{Binding OpenUpstreamCommand}"/>
+                        <Button Margin="4" Width="260" HorizontalAlignment="Center"
+                                Content="{x:Static i18n:Text.ReportBug}" Command="{Binding OpenReportBugCommand}"/>
+                        <Button Margin="4" Width="260" HorizontalAlignment="Center"
+                                Content="{x:Static i18n:Text.DonationPage}" Command="{Binding OpenDonateCommand}"/>
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,2,0,0"
+                                   Text="Donations go to Sam Hocevar, the original author."/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{x:Static i18n:Text.Authors}">
+                <TabItem.DataContext><wc:AboutBoxViewModel/></TabItem.DataContext>
+                <WebBrowser Margin="8" wc:AboutBox.WebContent="{Binding AuthorsDocument}"/>
+            </TabItem>
+
+            <TabItem Header="{x:Static i18n:Text.License}">
+                <TabItem.DataContext><wc:AboutBoxViewModel/></TabItem.DataContext>
+                <WebBrowser Margin="8" wc:AboutBox.WebContent="{Binding LicenseDocument}"/>
             </TabItem>
 
         </TabControl>
