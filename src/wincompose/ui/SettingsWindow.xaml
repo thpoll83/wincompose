@@ -428,19 +428,19 @@
                         <TextBlock HorizontalAlignment="Center" Text="WinCompose" FontSize="20"/>
                         <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Version}"/>
                         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,10,0,2"
-                                   Text="PolyKybd fork of WinCompose"/>
+                                   Text="{x:Static i18n:Text.ForkTagline}"/>
                         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,10"
-                                   Text="Based on the original WinCompose by Sam Hocevar and contributors."/>
+                                   Text="{x:Static i18n:Text.ForkBasedOn}"/>
                         <Button Margin="4" Width="260" HorizontalAlignment="Center"
                                 Content="{x:Static i18n:Text.VisitWebsite}" Command="{Binding OpenWebsiteCommand}"/>
                         <Button Margin="4" Width="260" HorizontalAlignment="Center"
-                                Content="Visit the original project" Command="{Binding OpenUpstreamCommand}"/>
+                                Content="{x:Static i18n:Text.VisitUpstream}" Command="{Binding OpenUpstreamCommand}"/>
                         <Button Margin="4" Width="260" HorizontalAlignment="Center"
                                 Content="{x:Static i18n:Text.ReportBug}" Command="{Binding OpenReportBugCommand}"/>
                         <Button Margin="4" Width="260" HorizontalAlignment="Center"
                                 Content="{x:Static i18n:Text.DonationPage}" Command="{Binding OpenDonateCommand}"/>
                         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,2,0,0"
-                                   Text="Donations go to Sam Hocevar, the original author."/>
+                                   Text="{x:Static i18n:Text.DonationNote}"/>
 
                         <TextBlock Margin="0,16,0,4" FontWeight="SemiBold"
                                    Text="{x:Static i18n:Text.Authors}"/>

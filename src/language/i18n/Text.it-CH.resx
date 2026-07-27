@@ -501,4 +501,16 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Sa cumpositzione no at a funtzionare in unas cantas aplicatziones si WinCompose non s'at a esecutare cun privilègios elevados. Custa optzione mìnimat sas possibilidades chi custu acontessat.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Fork PolyKybd di WinCompose</value>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Basato sul WinCompose originale di Sam Hocevar e collaboratori.</value>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Visita il progetto originale</value>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Le donazioni vanno a Sam Hocevar, l’autore originale.</value>
+  </data>
 </root>

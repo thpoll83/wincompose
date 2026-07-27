@@ -270,4 +270,16 @@
   <data name="SpecialThanks" xml:space="preserve">
     <value>Særlig tak</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>PolyKybd-fork af WinCompose</value>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Baseret på det oprindelige WinCompose af Sam Hocevar og bidragydere.</value>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Besøg det oprindelige projekt</value>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Donationer går til Sam Hocevar, den oprindelige forfatter.</value>
+  </data>
 </root>

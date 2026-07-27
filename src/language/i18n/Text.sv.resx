@@ -501,4 +501,16 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Komposition kommer inte fungera i somliga program om WinCompose inte körs med utökade privilegier. Detta val minskar risken att detta sker.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>PolyKybd-fork av WinCompose</value>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Baserad på det ursprungliga WinCompose av Sam Hocevar och bidragsgivare.</value>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Besök det ursprungliga projektet</value>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Donationer går till Sam Hocevar, den ursprungliga upphovsmannen.</value>
+  </data>
 </root>

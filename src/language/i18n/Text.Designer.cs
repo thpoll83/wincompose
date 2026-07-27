@@ -1211,5 +1211,41 @@ namespace WinCompose.i18n {
                 return ResourceManager.GetString("WindowTitle", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Looks up a localized string similar to PolyKybd fork of WinCompose.
+        /// </summary>
+        public static string ForkTagline {
+            get {
+                return ResourceManager.GetString("ForkTagline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Based on the original WinCompose by Sam Hocevar and contributors..
+        /// </summary>
+        public static string ForkBasedOn {
+            get {
+                return ResourceManager.GetString("ForkBasedOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit the original project.
+        /// </summary>
+        public static string VisitUpstream {
+            get {
+                return ResourceManager.GetString("VisitUpstream", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Donations go to Sam Hocevar, the original author..
+        /// </summary>
+        public static string DonationNote {
+            get {
+                return ResourceManager.GetString("DonationNote", resourceCulture);
+            }
+        }
+        
     }
 }

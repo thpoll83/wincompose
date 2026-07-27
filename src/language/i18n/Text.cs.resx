@@ -498,4 +498,16 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Složení nebude fungovat v některých aplikacích, když WinCompose nepoběží se zvýšenými oprávněními. Tato možnost snižuje šanci, že se to stane.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Fork PolyKybd programu WinCompose</value>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Založeno na původním WinCompose od Sama Hocevara a přispěvatelů.</value>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Navštívit původní projekt</value>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Dary putují Samu Hocevarovi, původnímu autorovi.</value>
+  </data>
 </root>

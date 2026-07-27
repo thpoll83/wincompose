@@ -501,4 +501,16 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>La composición no funcionará en algunas aplicaciones si WinCompose no se ejecuta con privilegios elevados. Esta opción reduce las posibilidades de que eso pase.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Bifurcación PolyKybd de WinCompose</value>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Basado en el WinCompose original de Sam Hocevar y sus colaboradores.</value>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Visitar el proyecto original</value>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Las donaciones van a Sam Hocevar, el autor original.</value>
+  </data>
 </root>

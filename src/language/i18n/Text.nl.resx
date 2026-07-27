@@ -501,4 +501,16 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Opstellen werkt niet in sommige programma's als WinCompose niet als administrator wordt uitgevoerd. Deze opties verkleinen de kans op problemen.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>PolyKybd-fork van WinCompose</value>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Gebaseerd op het originele WinCompose van Sam Hocevar en bijdragers.</value>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Bezoek het originele project</value>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Donaties gaan naar Sam Hocevar, de oorspronkelijke auteur.</value>
+  </data>
 </root>

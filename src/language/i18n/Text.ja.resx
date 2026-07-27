@@ -501,4 +501,16 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>WinComposeが管理者権限で実行されない場合、一部のアプリで合成が動作しないことがあります。 この設定は、そのような現象が発生する可能性を減らします。</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>WinCompose の PolyKybd フォーク</value>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Sam Hocevar 氏と貢献者による オリジナルの WinCompose に基づいています。</value>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>オリジナルのプロジェクトを開く</value>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>寄付はオリジナルの作者である Sam Hocevar 氏に送られます。</value>
+  </data>
 </root>
