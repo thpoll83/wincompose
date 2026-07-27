@@ -10,6 +10,23 @@
         <Setter Property="FontSize" Value="12" />
     </Style>
 
+    <!-- WPF-UI sizes every tab to MinWidth 180, meant for wide navigation tabs.
+         Three of those need 540px and our settings window is 400 wide, so they
+         wrapped onto a second row. Let them size to their text instead. -->
+    <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="Padding" Value="12,6" />
+    </Style>
+
+    <!-- The check box glyph is a 22x22 box the theme hardcodes via StaticResource,
+         so it cannot be overridden from here, but the surrounding box metrics are
+         plain setters: MinHeight 32 and Padding 11,5,11,6 are what make the rows
+         feel oversized next to 12px labels. -->
+    <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}">
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Padding" Value="8,1,8,2" />
+    </Style>
+
     <!-- WPF-UI draws the keyboard focus ring as a rectangle with no margin, so
          on a check box it sits flush against the box and its label. Same ring
          and brush, pushed outwards. Overriding the theme's key works because

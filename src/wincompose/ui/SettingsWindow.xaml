@@ -22,9 +22,10 @@
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
-        Width="400" Height="500" Title="{x:Static i18n:Text.Options}"
-        Icon="/WinCompose;component/res/icon_settings.png" ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen" SizeToContent="Height" WindowCornerPreference="Round"
+        Width="420" Height="560" MinWidth="380" MinHeight="420" MaxWidth="900"
+        Title="{x:Static i18n:Text.Options}"
+        Icon="/WinCompose;component/res/icon_settings.png" ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen" SizeToContent="Manual" WindowCornerPreference="Round"
         ExtendsContentIntoTitleBar="True">
 
     <Window.Resources>
