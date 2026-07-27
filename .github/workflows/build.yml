@@ -1,0 +1,39 @@
+name: Build
+
+# Compile-only check. Packaging (installer + portable zip) is not covered here:
+# src/Makefile additionally needs GitVersion, Inno Setup 6 and gettext, and the
+# solution's `installer` project shells out to iscc, which is why this builds the
+# wincompose project directly rather than wincompose.sln.
+
+on:
+  push:
+    branches:
+      - main
+      - 'claude/**'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The build embeds data files from the 3rdparty submodules (keysymdef.h,
+          # Compose.pre, dotXCompose, emoji-test.txt, Blocks.txt), so a shallow
+          # checkout without them fails in the CompressResources target.
+          submodules: recursive
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build (Release)
+        run: msbuild src\wincompose\wincompose.csproj -restore -p:Configuration=Release -v:minimal
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: wincompose-release
+          path: src/wincompose/bin/Release/net481/
+          if-no-files-found: error
