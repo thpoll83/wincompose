@@ -468,4 +468,16 @@
   <data name="KeyboardLed" xml:space="preserve">
     <value>Klawiatura LED</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Fork PolyKybd programu WinCompose</value>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Oparty na oryginalnym WinCompose autorstwa Sama Hocevara i współtwórców.</value>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Odwiedź oryginalny projekt</value>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Darowizny trafiają do Sama Hocevara, oryginalnego autora.</value>
+  </data>
 </root>

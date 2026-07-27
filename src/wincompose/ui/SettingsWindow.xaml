@@ -22,9 +22,10 @@
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
-        Width="400" Height="500" Title="{x:Static i18n:Text.Options}"
-        Icon="/WinCompose;component/res/icon_settings.png" ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen" SizeToContent="Height" WindowCornerPreference="Round"
+        Width="460" Height="560" MinWidth="390" MinHeight="420" MaxWidth="900"
+        Title="{x:Static i18n:Text.Options}"
+        Icon="/WinCompose;component/res/icon_settings.png" ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen" SizeToContent="Manual" WindowCornerPreference="Round"
         ExtendsContentIntoTitleBar="True">
 
     <Window.Resources>
@@ -39,7 +40,7 @@
             <DrawingImage emoji:Image.Source="🚀" x:Key="AdvancedIcon"/>
 
             <!-- display tooltips for 30 seconds; they’re supposed to be helpful -->
-            <Style TargetType="TextBlock">
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="ToolTipService.ShowDuration" Value="30000"/>
             </Style>
            <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}" >
@@ -72,15 +73,25 @@
     </Window.InputBindings>
 
 
-    <StackPanel Orientation="Vertical" >
-        <ui:TitleBar Title="{x:Static i18n:Text.Options}" CanMaximize="False" ShowMaximize="False" ShowMinimize="False" FontSize="14" Height="38">
+    <!-- A Grid, not a StackPanel: a vertical StackPanel measures its children
+         with infinite height, so the TabControl was never constrained and the
+         ScrollViewers inside it had nothing to scroll against. -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ui:TitleBar Grid.Row="0" Title="{x:Static i18n:Text.Options}" CanMaximize="False" ShowMaximize="False" ShowMinimize="False" FontSize="14" Height="38">
             <ui:TitleBar.Icon>
                 <ui:ImageIcon Source="/WinCompose;component/res/icon_settings.png"/>
             </ui:TitleBar.Icon></ui:TitleBar>
-        <TabControl Margin="6" >
+        <TabControl Grid.Row="1" Margin="6" >
 
             <!-- The Settings group -->
-            <TabItem Header="{x:Static i18n:Text.General}" MinWidth="125" Width="149">
+            <TabItem Header="{x:Static i18n:Text.General}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <DockPanel Margin="2">
                     <!--<DockPanel Margin="8" Height="{Binding ElementName=MasterPanel, Path=ActualHeight}">-->
                     <GroupBox DockPanel.Dock="Top" >
@@ -176,10 +187,12 @@
                     </GroupBox>
 
                 </DockPanel>
+                </ScrollViewer>
             </TabItem>
 
             <!-- The Composing tab -->
-            <TabItem Header="{x:Static i18n:Text.Composing}" MinWidth="125" Width="149">
+            <TabItem Header="{x:Static i18n:Text.Composing}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <DockPanel Margin="2" x:Name="MasterPanel">
 
                     <GroupBox DockPanel.Dock="Top" Padding="0,0,0,0">
@@ -288,10 +301,12 @@
                         </StackPanel>
                     </GroupBox>
                 </DockPanel>
+                </ScrollViewer>
             </TabItem>
 
             <!-- The Tweaks tab -->
-            <TabItem Header="{x:Static i18n:Text.Tweaks}" MinWidth="125" Width="149">
+            <TabItem Header="{x:Static i18n:Text.Tweaks}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <DockPanel Margin="2">
 
                     <!-- The Invalid Sequences group -->
@@ -401,16 +416,56 @@
                         </StackPanel>
                     </GroupBox>
                 </DockPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Moved out of the separate About window so everything the app can
+                 show lives in one dialog. Each tab builds its own view model. -->
+            <TabItem Header="{x:Static i18n:Text.About}">
+                <TabItem.DataContext><wc:AboutBoxViewModel/></TabItem.DataContext>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="12">
+                        <TextBlock HorizontalAlignment="Center" Text="WinCompose" FontSize="20"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Version}"/>
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,10,0,2"
+                                   Text="{x:Static i18n:Text.ForkTagline}"/>
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,10"
+                                   Text="{x:Static i18n:Text.ForkBasedOn}"/>
+                        <Button Margin="4" Width="260" HorizontalAlignment="Center"
+                                Content="{x:Static i18n:Text.VisitWebsite}" Command="{Binding OpenWebsiteCommand}"/>
+                        <Button Margin="4" Width="260" HorizontalAlignment="Center"
+                                Content="{x:Static i18n:Text.VisitUpstream}" Command="{Binding OpenUpstreamCommand}"/>
+                        <Button Margin="4" Width="260" HorizontalAlignment="Center"
+                                Content="{x:Static i18n:Text.ReportBug}" Command="{Binding OpenReportBugCommand}"/>
+                        <Button Margin="4" Width="260" HorizontalAlignment="Center"
+                                Content="{x:Static i18n:Text.DonationPage}" Command="{Binding OpenDonateCommand}"/>
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,2,0,0"
+                                   Text="{x:Static i18n:Text.DonationNote}"/>
+
+                        <TextBlock Margin="0,16,0,4" FontWeight="SemiBold"
+                                   Text="{x:Static i18n:Text.Authors}"/>
+                        <TextBlock Text="{Binding AuthorsText}" TextWrapping="Wrap"
+                                   Margin="0,0,0,4"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{x:Static i18n:Text.License}">
+                <TabItem.DataContext><wc:AboutBoxViewModel/></TabItem.DataContext>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <TextBlock Text="{Binding LicenseText}" TextWrapping="Wrap"
+                               FontFamily="Consolas, Courier New" Margin="12"/>
+                </ScrollViewer>
             </TabItem>
 
         </TabControl>
 
         <!-- The Close button and the restart warning message -->
-        <TextBlock Foreground="Red" Text="{x:Static i18n:Text.NeedRestart}" HorizontalAlignment="Left"
+        <TextBlock Grid.Row="2" Foreground="Red" Text="{x:Static i18n:Text.NeedRestart}" HorizontalAlignment="Left"
                  Margin="0, 0, 0, 4" Visibility="{Binding WarnMessageVisibility}" TextWrapping="Wrap"/>
-        <Button DockPanel.Dock="Bottom" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="80"
+        <Button Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="80"
               Margin="10,0,10,10" Content="{Binding CloseButtonText}" Command="{Binding CloseButtonCommand}"
               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
 
-    </StackPanel>
+    </Grid>
 </wc:BaseWindow>

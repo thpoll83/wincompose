@@ -45,7 +45,7 @@
         </ui:TitleBar>
         <TabControl Margin="10">
 
-            <TabItem Header="{x:Static i18n:Text.About}" Width="149">
+            <TabItem Header="{x:Static i18n:Text.About}">
                 <DockPanel Margin="8">
                     <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="Wincompose" FontSize="20" />
                     <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="20"  Text="{Binding Version}"/>
@@ -54,11 +54,11 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="{x:Static i18n:Text.Authors}" Width="149">
+            <TabItem Header="{x:Static i18n:Text.Authors}">
                 <WebBrowser Margin="8" wc:AboutBox.WebContent="{Binding AuthorsDocument}" Height="400" />
             </TabItem>
 
-            <TabItem Header="{x:Static i18n:Text.License}" Width="149">
+            <TabItem Header="{x:Static i18n:Text.License}">
                 <WebBrowser Margin="8" wc:AboutBox.WebContent="{Binding LicenseDocument}" Height="400" />
             </TabItem>
 

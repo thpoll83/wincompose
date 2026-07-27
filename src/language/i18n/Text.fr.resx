@@ -501,4 +501,16 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>La composition ne fonctionnera pas dans certaines applications si WinCompose ne se lance pas en tant qu'administrateur. Cette option réduit les chances d'un tel événement.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Fork PolyKybd de WinCompose</value>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Basé sur le WinCompose original de Sam Hocevar et ses contributeurs.</value>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Visiter le projet d’origine</value>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Les dons vont à Sam Hocevar, l’auteur original.</value>
+  </data>
 </root>

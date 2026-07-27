@@ -501,4 +501,16 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Komponado ne funkcios en iuj aplikaĵoj se WinCompose ne estas plenumata altrange. Tiu ĉi agordo malpli-ebligas, ke tio okazos.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>PolyKybd-forko de WinCompose</value>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Bazita sur la originala WinCompose de Sam Hocevar kaj kunlaborantoj.</value>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Viziti la originalan projekton</value>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Donacoj iras al Sam Hocevar, la originala aŭtoro.</value>
+  </data>
 </root>

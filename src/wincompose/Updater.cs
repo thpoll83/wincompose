@@ -120,7 +120,10 @@ static class Updater
     }
 
     /// <summary>
-    /// Query the WinCompose website for update information
+    /// Query our own status file for update information. This used to point at
+    /// http://wincompose.info/status.txt, which is upstream's server: it is
+    /// plain HTTP, we do not control it, and it advertises upstream releases
+    /// that do not correspond to this fork's builds.
     /// </summary>
     private static void UpdateStatus()
     {
@@ -128,7 +131,7 @@ static class Updater
         {
             WebClient browser = new WebClient();
             browser.Headers.Add("user-agent", GetUserAgent());
-            using (Stream s = browser.OpenRead("http://wincompose.info/status.txt"))
+            using (Stream s = browser.OpenRead(STATUS_URL))
             using (StreamReader sr = new StreamReader(s))
             {
                 m_data.Clear();
@@ -155,6 +158,9 @@ static class Updater
                       Utils.IsInstalled ? "" : "; Portable";
         return $"WinCompose/{Settings.Version} ({Environment.OSVersion}{flavour})";
     }
+
+    private const string STATUS_URL
+        = "https://raw.githubusercontent.com/thpoll83/wincompose/main/status.txt";
 
     private static Dictionary<string, string> m_data = new Dictionary<string, string>();
     private static Thread m_thread;

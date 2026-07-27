@@ -501,4 +501,16 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Комбинирование может не сработать в некоторых приложениях если WinCompose не будет запущен с повышенными привилегиями. Эта опция уменьшает шансы того, что это случится.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Форк PolyKybd программы WinCompose</value>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Основано на оригинальном WinCompose Сэма Осевара и участников проекта.</value>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Открыть оригинальный проект</value>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Пожертвования идут Сэму Осевару, автору оригинала.</value>
+  </data>
 </root>

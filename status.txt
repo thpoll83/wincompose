@@ -1,0 +1,12 @@
+# Update information for WinCompose, read by src/wincompose/Updater.cs over
+# https://raw.githubusercontent.com/thpoll83/wincompose/main/status.txt
+#
+# Format is "Key:  value", one per line; lines starting with # are ignored.
+# "Latest" is compared against the running version, and the tray only offers a
+# download when it is greater. Keep it equal to the shipped version until a
+# release actually exists, or the tray will point at a download that is not
+# there.
+
+Latest:  0.9.16
+Installer:  https://github.com/thpoll83/wincompose/releases/latest
+Portable:  https://github.com/thpoll83/wincompose/releases/latest

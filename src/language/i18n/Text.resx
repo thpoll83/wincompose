@@ -629,4 +629,20 @@
     <value>Composition will not work in some applications if WinCompose does not run with elevated privileges. This options reduces the chances that this will happen.</value>
     <comment></comment>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>PolyKybd fork of WinCompose</value>
+    <comment>Subtitle on the About tab identifying this build as a fork</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Based on the original WinCompose by Sam Hocevar and contributors.</value>
+    <comment>Attribution line on the About tab</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Visit the original project</value>
+    <comment>A button to open the original upstream project page</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Donations go to Sam Hocevar, the original author.</value>
+    <comment>Note under the donation button on the About tab</comment>
+  </data>
 </root>

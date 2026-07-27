@@ -56,6 +56,7 @@ namespace WinCompose
 
             TrayMouseDoubleClick += NotifyiconDoubleclicked;
 
+            Settings.DisableIcon.ValueChanged += MarkIconDirty;
             Settings.ComposeKeys.ValueChanged += MarkIconDirty;
             Settings.UseXComposeRules.ValueChanged += MarkIconDirty;
             Settings.UseEmojiRules.ValueChanged += MarkIconDirty;
@@ -74,6 +75,7 @@ namespace WinCompose
             GC.SuppressFinalize(this);
             CompositionTarget.Rendering -= UpdateNotificationIcon;
 
+            Settings.DisableIcon.ValueChanged -= MarkIconDirty;
             Settings.ComposeKeys.ValueChanged -= MarkIconDirty;
             Settings.UseXComposeRules.ValueChanged -= MarkIconDirty;
             Settings.UseEmojiRules.ValueChanged -= MarkIconDirty;
@@ -166,7 +168,46 @@ namespace WinCompose
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //private static System.Drawing.Icon[] m_icon_cache;
+        private static int CurrentIconIndex
+            => (Composer.IsComposing?    0x1 : 0x0) |
+               (Updater.HasNewerVersion? 0x2 : 0x0);
+
+        public static System.Drawing.Icon GetIcon(int index)
+        {
+            if (m_icon_cache == null)
+                m_icon_cache = new System.Drawing.Icon[8];
+
+            if (m_icon_cache[index] == null)
+            {
+                bool is_composing = (index & 0x1) != 0;
+                bool has_update = (index & 0x2) != 0;
+
+                // XXX: if you create new bitmap images here instead of using bitmaps from
+                // resources, make sure the DPI settings match. Our PNGs are 72 DPI whereas
+                // new Bitmap objects appear to use 96 by default (even if copy-constructed).
+                // A reasonable workaround might be to use Clone().
+                using (Bitmap bitmap = Properties.Resources.KeyEmpty)
+                using (Graphics canvas = Graphics.FromImage(bitmap))
+                {
+                    // LED status: on or off
+                    canvas.DrawImage(is_composing ? Properties.Resources.DecalActive
+                                                  : Properties.Resources.DecalIdle, 0, 0);
+
+                    // Tiny yellow exclamation mark to advertise updates
+                    if (has_update)
+                        canvas.DrawImage(Properties.Resources.DecalUpdate, 0, 0);
+
+                    canvas.Save();
+                    m_icon_cache[index] = System.Drawing.Icon.FromHandle(bitmap.GetHicon());
+                }
+            }
+
+            return m_icon_cache[index];
+        }
+
+        private static System.Drawing.Icon[] m_icon_cache;
+
+        private int m_icon_index = -1;
 
         private misc.AtomicFlag m_dirty;
 
@@ -176,20 +217,38 @@ namespace WinCompose
         {
             if (m_dirty.Get())
             {
-                Currenttooltip = GetCurrentToolTip();
+                // Only assign on an actual change: this runs on every dirty
+                // tick, and each assignment makes the tray icon be removed and
+                // re-added.
+                var wanted = Settings.DisableIcon.Value ? Visibility.Collapsed
+                                                        : Visibility.Visible;
+                if (Visibility != wanted)
+                    Visibility = wanted;
+
+                // Assigning Icon replaces the tray icon, so only do it when the
+                // composing/update state actually changed.
+                var index = CurrentIconIndex;
+                if (index != m_icon_index)
+                {
+                    m_icon_index = index;
+                    Icon = GetIcon(index);
+                }
+                CurrentToolTip = GetCurrentToolTip();
             }
         }
-        private string CurrentToolTip;
 
-        public string Currenttooltip
+        private string m_current_tooltip;
+
+        public string CurrentToolTip
         {
-            get => CurrentToolTip;
+            get => m_current_tooltip;
             set
             {
-                if (value == CurrentToolTip) return;
-                CurrentToolTip = value;
-                Debug.WriteLine(CurrentToolTip);
-                OnPropertyChanged("currenttooltip");
+                if (value == m_current_tooltip) return;
+                m_current_tooltip = value;
+                // The name must match the property exactly; WPF compares it
+                // ordinally, so a case mismatch silently drops the update.
+                OnPropertyChanged(nameof(CurrentToolTip));
             }
         }
 

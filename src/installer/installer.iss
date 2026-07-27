@@ -11,7 +11,7 @@
 ;;
 
 #define NAME "WinCompose"
-#define AUTHOR "Sam Hocevar"
+#define AUTHOR "thpoll83"
 #define EXE "wincompose.exe"
 #ifndef CONFIG
 #   define CONFIG GetEnv('CONFIG')
@@ -33,7 +33,7 @@
 AppName = {#NAME}
 AppVersion = {#VERSION}
 AppPublisher = {#AUTHOR}
-AppPublisherURL = http://sam.hocevar.net/
+AppPublisherURL = https://github.com/thpoll83/wincompose
 OutputBaseFilename = "{#NAME}-Setup-{#VERSION}"
 ArchitecturesInstallIn64BitMode = x64
 DefaultDirName = {commonpf}\{#NAME}

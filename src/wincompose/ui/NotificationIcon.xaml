@@ -23,7 +23,7 @@
                 DataContext="{Binding RelativeSource={RelativeSource Self}}"
                 x:Name="wcToolTip"
                 IconSource="/ui/key_compose.png"
-                ToolTipText="{Binding Currenttooltip}">
+                ToolTipText="{Binding CurrentToolTip}">
 
     <tb:TaskbarIcon.Resources>
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
@@ -60,38 +60,30 @@
                     <Image Source="{StaticResource ComposeKeyImage}" Width="16" Height="16"/>
                 </MenuItem.Icon>
                 <MenuItem.Header>
-                    <TextBlock FontWeight="Bold" FontSize="14"
-                               Text="WinCompose" VerticalAlignment="Center"/>
+                    <TextBlock Text="WinCompose" VerticalAlignment="Center"/>
                 </MenuItem.Header>
             </MenuItem>
 
             <MenuItem Command="{Binding MenuItemCommand}"
                       Icon="{StaticResource SequencesEmoji}" CommandParameter="{x:Static wc:MenuCommand.ShowSequences}">
                 <MenuItem.Header>
-                    <TextBlock FontWeight="Bold" Text="{x:Static i18n:Text.ShowSequences}"/>
+                    <TextBlock Text="{x:Static i18n:Text.ShowSequences}"/>
                 </MenuItem.Header>
             </MenuItem>
 
             <MenuItem Header="{x:Static i18n:Text.ShowOptions}" Command="{Binding MenuItemCommand}"
                       Icon="{StaticResource OptionsEmoji}" CommandParameter="{x:Static wc:MenuCommand.ShowOptions}"/>
 
-            <MenuItem Header="{x:Static i18n:Text.Help}">
-                <MenuItem Header="{x:Static i18n:Text.About}" Command="{Binding MenuItemCommand}"
-                          Icon="{StaticResource AboutEmoji}" CommandParameter="{x:Static wc:MenuCommand.About}"/>
-                <MenuItem Header="{x:Static i18n:Text.VisitWebsite}" Command="{Binding MenuItemCommand}"
-                          Icon="{StaticResource WebsiteEmoji}" CommandParameter="{x:Static wc:MenuCommand.VisitWebsite}"/>
-                <MenuItem Header="{x:Static i18n:Text.DonationPage}" Command="{Binding MenuItemCommand}"
-                          Icon="{StaticResource DonateEmoji}" CommandParameter="{x:Static wc:MenuCommand.DonationPage}"/>
-                <Separator/>
-                <MenuItem Header="{x:Static i18n:Text.DebugWindow}" Command="{Binding MenuItemCommand}"
-                          Icon="{StaticResource DebugEmoji}" CommandParameter="{x:Static wc:MenuCommand.DebugWindow}"/>
-            </MenuItem>
+            <!-- About, the website and the donation page all live in the options
+                 dialog now, so the tray menu is one flat list of actions. -->
+            <MenuItem Header="{x:Static i18n:Text.DebugWindow}" Command="{Binding MenuItemCommand}"
+                      Icon="{StaticResource DebugEmoji}" CommandParameter="{x:Static wc:MenuCommand.DebugWindow}"/>
 
             <MenuItem Command="{Binding MenuItemCommand}"
                       Visibility="{Binding Path=HasNewerVersion, Mode=OneWay, Converter={StaticResource booleanToVisibilityConverter}}"
                       CommandParameter="{x:Static wc:MenuCommand.Download}">
                 <MenuItem.Header>
-                    <TextBlock FontWeight="Bold" Text="{Binding DownloadHeader}"/>
+                    <TextBlock Text="{Binding DownloadHeader}"/>
                 </MenuItem.Header>
             </MenuItem>
 

@@ -1,0 +1,132 @@
+name: Build
+
+# Compile-only check. Packaging (installer + portable zip) is not covered here:
+# src/Makefile additionally needs GitVersion, Inno Setup 6 and gettext, and the
+# solution's `installer` project shells out to iscc, which is why this builds the
+# wincompose project directly rather than wincompose.sln.
+
+on:
+  push:
+    branches:
+      - main
+      - 'claude/**'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    # Mapped to env because a step's `if` cannot read the secrets context. While
+    # these are unset the signing step is skipped and builds stay green unsigned.
+    env:
+      SIGNING_CLIENT_ID: ${{ secrets.AZURE_SIGNING_CLIENT_ID }}
+      SIGNING_TENANT_ID: ${{ secrets.AZURE_SIGNING_TENANT_ID }}
+      SIGNING_CLIENT_SECRET: ${{ secrets.AZURE_SIGNING_CLIENT_SECRET }}
+      SIGNING_ENDPOINT: ${{ secrets.AZURE_SIGNING_ENDPOINT }}
+      SIGNING_ACCOUNT: ${{ secrets.AZURE_SIGNING_ACCOUNT }}
+      SIGNING_PROFILE: ${{ secrets.AZURE_SIGNING_PROFILE }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The build embeds data files from the 3rdparty submodules (keysymdef.h,
+          # Compose.pre, dotXCompose, emoji-test.txt, Blocks.txt), so a shallow
+          # checkout without them fails in the CompressResources target.
+          submodules: recursive
+          # language.csproj builds with GitVersion.MsBuild, which walks branch
+          # history to derive a version. On the default grafted checkout it dies
+          # with a NullReferenceException in LibGit2Sharp, so it needs the lot.
+          fetch-depth: 0
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      # wincompose.csproj has an InsertIcons target that runs this tool after the
+      # build. The solution builds it as a sibling project; building the project
+      # on its own does not, so build it explicitly first.
+      # Built outside the solution, MSBuild picks Platform=x86, for which this
+      # old-style project defines no OutputPath. Pin both, with forward slashes
+      # so the trailing separator survives PowerShell argument parsing.
+      - name: Build InsertIcons
+        run: msbuild src\3rdparty\inserticons\inserticons.csproj -restore -p:Configuration=Release -p:Platform=AnyCPU -p:OutputPath=bin/Release/ -v:minimal
+
+      - name: Build (Release)
+        run: msbuild src\wincompose\wincompose.csproj -restore -p:Configuration=Release -v:minimal
+
+      # Dormant until a code-signing certificate exists. Azure Artifact Signing
+      # (formerly Trusted Signing) is available to organisations in the EU, so
+      # this waits on the business entity rather than on any code change. It runs
+      # before packaging so the archive we publish hashes the signed binary.
+      - name: Sign binaries
+        if: env.SIGNING_CLIENT_ID != ''
+        uses: azure/trusted-signing-action@v0
+        with:
+          azure-tenant-id: ${{ env.SIGNING_TENANT_ID }}
+          azure-client-id: ${{ env.SIGNING_CLIENT_ID }}
+          azure-client-secret: ${{ env.SIGNING_CLIENT_SECRET }}
+          endpoint: ${{ env.SIGNING_ENDPOINT }}
+          trusted-signing-account-name: ${{ env.SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ env.SIGNING_PROFILE }}
+          files-folder: src/wincompose/bin/Release
+          files-folder-filter: exe,dll
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+
+      # The raw bin directory is NOT runnable as a portable install: Utils
+      # decides it is "debugging" when a .pdb sits next to the exe, which sends
+      # the rule lookup to ../../../rules and loses Emoji.txt/WinCompose.txt.
+      # Mirror what src/Makefile assembles for the portable zip instead.
+      - name: Package portable
+        shell: pwsh
+        run: |
+          # Locate the target-framework directory rather than hardcoding the
+          # moniker, but insist on exactly one so a stale folder from a previous
+          # TFM cannot be packaged silently.
+          $tfm = @(Get-ChildItem 'src/wincompose/bin/Release' -Directory)
+          if ($tfm.Count -ne 1) { throw "expected one TFM directory under bin/Release, found $($tfm.Count)" }
+          $bin = $tfm[0].FullName
+          $out = 'portable'
+          New-Item -ItemType Directory -Path $out | Out-Null
+          Copy-Item "$bin/*" $out -Recurse
+          Get-ChildItem $out -Recurse -Include *.pdb | Remove-Item -Force
+          New-Item -ItemType Directory -Path "$out/rules" | Out-Null
+          Copy-Item 'src/wincompose/rules/DefaultUserSequences.txt', `
+                    'src/wincompose/rules/Emoji.txt', `
+                    'src/wincompose/rules/WinCompose.txt' "$out/rules/"
+          # These are the only way back into the UI once the tray icon is
+          # hidden, so the portable layout ships them like the Makefile does.
+          'start wincompose.exe -settings'  | Set-Content "$out/wincompose-settings.bat"
+          'start wincompose.exe -sequences' | Set-Content "$out/wincompose-sequences.bat"
+          if (Test-Path "$out/wincompose.pdb") { throw 'pdb survived' }
+          if (-not (Test-Path "$out/rules/Emoji.txt")) { throw 'rules missing' }
+
+      # Until the builds are signed, a published checksum is the only way for
+      # someone to confirm the download matches what CI produced. Hash our own
+      # archive rather than the artifact zip, whose bytes GitHub controls.
+      - name: Build release archive and checksums
+        shell: pwsh
+        run: |
+          $ver = (Get-Item 'portable/wincompose.exe').VersionInfo.FileVersion
+          $zip = "WinCompose-NoInstall-$ver.zip"
+          Compress-Archive -Path 'portable/*' -DestinationPath $zip
+          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
+          New-Item -ItemType Directory -Path 'release' | Out-Null
+          Move-Item $zip 'release/'
+          "$hash  $zip" | Set-Content 'release/SHA256SUMS.txt' -Encoding ascii
+          Get-Content 'release/SHA256SUMS.txt'
+
+      - name: Upload portable build
+        uses: actions/upload-artifact@v4
+        with:
+          name: wincompose-portable
+          path: portable/
+          if-no-files-found: error
+
+      - name: Upload release assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: wincompose-release-assets
+          path: release/
+          if-no-files-found: error

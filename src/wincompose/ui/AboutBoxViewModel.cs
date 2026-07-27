@@ -13,6 +13,8 @@
 
 using System;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace WinCompose
@@ -21,16 +23,22 @@ namespace WinCompose
     {
         private readonly DelegateCommand m_openwebsite_command;
         private readonly DelegateCommand m_reportbug_command;
+        private readonly DelegateCommand m_openupstream_command;
+        private readonly DelegateCommand m_opendonate_command;
 
         public AboutBoxViewModel()
         {
             m_openwebsite_command = new DelegateCommand(OnOpenWebsiteCommandExecuted);
             m_reportbug_command = new DelegateCommand(OnReportBugCommandExecuted);
+            m_openupstream_command = new DelegateCommand(OnOpenUpstreamCommandExecuted);
+            m_opendonate_command = new DelegateCommand(OnOpenDonateCommandExecuted);
         }
 
 
         public ICommand OpenWebsiteCommand => m_openwebsite_command;
         public ICommand OpenReportBugCommand => m_reportbug_command;
+        public ICommand OpenUpstreamCommand => m_openupstream_command;
+        public ICommand OpenDonateCommand => m_opendonate_command;
 
         public Stream AuthorsDocument
             => Application.GetResourceStream(new Uri("pack://application:,,,/res/contributors.html")).Stream;
@@ -38,12 +46,60 @@ namespace WinCompose
         public Stream LicenseDocument
             => Application.GetResourceStream(new Uri("pack://application:,,,/res/copying.html")).Stream;
 
+        // Rendered as plain text rather than through a WebBrowser: that control
+        // is an HwndHost, so it paints over neighbouring WPF content and ignores
+        // the surrounding ScrollViewer's clipping.
+        public string AuthorsText => HtmlToText(AuthorsDocument);
+
+        public string LicenseText => HtmlToText(LicenseDocument);
+
+        private static string HtmlToText(Stream stream)
+        {
+            using (var reader = new StreamReader(stream))
+            {
+                var text = reader.ReadToEnd();
+
+                text = Regex.Replace(text, "<li>", "• ", RegexOptions.IgnoreCase);
+                text = Regex.Replace(text, "<br ?/?>", "\n", RegexOptions.IgnoreCase);
+                text = Regex.Replace(text, "<[^>]+>", "");
+
+                // &amp; last, so an escaped entity is not decoded twice.
+                text = text.Replace("&lt;", "<").Replace("&gt;", ">")
+                           .Replace("&quot;", "\"").Replace("&#39;", "'")
+                           .Replace("&amp;", "&");
+
+                // Stripping the tags leaves the runs of blank lines they sat on.
+                var lines = text.Replace("\r", "").Split('\n')
+                                .Select(line => line.TrimEnd());
+                var result = new System.Text.StringBuilder();
+                var blank = 0;
+                foreach (var line in lines)
+                {
+                    blank = line.Length == 0 ? blank + 1 : 0;
+                    if (blank > 1)
+                        continue;
+                    result.AppendLine(line);
+                }
+                return result.ToString().Trim('\n');
+            }
+        }
+
         public string Version => Settings.Version;
 
+        // This fork's own page, not the original project's site.
         private static void OnOpenWebsiteCommandExecuted(object parameter)
-            => System.Diagnostics.Process.Start("http://wincompose.info/");
+            => System.Diagnostics.Process.Start("https://www.polykybd.org/software/wincompose/");
 
+        // Bugs in this fork belong in this fork's tracker; the original project
+        // is no longer actively developed and should not receive our reports.
         private static void OnReportBugCommandExecuted(object parameter)
-            => System.Diagnostics.Process.Start("https://github.com/samhocevar/wincompose/issues/new");
+            => System.Diagnostics.Process.Start("https://github.com/thpoll83/wincompose/issues/new");
+
+        private static void OnOpenUpstreamCommandExecuted(object parameter)
+            => System.Diagnostics.Process.Start("https://github.com/samhocevar/wincompose");
+
+        // Donations go to the original author, whose work this all is.
+        private static void OnOpenDonateCommandExecuted(object parameter)
+            => System.Diagnostics.Process.Start("http://wincompose.info/donate/");
     }
 }

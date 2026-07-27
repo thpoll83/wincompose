@@ -120,8 +120,11 @@ public class SequenceTree : SequenceNode
             Key k = Key.FromKeySymOrChar(keysyms[i]);
             if (k == null)
             {
+                // Info, not a warning: the X.org rules reference keysyms with no
+                // Windows equivalent (dead keys, keypad keys), so this is the
+                // expected outcome for dozens of sequences on every start.
                 if (m_invalid_keys.Add(keysyms[i]))
-                    Logger.Warn($"Unknown key name <{keysyms[i]}>, ignoring sequence");
+                    Logger.Info($"Unknown key name <{keysyms[i]}>, ignoring sequence");
                 return; // Unknown key name! Better bail out
             }
 
@@ -164,7 +167,7 @@ public class SequenceTree : SequenceNode
             var result_key = Key.FromKeySymOrChar(result);
             if (result_key == null)
             {
-                Logger.Warn($"Unknown key name {result}, ignoring sequence");
+                Logger.Info($"Unknown key name {result}, ignoring sequence");
                 return;
             }
             result = result_key.PrintableResult;
