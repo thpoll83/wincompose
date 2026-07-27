@@ -32,6 +32,12 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
 
+      # wincompose.csproj has an InsertIcons target that runs this tool after the
+      # build. The solution builds it as a sibling project; building the project
+      # on its own does not, so build it explicitly first.
+      - name: Build InsertIcons
+        run: msbuild src\3rdparty\inserticons\inserticons.csproj -restore -p:Configuration=Release -v:minimal
+
       - name: Build (Release)
         run: msbuild src\wincompose\wincompose.csproj -restore -p:Configuration=Release -v:minimal
 
