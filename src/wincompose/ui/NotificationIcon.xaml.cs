@@ -176,20 +176,22 @@ namespace WinCompose
         {
             if (m_dirty.Get())
             {
-                Currenttooltip = GetCurrentToolTip();
+                CurrentToolTip = GetCurrentToolTip();
             }
         }
-        private string CurrentToolTip;
 
-        public string Currenttooltip
+        private string m_current_tooltip;
+
+        public string CurrentToolTip
         {
-            get => CurrentToolTip;
+            get => m_current_tooltip;
             set
             {
-                if (value == CurrentToolTip) return;
-                CurrentToolTip = value;
-                Debug.WriteLine(CurrentToolTip);
-                OnPropertyChanged("currenttooltip");
+                if (value == m_current_tooltip) return;
+                m_current_tooltip = value;
+                // The name must match the property exactly; WPF compares it
+                // ordinally, so a case mismatch silently drops the update.
+                OnPropertyChanged(nameof(CurrentToolTip));
             }
         }
 

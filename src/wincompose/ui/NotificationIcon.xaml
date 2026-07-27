@@ -23,7 +23,7 @@
                 DataContext="{Binding RelativeSource={RelativeSource Self}}"
                 x:Name="wcToolTip"
                 IconSource="/ui/key_compose.png"
-                ToolTipText="{Binding Currenttooltip}">
+                ToolTipText="{Binding CurrentToolTip}">
 
     <tb:TaskbarIcon.Resources>
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
