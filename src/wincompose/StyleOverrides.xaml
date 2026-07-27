@@ -14,7 +14,7 @@
 
     <!-- Emoji.Wpf's TextBlock is its own type and WPF implicit styles match the
          exact type, so the style above never reached the labels that carry an
-         emoji -- they stayed at the theme's 14px. -->
+         emoji: they stayed at the theme's 14px. -->
     <Style TargetType="{x:Type emoji:TextBlock}">
         <Setter Property="FontSize" Value="12" />
     </Style>
