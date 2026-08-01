@@ -110,6 +110,23 @@ jobs:
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
 
+      # installer.iss line 54 bundles bin\Release\installer-helper.dll, a C++
+      # DLL that is NOT part of the .NET build — src/Makefile gets it by building
+      # the whole solution, whereas this workflow builds projects individually
+      # (so that signing can run between the app build and packaging). Without
+      # it iscc aborts with 'Source file "…\installer-helper.dll" does not exist'.
+      # Win32 is the only platform the vcxproj defines, and its OutDir
+      # (bin\$(Configuration)\) is already the path the .iss expects.
+      - name: Build installer helper (C++)
+        run: msbuild src\installer\installer-helper.vcxproj -p:Configuration=Release -p:Platform=Win32 -v:minimal
+
+      - name: Verify installer payload
+        shell: pwsh
+        run: |
+          $dll = 'src/installer/bin/Release/installer-helper.dll'
+          if (-not (Test-Path $dll)) { throw "installer-helper.dll missing at $dll" }
+          "installer-helper.dll: $((Get-Item $dll).Length) bytes"
+
       # iscc derives the version from the built wincompose.exe's version
       # resource (GetVersionComponents) and writes WinCompose-Setup-<ver>.exe to
       # OutputDir `..\` — i.e. src\.
