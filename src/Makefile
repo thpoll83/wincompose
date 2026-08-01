@@ -42,10 +42,10 @@ MSGMERGE = msgmerge
 all: check installer portable
 	@echo
 	@echo Latest: $(VERSION)
-	@echo Installer: https://github.com/ell1010/wincompose/releases/download/v$(VERSION)/WinCompose-Setup-$(VERSION).exe
+	@echo Installer: https://github.com/thpoll83/wincompose/releases/download/PK-$(VERSION)/WinCompose-Setup-$(VERSION).exe
 	@echo InstallerMD5: $(shell certutil -hashfile WinCompose-Setup-$(VERSION).exe MD5)
 	@echo InstallerSHA256: $(shell certutil -hashfile WinCompose-Setup-$(VERSION).exe sha256)
-	@echo Portable: https://github.com/ell1010/wincompose/releases/download/v$(VERSION)/WinCompose-NoInstall-$(VERSION).zip
+	@echo Portable: https://github.com/thpoll83/wincompose/releases/download/PK-$(VERSION)/WinCompose-NoInstall-$(VERSION).zip
 	@echo PortableSHA256: $(shell certutil -hashfile $(PORTABLE) MD5)
 	@echo PortableMD5: $(shell certutil -hashfile $(PORTABLE) sha256)
 

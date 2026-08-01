@@ -1,0 +1,212 @@
+name: Release
+
+# Same shape as the other PolyKybd repos: a release is created by PUBLISHING it
+# (scripts/publish_release.py, or the GitHub UI), which fires `release:
+# published`; this workflow then applies the crafted notes and attaches the
+# built assets. The tag-push trigger is kept for a tag pushed by hand.
+on:
+  push:
+    tags:
+      - 'PK-*'
+  release:
+    types: [published]
+  # Build the assets without releasing, to check this workflow end to end.
+  workflow_dispatch: {}
+
+concurrency:
+  group: release-${{ github.event.release.tag_name || github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and release WinCompose
+    runs-on: windows-latest
+
+    # Mapped to env because a step's `if` cannot read the secrets context. While
+    # these are unset the signing step is skipped and builds stay green unsigned
+    # (same dormant wiring as build.yml).
+    env:
+      SIGNING_CLIENT_ID: ${{ secrets.AZURE_SIGNING_CLIENT_ID }}
+      SIGNING_TENANT_ID: ${{ secrets.AZURE_SIGNING_TENANT_ID }}
+      SIGNING_CLIENT_SECRET: ${{ secrets.AZURE_SIGNING_CLIENT_SECRET }}
+      SIGNING_ENDPOINT: ${{ secrets.AZURE_SIGNING_ENDPOINT }}
+      SIGNING_ACCOUNT: ${{ secrets.AZURE_SIGNING_ACCOUNT }}
+      SIGNING_PROFILE: ${{ secrets.AZURE_SIGNING_PROFILE }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # installer.iss pulls its wizard resources from the issrc submodule
+          # (INNODIR ../3rdparty/innosetup/Files), and the build embeds data
+          # files from the other 3rdparty submodules — so recursive, and full
+          # history for GitVersion (see build.yml for the LibGit2Sharp crash).
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      # src/installer/installer.csproj's Build target shells out to
+      # "%ProgramFiles(x86)%\Inno Setup 6\iscc", so Inno Setup has to exist at
+      # exactly that path — which is where choco puts it.
+      - name: Install Inno Setup 6
+        run: choco install innosetup --version=6.2.2 -y --no-progress
+
+      # wincompose.csproj has an InsertIcons target that runs this tool after the
+      # build; building the project on its own does not build it. Same pinning as
+      # build.yml (old-style project defines no OutputPath for x86).
+      - name: Build InsertIcons
+        run: msbuild src\3rdparty\inserticons\inserticons.csproj -restore -p:Configuration=Release -p:Platform=AnyCPU -p:OutputPath=bin/Release/ -v:minimal
+
+      - name: Build (Release)
+        run: msbuild src\wincompose\wincompose.csproj -restore -p:Configuration=Release -v:minimal
+
+      # Before packaging, so both the installer payload and the portable zip
+      # carry signed binaries and the published checksums cover the signed bytes.
+      - name: Sign binaries
+        if: env.SIGNING_CLIENT_ID != ''
+        uses: azure/trusted-signing-action@v0
+        with:
+          azure-tenant-id: ${{ env.SIGNING_TENANT_ID }}
+          azure-client-id: ${{ env.SIGNING_CLIENT_ID }}
+          azure-client-secret: ${{ env.SIGNING_CLIENT_SECRET }}
+          endpoint: ${{ env.SIGNING_ENDPOINT }}
+          trusted-signing-account-name: ${{ env.SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ env.SIGNING_PROFILE }}
+          files-folder: src/wincompose/bin/Release
+          files-folder-filter: exe,dll
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+
+      # iscc derives the version from the built wincompose.exe's version
+      # resource (GetVersionComponents) and writes WinCompose-Setup-<ver>.exe to
+      # OutputDir `..\` — i.e. src\.
+      - name: Build installer
+        run: msbuild src\installer\installer.csproj -p:Configuration=Release -v:minimal
+
+      # The raw bin directory is NOT runnable as a portable install: Utils
+      # decides it is "debugging" when a .pdb sits next to the exe, which sends
+      # the rule lookup to ../../../rules and loses Emoji.txt/WinCompose.txt.
+      # Mirror what src/Makefile assembles for the portable zip instead.
+      # (Kept in step with build.yml — change both together.)
+      - name: Package portable
+        shell: pwsh
+        run: |
+          $tfm = @(Get-ChildItem 'src/wincompose/bin/Release' -Directory)
+          if ($tfm.Count -ne 1) { throw "expected one TFM directory under bin/Release, found $($tfm.Count)" }
+          $bin = $tfm[0].FullName
+          $out = 'portable'
+          New-Item -ItemType Directory -Path $out | Out-Null
+          Copy-Item "$bin/*" $out -Recurse
+          Get-ChildItem $out -Recurse -Include *.pdb | Remove-Item -Force
+          New-Item -ItemType Directory -Path "$out/rules" | Out-Null
+          Copy-Item 'src/wincompose/rules/DefaultUserSequences.txt', `
+                    'src/wincompose/rules/Emoji.txt', `
+                    'src/wincompose/rules/WinCompose.txt' "$out/rules/"
+          # These are the only way back into the UI once the tray icon is
+          # hidden, so the portable layout ships them like the Makefile does.
+          'start wincompose.exe -settings'  | Set-Content "$out/wincompose-settings.bat"
+          'start wincompose.exe -sequences' | Set-Content "$out/wincompose-sequences.bat"
+          if (Test-Path "$out/wincompose.pdb") { throw 'pdb survived' }
+          if (-not (Test-Path "$out/rules/Emoji.txt")) { throw 'rules missing' }
+
+      # Until the builds are signed, a published checksum is the only way for
+      # someone to confirm a download matches what CI produced — the docs tell
+      # users to check against SHA256SUMS.txt, so it covers BOTH assets.
+      - name: Assemble release assets
+        id: assets
+        shell: pwsh
+        run: |
+          $ver = (Get-Item 'portable/wincompose.exe').VersionInfo.FileVersion
+          # FileVersion is 4-part (0.9.16.0); the asset names use MAJOR.MINOR.REV,
+          # matching iscc's VERSION and src/Makefile.
+          $ver = ($ver -split '\.')[0..2] -join '.'
+          $setup = "src/WinCompose-Setup-$ver.exe"
+          if (-not (Test-Path $setup)) { throw "installer not found at $setup" }
+          New-Item -ItemType Directory -Path 'release' | Out-Null
+          $zip = "WinCompose-NoInstall-$ver.zip"
+          Compress-Archive -Path 'portable/*' -DestinationPath "release/$zip"
+          Copy-Item $setup 'release/'
+          # Hash our own files, not the artifact zip whose bytes GitHub controls.
+          Get-ChildItem 'release' -File | Sort-Object Name | ForEach-Object {
+            "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)"
+          } | Set-Content 'release/SHA256SUMS.txt' -Encoding ascii
+          Get-Content 'release/SHA256SUMS.txt'
+          "version=$ver" >> $env:GITHUB_OUTPUT
+
+      # Always upload, so a workflow_dispatch smoke test yields inspectable
+      # assets without touching any release.
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wincompose-release-assets
+          path: release/
+          if-no-files-found: error
+
+      # Crafted release notes (optional): one file per tag on the unprotected
+      # `release-notes` branch — <TAG>.md, first line "# <title>", the rest the
+      # body. Files are keyed by tag, so they are never overwritten or deleted —
+      # the branch is an accumulating changelog archive. A missing file just
+      # falls back to --generate-notes, so this step is safe if unused.
+      - name: Fetch crafted release notes (if any)
+        id: notes
+        if: github.event_name == 'release' || github.ref_type == 'tag'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.event.release.tag_name || github.ref_name }}
+        run: |
+          if gh api "repos/${{ github.repository }}/contents/${TAG}.md?ref=release-notes" \
+               --jq '.content' 2>/dev/null | base64 -d > _release_notes.md && [ -s _release_notes.md ]; then
+            TITLE=$(head -n1 _release_notes.md | sed 's/^#\s*//')
+            tail -n +2 _release_notes.md | sed '/./,$!d' > _release_body.md
+            {
+              echo "have_notes=1"
+              echo "title=$TITLE"
+            } >> "$GITHUB_OUTPUT"
+            echo "Using crafted notes for $TAG (title: $TITLE)."
+          else
+            echo "have_notes=0" >> "$GITHUB_OUTPUT"
+            echo "No crafted notes on the release-notes branch for $TAG — auto-generating."
+          fi
+
+      # Idempotent: creates the release if missing, otherwise (re-)uploads the
+      # assets with --clobber; a create that loses a race falls back to upload.
+      # Guarded so a workflow_dispatch from a branch builds as a smoke test only.
+      - name: Create or update GitHub Release
+        if: github.event_name == 'release' || github.ref_type == 'tag'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.event.release.tag_name || github.ref_name }}
+          HAVE_NOTES: ${{ steps.notes.outputs.have_notes }}
+          TITLE: ${{ steps.notes.outputs.title }}
+          VERSION: ${{ steps.assets.outputs.version }}
+        run: |
+          ASSETS=( release/WinCompose-Setup-${VERSION}.exe \
+                   release/WinCompose-NoInstall-${VERSION}.zip \
+                   release/SHA256SUMS.txt )
+          if [ "$HAVE_NOTES" = "1" ]; then
+            NOTES_ARGS=( --title "$TITLE" --notes-file _release_body.md )
+          else
+            NOTES_ARGS=( --title "WinCompose $TAG" --generate-notes )
+          fi
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            # The normal path: the release was published (UI or
+            # scripts/publish_release.py) and this run attaches the assets.
+            if [ "$HAVE_NOTES" = "1" ]; then
+              echo "Release $TAG exists — applying crafted notes + uploading assets."
+              gh release edit "$TAG" --title "$TITLE" --notes-file _release_body.md
+            else
+              echo "Release $TAG exists — uploading assets (keeping existing notes)."
+            fi
+            gh release upload "$TAG" "${ASSETS[@]}" --clobber
+          else
+            echo "Creating release $TAG (falls back to upload if a concurrent run won the create)."
+            gh release create "$TAG" "${NOTES_ARGS[@]}" "${ASSETS[@]}" \
+            || gh release upload "$TAG" "${ASSETS[@]}" --clobber
+          fi
