@@ -10,11 +10,21 @@ on:
       - 'PK-*'
   release:
     types: [published]
-  # Build the assets without releasing, to check this workflow end to end.
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: >-
+          Existing release tag to attach the built assets to (e.g. PK-0.9.16).
+          Leave EMPTY to only build the assets as artifacts, releasing nothing —
+          that is the safe smoke test. Set it to recover a release whose build
+          failed: a re-run of the original `release` run would replay the
+          workflow file from that tag's commit, bug included, so a dispatch from
+          the fixed default branch is the way to attach the assets afterwards.
+        required: false
+        default: ''
 
 concurrency:
-  group: release-${{ github.event.release.tag_name || github.ref_name }}
+  group: release-${{ github.event.release.tag_name || inputs.tag || github.ref_name }}
   cancel-in-progress: false
 
 permissions:
@@ -51,9 +61,27 @@ jobs:
 
       # src/installer/installer.csproj's Build target shells out to
       # "%ProgramFiles(x86)%\Inno Setup 6\iscc", so Inno Setup has to exist at
-      # exactly that path — which is where choco puts it.
-      - name: Install Inno Setup 6
-        run: choco install innosetup --version=6.2.2 -y --no-progress
+      # exactly that path.
+      #
+      # ⚠️ Do NOT pin a version here. windows-latest already ships Inno Setup
+      # (6.7.1 as of 2026-08), and `choco install innosetup --version=6.2.2`
+      # FAILS the step outright — "A newer version of InnoSetup (v6.7.1) is
+      # already installed. Use --allow-downgrade or --force" — exit code 1.
+      # Install only when it is genuinely missing, then assert the path the
+      # csproj hardcodes, so a runner-image change surfaces as a clear error
+      # instead of a confusing msbuild failure later.
+      - name: Ensure Inno Setup 6 is available
+        shell: pwsh
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (Test-Path $iscc) {
+            "Inno Setup already present: $((Get-Item $iscc).VersionInfo.ProductVersion)"
+          } else {
+            choco install innosetup -y --no-progress
+          }
+          if (-not (Test-Path $iscc)) {
+            throw "Inno Setup not at '$iscc' — src/installer/installer.csproj hardcodes this path."
+          }
 
       # wincompose.csproj has an InsertIcons target that runs this tool after the
       # build; building the project on its own does not build it. Same pinning as
@@ -154,11 +182,11 @@ jobs:
       # falls back to --generate-notes, so this step is safe if unused.
       - name: Fetch crafted release notes (if any)
         id: notes
-        if: github.event_name == 'release' || github.ref_type == 'tag'
+        if: github.event_name == 'release' || github.ref_type == 'tag' || inputs.tag != ''
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ github.event.release.tag_name || github.ref_name }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag || github.ref_name }}
         run: |
           if gh api "repos/${{ github.repository }}/contents/${TAG}.md?ref=release-notes" \
                --jq '.content' 2>/dev/null | base64 -d > _release_notes.md && [ -s _release_notes.md ]; then
@@ -176,13 +204,14 @@ jobs:
 
       # Idempotent: creates the release if missing, otherwise (re-)uploads the
       # assets with --clobber; a create that loses a race falls back to upload.
-      # Guarded so a workflow_dispatch from a branch builds as a smoke test only.
+      # Guarded so a workflow_dispatch with no `tag` input builds as a smoke test
+      # only, while one WITH a tag attaches to that existing release.
       - name: Create or update GitHub Release
-        if: github.event_name == 'release' || github.ref_type == 'tag'
+        if: github.event_name == 'release' || github.ref_type == 'tag' || inputs.tag != ''
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ github.event.release.tag_name || github.ref_name }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag || github.ref_name }}
           HAVE_NOTES: ${{ steps.notes.outputs.have_notes }}
           TITLE: ${{ steps.notes.outputs.title }}
           VERSION: ${{ steps.assets.outputs.version }}
