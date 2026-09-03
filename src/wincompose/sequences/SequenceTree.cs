@@ -77,9 +77,14 @@ public class SequenceTree : SequenceNode
     }
 
     private static Regex m_r0 = new Regex(@"^\s*include\s*""([^""]*)""");
-    private static Regex m_r1 = new Regex(@"^\s*(<:>|<[^:]*>\s*)*:\s*(""(\\""|\\.|[^""])*""|[A-Za-z0-9_]*)[^#]*#?\s*(.*)");
-        //                                      ^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^           ^^^^
-        //                                            keys                result 1         result 2             desc
+    // The <:> alternative needs its own \s* just like its sibling: without it
+    // the key group cannot continue past a colon key, so any sequence with <:>
+    // followed by more keys never matched and was dropped in silence (a
+    // non-match produces no log line). That cost every emoji whose name has a
+    // colon in it -- the 260 skin-tone and hair variants in Emoji.txt.
+    private static Regex m_r1 = new Regex(@"^\s*(<:>\s*|<[^:]*>\s*)*:\s*(""(\\""|\\.|[^""])*""|[A-Za-z0-9_]*)[^#]*#?\s*(.*)");
+        //                                      ^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^           ^^^^
+        //                                              keys                result 1         result 2             desc
 
     // Split along "^<", ">$", or "> <" to capture tag contents
     private static Regex m_r2 = new Regex(@"(?:^\s*<|>\s*<|>\s*$)");
