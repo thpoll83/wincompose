@@ -1,5 +1,3 @@
-Open to contributers / helpers
-
 WinCompose
 ==========
 
@@ -13,16 +11,40 @@ very intuitive key combinations. For instance, **ö** is obtained using
 
 WinCompose also supports Emoji input for 😁 👻 👍 💩 🎁 🌹 🐊.
 
-Download latest: [WinCompose 0.9.15.1](https://github.com/ell1010/wincompose/releases/download/v0.9.15.1/WinCompose-Setup-0.9.15.1.exe) May 8th, 2025) or [browse releases](https://github.com/ell1010/wincompose/releases/)
+This is the **PolyKybd fork**. WinCompose is Sam Hocevar's project — essentially
+all of the code, the compose-sequence data and the design are his work — and this
+fork builds on [ell1010's fork](https://github.com/ell1010/wincompose), which
+modernised the UI and retargeted to .NET Framework 4.8.1. It exists because
+[PolyKybd](https://github.com/thpoll83/PolyKybd) uses WinCompose for unicode and
+emoji output on Windows and needed a handful of fixes. It does not claim to
+succeed either repository; both are still there, and these changes are meant to
+go back upstream.
+
+Download latest: WinCompose 0.9.16 (August 1st, 2026) or [browse releases](https://github.com/thpoll83/wincompose/releases/)
 ----------------
 
- * Installable version: [WinCompose 0.9.15.1 (installer)](https://github.com/ell1010/wincompose/releases/download/v0.9.15.1/WinCompose-Setup-0.9.15.1.exe).
+ * Installable version: [WinCompose 0.9.16 (installer)](https://github.com/thpoll83/wincompose/releases/download/PK-0.9.16/WinCompose-Setup-0.9.16.exe) — registers WinCompose to start with Windows.
 
- * Portable version: [WinCompose 0.9.15.1 (portable)](https://github.com/ell1010/wincompose/releases/download/v0.9.15.1/WinCompose-NoInstall-0.9.15.1.zip).
+ * Portable version: [WinCompose 0.9.16 (portable)](https://github.com/thpoll83/wincompose/releases/download/PK-0.9.16/WinCompose-NoInstall-0.9.16.zip) — runs from any folder.
 
- * Older versions are available [in the releases section](https://github.com/samhocevar/wincompose/releases/).
+ * Older versions are in [ell1010's releases](https://github.com/ell1010/wincompose/releases/) and in [Sam Hocevar's original releases](https://github.com/samhocevar/wincompose/releases/).
 
-**Note: this software is not digitally signed.** ~~You can help with this by [donating to the project](http://wincompose.info/donate/).~~
+**Note: these builds are not code-signed**, so Windows SmartScreen warns that the
+publisher is unrecognised — choose **More info → Run anyway** if you are happy to
+proceed. Signing is planned and waits on a registered business entity, since the
+certificate has to be issued to one.
+
+Because they are unsigned, every release ships a
+[`SHA256SUMS.txt`](https://github.com/thpoll83/wincompose/releases/download/PK-0.9.16/SHA256SUMS.txt)
+listing the SHA-256 of each asset, written by the same CI run that built them:
+
+```powershell
+Get-FileHash .\WinCompose-NoInstall-0.9.16.zip -Algorithm SHA256
+```
+
+Compare that against the matching line. It proves the file is byte-for-byte what
+our CI produced — it does not prove who produced it, which is what a signature is
+for.
 
 Quick start
 -----------
@@ -113,8 +135,16 @@ Make sure that all Git submodules are fetched, then just open `src/wincompose.sl
 in Visual Studio in order to build WinCompose. You will also need to install
 [Inno Setup](https://jrsoftware.org/isinfo.php) if you wish to build the installer.
 
+`.github/workflows/build.yml` compiles the app on every push and pull request.
+`release.yml` builds the installer, the portable zip and `SHA256SUMS.txt` and
+attaches them when a release is published — see [`RELEASE.md`](RELEASE.md).
+
 Bugs and Improvements
 ---------------------
 
-~~Please report bugs or suggest improvements to Sam Hocevar <sam@hocevar.net>~~
-or preferably to the [GitHub issue tracker](https://github.com/ell1010/wincompose/issues).
+Please report bugs or suggest improvements for **this fork** in its
+[issue tracker](https://github.com/thpoll83/wincompose/issues).
+
+For the upstream projects, use
+[ell1010/wincompose](https://github.com/ell1010/wincompose/issues) or
+[samhocevar/wincompose](https://github.com/samhocevar/wincompose/issues).
