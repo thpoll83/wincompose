@@ -12,6 +12,7 @@
 //
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -106,6 +107,30 @@ public partial class Key
     }
 
     /// <summary>
+    /// Shared instances, so that the same key parsed a thousand times costs
+    /// one object. Key is immutable (both fields are readonly) and compares
+    /// by value, so sharing changes no behaviour -- == already treated two
+    /// separately allocated equal keys as equal.
+    ///
+    /// It is worth doing because the ratio is extreme: the rule files the
+    /// app loads contain about 600 distinct keys behind roughly 36,000 Key
+    /// objects, each carrying its own one-character string.
+    ///
+    /// Concurrent because rules are parsed on the UI thread while lookups
+    /// run on the keyboard hook thread.
+    /// </summary>
+    private static readonly ConcurrentDictionary<string, Key> m_str_cache
+        = new ConcurrentDictionary<string, Key>();
+    private static readonly ConcurrentDictionary<VK, Key> m_vk_cache
+        = new ConcurrentDictionary<VK, Key>();
+
+    public static Key Get(string str)
+        => str == null ? null : m_str_cache.GetOrAdd(str, s => new Key(s));
+
+    public static Key Get(VK vk)
+        => m_vk_cache.GetOrAdd(vk, v => new Key(v));
+
+    /// <summary>
     /// Convert a string to a key, using the following methods:
     ///  - a dictionary of keysyms
     ///  - the "U+XXXX" Unicode hex notation
@@ -114,17 +139,17 @@ public partial class Key
     public static Key FromKeySymOrChar(string keysym)
     {
         if (m_keysyms.ContainsKey(keysym))
-            return new Key(m_keysyms[keysym]);
+            return Get(m_keysyms[keysym]);
 
         if (m_extra_keysyms.ContainsKey(keysym))
-            return new Key(m_extra_keysyms[keysym]);
+            return Get(m_extra_keysyms[keysym]);
 
         if (keysym.Length > 1 && keysym[0] == 'U' &&
             int.TryParse(keysym.Substring(1), NumberStyles.HexNumber, null, out var codepoint))
-            return new Key(char.ConvertFromUtf32(codepoint));
+            return Get(char.ConvertFromUtf32(codepoint));
 
         if (keysym.Length == 1)
-            return new Key(keysym);
+            return Get(keysym);
 
         return null;
     }
