@@ -94,6 +94,7 @@ namespace WinCompose
             Metadata.LoadDB();
             KeyboardHook.Init();
             Updater.Init();
+            MemoryReport.Init();
 
             Settings.StartWatchConfigFile();
 
@@ -105,6 +106,7 @@ namespace WinCompose
             finally
             {
                 Settings.StopWatchConfigFile();
+                MemoryReport.Fini();
                 Updater.Fini();
                 KeyboardHook.Fini();
                 Settings.SaveConfig();
