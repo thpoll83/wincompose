@@ -11,8 +11,8 @@ attach anything by hand.
 -----------------
 
 `<AssemblyVersion>` and `<FileVersion>` in `src/wincompose/wincompose.csproj`.
-`iscc` reads that version off the built exe, so the asset filenames follow it,
-and `scripts/publish_release.py` derives the tag from it. `GitVersion.yml` sets
+`iscc` reads that version off the built exe, so the asset filenames follow it.
+It does **not** decide which tag gets published — see ③. `GitVersion.yml` sets
 `tag-prefix: PK-` so GitVersion recognises our tags instead of computing 0.1.0.
 
 Run `src/update-data.sh` if the translations need refreshing.
@@ -31,8 +31,13 @@ that file; without it the release falls back to GitHub's auto-generated notes.
     python scripts/publish_release.py --dry-run   # show what it would do
     python scripts/publish_release.py --tag PK-0.9.16
 
-It reads the version from the default branch (not from whatever branch you have
-checked out), finds the prepared notes, then creates and publishes the release.
+The tag comes from the `release-notes` branch, **not** from the csproj version:
+with no `--tag`, it publishes the newest prepared `PK-<X.Y.Z>.md` found there. The
+version on the default branch is read only to print a note when the two disagree,
+so a csproj bump that landed after the notes were prepared does not change what
+gets published. Pass `--tag` whenever more than one is prepared, and read the
+"newest prepared tag" line it prints before letting it publish.
+
 Auth comes from `GH_TOKEN` / `GITHUB_TOKEN`, else `gh auth token`.
 
 ④ Update the updater
