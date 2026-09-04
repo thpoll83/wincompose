@@ -474,4 +474,56 @@
   <data name="AutoLaunchToolTip" xml:space="preserve">
     <value>Jei pasirinkta, WinCompose bus atverta, kai naudotojas prisijungs.</value>
   </data>
+  <data name="ResetTimeout" xml:space="preserve">
+    <value>Atstatymo laikas</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="NoTimeout" xml:space="preserve">
+    <value>Be laiko limito</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TimeoutToolTip" xml:space="preserve">
+    <value>Jei nustatyta, bet kuri Compose seka bus atšaukta po tam tikros delsos, jei nebus aptikta klaviatūros veiksmų.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyboardLedToolTip" xml:space="preserve">
+    <value>Jei nustatyta, vykstant Compose sekai švies atitinkamas klaviatūros indikatorius.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Accessibility" xml:space="preserve">
+    <value>Pritaikymas neįgaliesiems</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLock" xml:space="preserve">
+    <value>Caps Lock veikia tik tol, kol laikomas nuspaustas</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLockToolTip" xml:space="preserve">
+    <value>Atleidus Caps Lock klavišą jis iškart išjungiamas, užuot įprastai reikalaujant paspausti jį antrą kartą.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevated" xml:space="preserve">
+    <value>Vykdyti didesnėmis teisėmis (rekomenduojama)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevatedToolTip" xml:space="preserve">
+    <value>Kai kuriose programose simbolių sudarymas neveiks, jei WinCompose nebus vykdoma didesnėmis teisėmis. Ši parinktis sumažina tikimybę, kad taip nutiks.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>PolyKybd WinCompose atšaka</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Sukurta remiantis originalia Sam Hocevar ir bendraautorių programa WinCompose.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Aplankyti originalų projektą</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Aukos skiriamos originalo autoriui Sam Hocevar.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

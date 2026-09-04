@@ -501,4 +501,20 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Kobineerimine ei tööta mõnedes rakendustes, kui WinCompose ei tööta kõrgendatud õigustega. See suvand vähendab võimalusi mittetöötamine kogemiseks.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>WinCompose’i PolyKybd haru</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Põhineb Sam Hocevari ja kaastöötajate algsel WinCompose’il.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Külasta algset projekti</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Annetused lähevad algsele autorile Sam Hocevarile.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

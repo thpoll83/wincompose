@@ -1,0 +1,52 @@
+# Machine-translated fallback strings for Italian (it).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/it.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#: Text ID:UnicodeInputToolTip
+msgid "Enable Unicode input for all characters, even those with no compose sequence defined. For instance, the following sequence will output character U+1A3F: Compose U 1 A 3 F Enter"
+msgstr "Abilita l'inserimento Unicode per tutti i caratteri, anche quelli senza una sequenza compose definita. Per esempio, la sequenza seguente produrrà il carattere U+1A3F: Compose U 1 A 3 F Enter"
+
+#: Text ID:AlwaysComposeToolTip
+msgid "If enabled, all compose keys will be treated as Compose in a sequence. By default, only the first pressed key will act as Compose, and alternate compose keys will keep their original role."
+msgstr "Se abilitato, tutti i tasti compose saranno considerati come Compose all'interno di una sequenza. Per impostazione predefinita solo il primo tasto premuto agisce da Compose, mentre i tasti compose alternativi mantengono il loro ruolo originale."
+
+#: Text ID:TimeoutToolTip
+msgid "If set, any compose sequence will be cancelled after a certain delay if no keyboard activity is detected."
+msgstr "Se impostato, qualsiasi sequenza compose verrà annullata dopo un certo ritardo se non viene rilevata alcuna attività della tastiera."
+
+#: Text ID:KeyboardLedToolTip
+msgid "If set, the corresponding keyboard LED will be lit when a compose sequence is in progress."
+msgstr "Se impostato, il LED corrispondente della tastiera si accenderà mentre è in corso una sequenza compose."
+
+#: Text ID:AutoLaunch
+msgid "Launch WinCompose on login"
+msgstr "Avvia WinCompose all'accesso"
+
+#: Text ID:AutoLaunchToolTip
+msgid "If set, WinCompose will be started when the user logs in."
+msgstr "Se impostato, WinCompose verrà avviato quando l'utente effettua l'accesso."
+
+#: Text ID:Accessibility
+msgid "Accessibility"
+msgstr "Accessibilità"
+
+#: Text ID:MustHoldCapsLock
+msgid "Caps Lock is only active while being held down"
+msgstr "Bloc Maiusc è attivo solo mentre è tenuto premuto"
+
+#: Text ID:MustHoldCapsLockToolTip
+msgid "Releasing the Caps Lock key will immediately disable it, instead of the more standard behaviour of having to press it a second time."
+msgstr "Rilasciando il tasto Bloc Maiusc lo si disattiva immediatamente, invece del comportamento più consueto che richiede di premerlo una seconda volta."
+
+#: Text ID:RunElevated
+msgid "Run with elevated privileges (recommended)"
+msgstr "Esegui con privilegi elevati (consigliato)"
+
+#: Text ID:RunElevatedToolTip
+msgid "Composition will not work in some applications if WinCompose does not run with elevated privileges. This options reduces the chances that this will happen."
+msgstr "In alcune applicazioni la composizione non funziona se WinCompose non viene eseguito con privilegi elevati. Questa opzione riduce le probabilità che accada."

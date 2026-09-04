@@ -1,0 +1,28 @@
+# Machine-translated fallback strings for Chinese (Traditional) (zh_Hant).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/zh_Hant.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#. Subtitle on the About tab identifying this build as a fork
+#: Text ID:ForkTagline
+msgid "PolyKybd fork of WinCompose"
+msgstr "WinCompose 的 PolyKybd 分支"
+
+#. Attribution line on the About tab
+#: Text ID:ForkBasedOn
+msgid "Based on the original WinCompose by Sam Hocevar and contributors."
+msgstr "基於 Sam Hocevar 及貢獻者的原始 WinCompose。"
+
+#. A button to open the original upstream project page
+#: Text ID:VisitUpstream
+msgid "Visit the original project"
+msgstr "造訪原始專案"
+
+#. Note under the donation button on the About tab
+#: Text ID:DonationNote
+msgid "Donations go to Sam Hocevar, the original author."
+msgstr "捐款將轉給原作者 Sam Hocevar。"

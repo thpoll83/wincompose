@@ -510,4 +510,8 @@
   <data name="DonationNote" xml:space="preserve">
     <value>Dary putují Samu Hocevarovi, původnímu autorovi.</value>
   </data>
+  <data name="UnicodeInputToolTip" xml:space="preserve">
+    <value>Umožnit zadání kódu Unicode pro všechny znaky, dokonce i ty, které nemají definovanou sekvenci. Například znak U+1A3F by bylo možné napsat následující sekvencí: Compose U 1 A 3 F Enter</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

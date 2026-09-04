@@ -501,4 +501,20 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Η σύνθεση δεν θα λειτουργεί σε κάποιες εφαρμογές εάν το WinCompose δεν εκτελείται με αυξημένα δικαιώματα. Αυτή η επιλογή μειώνει τις πιθανότητες να συμβεί αυτό.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Διακλάδωση PolyKybd του WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Βασίζεται στο αρχικό WinCompose του Sam Hocevar και των συνεισφερόντων.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Επίσκεψη στο αρχικό έργο</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Οι δωρεές πηγαίνουν στον Sam Hocevar, τον αρχικό δημιουργό.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

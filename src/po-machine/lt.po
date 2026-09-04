@@ -1,0 +1,66 @@
+# Machine-translated fallback strings for Lithuanian (lt).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/lt.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#. The compose key deactivates itself after a certain configurable delay
+#: Text ID:ResetTimeout
+msgid "Reset timeout"
+msgstr "Atstatymo laikas"
+
+#. Text to show instead of a value in seconds when the reset timeout feature is disabled
+#: Text ID:NoTimeout
+msgid "No timeout"
+msgstr "Be laiko limito"
+
+#: Text ID:TimeoutToolTip
+msgid "If set, any compose sequence will be cancelled after a certain delay if no keyboard activity is detected."
+msgstr "Jei nustatyta, bet kuri Compose seka bus atšaukta po tam tikros delsos, jei nebus aptikta klaviatūros veiksmų."
+
+#: Text ID:KeyboardLedToolTip
+msgid "If set, the corresponding keyboard LED will be lit when a compose sequence is in progress."
+msgstr "Jei nustatyta, vykstant Compose sekai švies atitinkamas klaviatūros indikatorius."
+
+#: Text ID:Accessibility
+msgid "Accessibility"
+msgstr "Pritaikymas neįgaliesiems"
+
+#: Text ID:MustHoldCapsLock
+msgid "Caps Lock is only active while being held down"
+msgstr "Caps Lock veikia tik tol, kol laikomas nuspaustas"
+
+#: Text ID:MustHoldCapsLockToolTip
+msgid "Releasing the Caps Lock key will immediately disable it, instead of the more standard behaviour of having to press it a second time."
+msgstr "Atleidus Caps Lock klavišą jis iškart išjungiamas, užuot įprastai reikalaujant paspausti jį antrą kartą."
+
+#: Text ID:RunElevated
+msgid "Run with elevated privileges (recommended)"
+msgstr "Vykdyti didesnėmis teisėmis (rekomenduojama)"
+
+#: Text ID:RunElevatedToolTip
+msgid "Composition will not work in some applications if WinCompose does not run with elevated privileges. This options reduces the chances that this will happen."
+msgstr "Kai kuriose programose simbolių sudarymas neveiks, jei WinCompose nebus vykdoma didesnėmis teisėmis. Ši parinktis sumažina tikimybę, kad taip nutiks."
+
+#. Subtitle on the About tab identifying this build as a fork
+#: Text ID:ForkTagline
+msgid "PolyKybd fork of WinCompose"
+msgstr "PolyKybd WinCompose atšaka"
+
+#. Attribution line on the About tab
+#: Text ID:ForkBasedOn
+msgid "Based on the original WinCompose by Sam Hocevar and contributors."
+msgstr "Sukurta remiantis originalia Sam Hocevar ir bendraautorių programa WinCompose."
+
+#. A button to open the original upstream project page
+#: Text ID:VisitUpstream
+msgid "Visit the original project"
+msgstr "Aplankyti originalų projektą"
+
+#. Note under the donation button on the About tab
+#: Text ID:DonationNote
+msgid "Donations go to Sam Hocevar, the original author."
+msgstr "Aukos skiriamos originalo autoriui Sam Hocevar."

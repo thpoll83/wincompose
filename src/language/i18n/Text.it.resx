@@ -480,4 +480,48 @@
   <data name="DonationNote" xml:space="preserve">
     <value>Le donazioni vanno a Sam Hocevar, l’autore originale.</value>
   </data>
+  <data name="UnicodeInputToolTip" xml:space="preserve">
+    <value>Abilita l'inserimento Unicode per tutti i caratteri, anche quelli senza una sequenza compose definita. Per esempio, la sequenza seguente produrrà il carattere U+1A3F: Compose U 1 A 3 F Enter</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysComposeToolTip" xml:space="preserve">
+    <value>Se abilitato, tutti i tasti compose saranno considerati come Compose all'interno di una sequenza. Per impostazione predefinita solo il primo tasto premuto agisce da Compose, mentre i tasti compose alternativi mantengono il loro ruolo originale.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TimeoutToolTip" xml:space="preserve">
+    <value>Se impostato, qualsiasi sequenza compose verrà annullata dopo un certo ritardo se non viene rilevata alcuna attività della tastiera.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyboardLedToolTip" xml:space="preserve">
+    <value>Se impostato, il LED corrispondente della tastiera si accenderà mentre è in corso una sequenza compose.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunch" xml:space="preserve">
+    <value>Avvia WinCompose all'accesso</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunchToolTip" xml:space="preserve">
+    <value>Se impostato, WinCompose verrà avviato quando l'utente effettua l'accesso.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Accessibility" xml:space="preserve">
+    <value>Accessibilità</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLock" xml:space="preserve">
+    <value>Bloc Maiusc è attivo solo mentre è tenuto premuto</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLockToolTip" xml:space="preserve">
+    <value>Rilasciando il tasto Bloc Maiusc lo si disattiva immediatamente, invece del comportamento più consueto che richiede di premerlo una seconda volta.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevated" xml:space="preserve">
+    <value>Esegui con privilegi elevati (consigliato)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevatedToolTip" xml:space="preserve">
+    <value>In alcune applicazioni la composizione non funziona se WinCompose non viene eseguito con privilegi elevati. Questa opzione riduce le probabilità che accada.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

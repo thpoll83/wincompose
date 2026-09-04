@@ -486,4 +486,40 @@
   <data name="AutoLaunchToolTip" xml:space="preserve">
     <value>As dit aan is, sal WinCompose begin word wanneer jy inlog op die rekenaar.</value>
   </data>
+  <data name="Accessibility" xml:space="preserve">
+    <value>Toeganklikheid</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLock" xml:space="preserve">
+    <value>Caps Lock is net aktief solank dit ingedruk gehou word</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLockToolTip" xml:space="preserve">
+    <value>Wanneer die Caps Lock-sleutel losgelaat word, word dit onmiddellik afgeskakel, in plaas van die meer gebruiklike gedrag waar dit ’n tweede keer gedruk moet word.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevated" xml:space="preserve">
+    <value>Loop met verhoogde regte (aanbeveel)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevatedToolTip" xml:space="preserve">
+    <value>Komponering sal in sommige toepassings nie werk as WinCompose nie met verhoogde regte loop nie. Hierdie opsie verminder die kans dat dit gebeur.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>PolyKybd-fork van WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Gebaseer op die oorspronklike WinCompose deur Sam Hocevar en bydraers.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Besoek die oorspronklike projek</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Skenkings gaan aan Sam Hocevar, die oorspronklike outeur.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>
