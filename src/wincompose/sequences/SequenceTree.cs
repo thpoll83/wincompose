@@ -53,14 +53,6 @@ public class SequenceTree : SequenceNode
         }
     }
 
-    public void Clear()
-    {
-        m_children = null;
-        m_loaded_files.Clear();
-        m_invalid_keys.Clear();
-        Count = 0;
-    }
-
     public int Count { get; private set; }
 
     private void LoadStream(StreamReader s)
@@ -406,19 +398,21 @@ public class SequenceNode
     /// 4,969 are leaves that would hold an empty dictionary for the life of
     /// the process and 8,303 carry no result at all.
     ///
-    /// Because these can now be null, every READ must copy the field into a
-    /// local and test that, never test the field and then dereference it.
-    /// Settings.LoadSequences() calls Clear() from the UI thread (a settings
-    /// toggle, or opening the sequence window) while Composer looks sequences
-    /// up on the keyboard hook thread, so a null can land between the two.
-    /// Before these were lazy, Clear() emptied the dictionary in place and the
-    /// field was never null, so the check-then-use pattern was safe here.
+    /// Because these can be null, every READ copies the field into a local and
+    /// tests that, rather than testing the field and then dereferencing it.
     ///
-    /// That makes the read paths NRE-free; it does not make the tree thread
-    /// safe. A lookup racing a reload still walks a half-loaded tree and
-    /// returns no match, exactly as it did before this change. Fixing that
-    /// properly means serialising Settings' access to the whole tree, which is
-    /// a pre-existing question and deliberately not attempted here.
+    /// A published tree is no longer mutated at all -- Settings.LoadSequences()
+    /// builds a new one and swaps the reference -- so a reader cannot race a
+    /// writer here any more, and Clear() is gone with it. The read-once idiom
+    /// stays because it is free and because it is what makes that safe to rely
+    /// on: it holds even while a tree is still being built, which is the one
+    /// window in which m_children legitimately changes (null to a dictionary,
+    /// on the first insert).
+    ///
+    /// Do not reintroduce a method that empties a live tree. That is what made
+    /// the check-then-use pattern unsafe: Clear() assigned m_children = null on
+    /// the UI thread while Composer walked the tree on the keyboard hook
+    /// thread, so a null could land between a guard and the use after it.
     /// </summary>
     protected IDictionary<Key, SequenceNode> m_children;
     private IList<SequenceDescription> m_results;

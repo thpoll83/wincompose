@@ -260,22 +260,48 @@ namespace WinCompose
             }
         }
 
+        /// <summary>
+        /// Reload the compose rules.
+        ///
+        /// The tree is built off to the side and published with a single
+        /// assignment, because this does not run alone: it is called at startup,
+        /// when the sequence window opens, and from the ValueChanged handlers on
+        /// UseXorgRules / UseXComposeRules / UseEmojiRules -- all on the UI
+        /// thread -- while Composer resolves sequences on the keyboard hook
+        /// thread through IsValidPrefix / IsValidSequence / GetSequenceResult.
+        ///
+        /// It used to clear the live tree and refill it in place, so a lookup
+        /// landing in that window walked a half-loaded tree and reported no
+        /// match. That is a dropped compose sequence, not a crash, which is why
+        /// it could sit here unnoticed: the user sees a key that did nothing and
+        /// tries again. Loading the rules is not quick -- it parses several
+        /// thousand of them -- so the window is not a hair's breadth either.
+        ///
+        /// Now a lookup either sees the whole previous tree or the whole new
+        /// one. A reader that is mid-descent keeps walking the tree it started
+        /// on, which stays intact because nothing mutates a published tree any
+        /// more; it simply becomes garbage once the last reader lets go.
+        /// </summary>
         public static void LoadSequences()
         {
-            m_sequences.Clear();
+            var tree = new SequenceTree();
 
             if (UseXorgRules.Value)
-                m_sequences.LoadResource("xorg.rules.gz");
+                tree.LoadResource("xorg.rules.gz");
             if (UseXComposeRules.Value)
-                m_sequences.LoadResource("xcompose.rules.gz");
+                tree.LoadResource("xcompose.rules.gz");
             if (UseEmojiRules.Value)
             {
-                m_sequences.LoadFile(Path.Combine(Utils.DataDir, "Emoji.txt"));
-                m_sequences.LoadFile(Path.Combine(Utils.DataDir, "WinCompose.txt"));
+                tree.LoadFile(Path.Combine(Utils.DataDir, "Emoji.txt"));
+                tree.LoadFile(Path.Combine(Utils.DataDir, "WinCompose.txt"));
             }
 
-            m_sequences.LoadFile(Path.Combine(Utils.UserDir, ".XCompose"));
-            m_sequences.LoadFile(Path.Combine(Utils.UserDir, ".XCompose.txt"));
+            tree.LoadFile(Path.Combine(Utils.UserDir, ".XCompose"));
+            tree.LoadFile(Path.Combine(Utils.UserDir, ".XCompose.txt"));
+
+            // Publish last. Every read of m_sequences is a single field read, so
+            // this is the only point at which what a caller sees changes.
+            m_sequences = tree;
         }
 
         public static void SetTheme()
@@ -386,8 +412,15 @@ namespace WinCompose
 
         public static List<SequenceDescription> GetSequenceDescriptions() => m_sequences.GetSequenceDescriptions();
 
-        // Tree of all known sequences
-        private static SequenceTree m_sequences = new SequenceTree();
+        // Tree of all known sequences.
+        //
+        // volatile because LoadSequences() publishes a tree it has just finished
+        // building: the write that stores the reference must not be reordered
+        // ahead of the writes that filled it, or a reader could be handed a tree
+        // whose contents it cannot see yet. x86 and x64 would not reorder those
+        // stores anyway, but Windows on ARM64 may, and volatile costs nothing
+        // measurable on a field read once per keystroke.
+        private static volatile SequenceTree m_sequences = new SequenceTree();
 
         // FIXME: couldn't we accept any compose key?
         private static readonly KeySequence m_valid_compose_keys = new KeySequence
