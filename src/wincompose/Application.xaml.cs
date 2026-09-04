@@ -33,6 +33,26 @@ namespace WinCompose
             }
         }
 
+        /// <summary>
+        /// The memory reading in Program.cs is taken before this class is even
+        /// constructed, so it sees our data structures and none of WPF: the
+        /// framework, the theme, the tray icon and Emoji.Wpf all initialise
+        /// after it. That left the largest single step in the process's
+        /// footprint inside a blind spot, and a 40-minute field log showed the
+        /// gap as an unexplained jump from 60 MB to 233 MB with no user action
+        /// to pin it on.
+        ///
+        /// ApplicationIdle is the first moment WPF has nothing left to do, so
+        /// this reading is "up and idle, nothing opened, nothing typed" -- the
+        /// baseline every later sample should be read against.
+        /// </summary>
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,
+                                   new Action(() => MemoryReport.Report("ui ready", collect: true)));
+        }
+
         private static void OnFatalError(Exception ex)
         {
             Logger.Fatal(ex, "Fatal Error");
