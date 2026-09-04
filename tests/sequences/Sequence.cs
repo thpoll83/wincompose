@@ -8,110 +8,104 @@ namespace WinCompose
     [TestClass]
     public class SequenceTreeTest
     {
-        SequenceTree tree = new SequenceTree();
+        // Unicode entry mode -- Compose u 0 0 5 7 space -> W -- used to live in
+        // SequenceTree, and this test used to ask an empty tree about it. It has
+        // since moved to Settings.IsValidGenericPrefix / GetGenericSequenceResult,
+        // so the test was asking the wrong object about a feature it no longer
+        // implements. Nothing noticed because nothing ran the test.
+        //
+        // The contract moved with it: a codepoint is now completed by a space or
+        // Enter rather than being complete on its own.
 
         [TestMethod]
-        public void TestUnicodeSequences()
+        public void TestUnicodeInputPrefixes()
         {
-            AssertUnicodeSequence("u0020", " ");
-            AssertUnicodeSequence("u0057", "W");
-            AssertUnicodeSequence("u0043", "C");
-            AssertUnicodeSequence("u00FC", "ü");
-            AssertUnicodeSequence("u00fc", "ü");
-            AssertShortUnicodeSequence("ufc", "ü");
-            AssertShortUnicodeSequence("udc", "Ü");
-            AssertUnicodeSequence("u03c0", "π"); // Greek lowercase letter pi
-            AssertUnicodeSequence("u0430", "а"); // Cyrillic small letter a
-            AssertShortUnicodeSequence("u1e60", "\u1e60"); // Latin capital letter s with dot above
-            AssertShortUnicodeSequence("u2013", "–"); // En-dash
-            AssertUnicodeSequence("u328c", "\u328c"); // Circled ideograph water
-            AssertUnicodeSequence("u4de1", "\u4de1"); // Hexagram for great power
-            AssertUnicodeSequence("u5000", "\u5000");
-            AssertUnicodeSequence("u6000", "\u6000");
-            AssertUnicodeSequence("u7000", "\u7000");
-            AssertUnicodeSequence("u8000", "\u8000");
-            AssertUnicodeSequence("u9000", "\u9000");
-            AssertUnicodeSequence("ua000", "\ua000");
-            AssertUnicodeSequence("ub000", "\ub000");
-            AssertUnicodeSequence("uc000", "\uc000");
-            AssertUnicodeSequence("ud000", "\ud000");
-            AssertShortUnicodeSequence("ue000", "\ue000");
-            AssertShortUnicodeSequence("uFEFF", "\uFEFF"); // Zero width non-joiner
+            // Every leading fragment of a codepoint keeps the sequence alive.
+            Assert.IsTrue(Settings.IsValidGenericPrefix(Chars("u")));
+            Assert.IsTrue(Settings.IsValidGenericPrefix(Chars("u0")));
+            Assert.IsTrue(Settings.IsValidGenericPrefix(Chars("u0057")));
+            Assert.IsTrue(Settings.IsValidGenericPrefix(Chars("u10FFFF")));
 
-            AssertUnicodeSequence("u1F600", char.ConvertFromUtf32(0x1F600)); // Grinning face
-
-            AssertInvalidPrefix("x");
-            AssertInvalidSequence("u"); // Too short
-            AssertInvalidSequence("u3"); // Too short
-            AssertInvalidSequence("uf"); // Too short
-            AssertInvalidSequence("ud800"); // Part of a surrogate pair
-            AssertInvalidSequence("udbff"); // Part of a surrogate pair
-            AssertInvalidSequence("udc00"); // Part of a surrogate pair
-            AssertInvalidSequence("udfff"); // Part of a surrogate pair
+            // Nothing else does.
+            Assert.IsFalse(Settings.IsValidGenericPrefix(Chars("x")));
+            Assert.IsFalse(Settings.IsValidGenericPrefix(Chars("ug")));
+            Assert.IsFalse(Settings.IsValidGenericPrefix(Chars("u1234567")));
         }
 
-        void AssertValidPrefix(string sequence)
+        [TestMethod]
+        public void TestUnicodeInputProducesTheCharacter()
         {
-            var keySequence = UnicodeKeySequence(sequence);
-            if (!tree.IsValidPrefix(keySequence, false))
-                Assert.Fail("Prefix \"" + keySequence + "\" must be valid.");
+            AssertUnicode("u0020 ", " ");
+            AssertUnicode("u0057 ", "W");
+            AssertUnicode("u00FC ", "ü");
+            AssertUnicode("u00fc ", "ü");   // hex digits are case-insensitive
+            AssertUnicode("u03c0 ", "π");   // Greek small letter pi
+            AssertUnicode("u0430 ", "а");   // Cyrillic small letter a
+            AssertUnicode("u2013 ", "–");   // en dash
+
+            // Above the basic plane, so the result is a surrogate pair.
+            AssertUnicode("u1F600 ", char.ConvertFromUtf32(0x1F600));
         }
 
-        void AssertInvalidPrefix(string sequence)
+        [TestMethod]
+        public void TestUnicodeInputAcceptsEnterAsTheTerminator()
         {
-            var keySequence = UnicodeKeySequence(sequence);
-            if (tree.IsValidPrefix(keySequence, false))
-                Assert.Fail("Prefix \"" + keySequence + "\" must be invalid.");
+            var seq = Chars("u0057");
+            seq.Add(new Key(VK.RETURN));
+
+            Assert.IsTrue(Settings.GetGenericSequenceResult(seq, out var result));
+            Assert.AreEqual("W", result);
         }
 
-        void AssertValidSequence(string sequence)
+        [TestMethod]
+        public void TestUnicodeInputRejectsUnusableCodepoints()
         {
-            var keySequence = UnicodeKeySequence(sequence);
-            if (!tree.IsValidSequence(keySequence, false))
-                Assert.Fail("Sequence \"" + keySequence + "\" must be valid.");
+            // Half of a surrogate pair is not a character on its own.
+            AssertNoUnicode("ud800 ");
+            AssertNoUnicode("udfff ");
+
+            // Past the last plane.
+            AssertNoUnicode("u110000 ");
+
+            // Not terminated, so not a result yet.
+            AssertNoUnicode("u0057");
         }
 
-        void AssertInvalidSequence(string sequence)
+        static void AssertUnicode(string keys, string expected)
         {
-            var keySequence = UnicodeKeySequence(sequence);
-            if (tree.IsValidSequence(keySequence, false))
-                Assert.Fail("Sequence \"" + keySequence + "\" must be invalid.");
+            Assert.IsTrue(Settings.GetGenericSequenceResult(Chars(keys), out var result),
+                          "\"" + keys + "\" should produce a character");
+            Assert.AreEqual(expected, result);
         }
 
-        void AssertUnicodeSequence(string sequence, string result)
+        static void AssertNoUnicode(string keys)
         {
-            for (var i = 1; i < sequence.Length - 1; i++)
-                AssertValidPrefix(sequence.Substring(0, i));
-            AssertInvalidPrefix(sequence);
-            AssertValidSequence(sequence);
-            Assert.AreEqual(result, tree.GetSequenceResult(UnicodeKeySequence(sequence), false));
+            Assert.IsFalse(Settings.GetGenericSequenceResult(Chars(keys), out _),
+                           "\"" + keys + "\" should not produce a character");
         }
 
-        // These sequences could be continued to form a longer Unicode
-        // sequence, therefore they are not terminated automatically 
-        // but have to be terminated by pressing the Compose key again.
-        void AssertShortUnicodeSequence(string sequence, string result)
+        // A key sequence built one character at a time, the way the composer
+        // accumulates one.
+        static KeySequence Chars(string keys)
         {
-            for (var i = 1; i < sequence.Length - 1; i++)
-                AssertValidPrefix(sequence.Substring(0, i));
-            AssertValidSequence(sequence);
-            Assert.AreEqual(result, tree.GetSequenceResult(UnicodeKeySequence(sequence), false));
-        }
-
-        KeySequence UnicodeKeySequence(string keys)
-        {
-            var keySequence = new KeySequence();
+            var ret = new KeySequence();
             foreach (var ch in keys)
-                keySequence.Add(Key.FromKeySymOrChar(Convert.ToString(ch)));
-            return keySequence;
+                ret.Add(Key.FromKeySymOrChar(ch.ToString()));
+            return ret;
         }
 
-        // A sequence may contain the colon key, and keys may follow it. The
-        // rule regex used to accept <:> without allowing whitespace after it,
-        // so the key group could not continue past a colon and the whole line
-        // failed to match -- silently, since a non-match is not logged. Every
-        // emoji whose name contains a colon was lost that way: 260 skin-tone
-        // and hair variants in Emoji.txt, e.g. "flexed biceps: light skin tone".
+        // A sequence may contain the colon key, and keys may follow it.
+        //
+        // Two separate defects had to be fixed for that to hold, and the second
+        // is why this test asserts the prefix does NOT resolve. First the <:>
+        // alternative had no trailing \s*, so the line did not match at all and
+        // was dropped silently. Fixing that alone made it match while ParseRule
+        // still read only the first capture of the repeated key group -- so the
+        // sequence was registered TRUNCATED at the colon, which is worse than
+        // being dropped: it binds the emoji to a short prefix that collides with
+        // other rules. In Emoji.txt all 260 colon rules collapsed onto two junk
+        // sequences (Compose f l a g, Compose flexed biceps) and every flag was
+        // unreachable -- 934 of 1192 emoji.
         [TestMethod]
         public void TestColonKeyInSequence()
         {
@@ -128,6 +122,12 @@ namespace WinCompose
 
                 Assert.AreEqual("X", loaded.GetSequenceResult(Seq("a", ":", "b"), false));
                 Assert.AreEqual("Y", loaded.GetSequenceResult(Seq("c", ":"), false));
+
+                // The part before the colon must not be a sequence of its own.
+                // This is the assertion that fails when only the \s* half of the
+                // fix is present: the rule matches, but binds "X" to <a> alone.
+                Assert.AreEqual("", loaded.GetSequenceResult(Seq("a"), false));
+                Assert.AreEqual("", loaded.GetSequenceResult(Seq("c"), false));
             }
             finally
             {

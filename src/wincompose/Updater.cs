@@ -73,15 +73,36 @@ static class Updater
             if (latest == null)
                 return false;
 
-            var current = SplitVersionString(Settings.Version);
-            var available = SplitVersionString(latest);
-
-            for (int i = 0; i < 4; ++i)
-                if (current[i] < available[i])
-                    return true;
-
-            return false;
+            return IsNewerVersion(Settings.Version, latest);
         }
+    }
+
+    /// <summary>
+    /// Whether <see cref="available"/> is a later version than
+    /// <see cref="current"/>. Compare component by component and decide on the
+    /// first one that differs.
+    ///
+    /// The loop this replaces only ever tested for "less than" and did not stop
+    /// on a greater component, so a later component could overrule an earlier
+    /// one: running 0.10.0 against an available 0.9.20 answered yes, because
+    /// 10 &lt; 9 is false but 0 &lt; 20 is true. That offers a downgrade as an
+    /// update, and it becomes reachable as soon as the minor version climbs
+    /// past the patch number. The same shape made 1.2.3 accept 1.2.3beta1.
+    ///
+    /// Split out of the property so it can be tested: the property reads the
+    /// running assembly's own version, which under a test host is the test
+    /// assembly's rather than WinCompose's.
+    /// </summary>
+    internal static bool IsNewerVersion(string current, string available)
+    {
+        var c = SplitVersionString(current);
+        var a = SplitVersionString(available);
+
+        for (int i = 0; i < 4; ++i)
+            if (c[i] != a[i])
+                return c[i] < a[i];
+
+        return false;
     }
 
     private static List<int> SplitVersionString(string str)

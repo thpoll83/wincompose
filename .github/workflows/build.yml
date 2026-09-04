@@ -54,6 +54,34 @@ jobs:
       - name: Build (Release)
         run: msbuild src\wincompose\wincompose.csproj -restore -p:Configuration=Release -v:minimal
 
+      # The repo has had a test project since 2016 and nothing has ever run it:
+      # this workflow builds wincompose.csproj rather than the solution, so the
+      # tests were not even compiled. A test nobody runs is decoration, so build
+      # and run them here.
+      - name: Build tests
+        run: msbuild tests\wincompose-tests.csproj -restore -p:Configuration=Release -v:minimal
+
+      - name: Run tests
+        shell: pwsh
+        run: |
+          # vstest.console ships inside the VS install on the runner. Locate it
+          # through vswhere rather than hardcoding an edition or a version, and
+          # fail loudly at each step: a test run that silently finds nothing is
+          # the exact failure this job exists to remove.
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          if (-not (Test-Path $vswhere)) { throw "vswhere not found at $vswhere" }
+          $vs = & $vswhere -latest -products * -property installationPath
+          if (-not $vs) { throw "vswhere reported no Visual Studio installation" }
+          $vstest = Join-Path $vs 'Common7\IDE\Extensions\TestPlatform\vstest.console.exe'
+          if (-not (Test-Path $vstest)) { throw "vstest.console.exe not found at $vstest" }
+
+          $dll = Get-ChildItem 'tests\bin\Release' -Recurse -Filter 'tests.dll' |
+                 Select-Object -First 1
+          if (-not $dll) { throw "built test assembly not found under tests\bin\Release" }
+
+          & $vstest $dll.FullName "/logger:console;verbosity=normal"
+          if ($LASTEXITCODE -ne 0) { throw "tests failed (vstest exit $LASTEXITCODE)" }
+
       # Dormant until a code-signing certificate exists. Azure Artifact Signing
       # (formerly Trusted Signing) is available to organisations in the EU, so
       # this waits on the business entity rather than on any code change. It runs

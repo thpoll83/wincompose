@@ -77,14 +77,26 @@ public class SequenceTree : SequenceNode
     }
 
     private static Regex m_r0 = new Regex(@"^\s*include\s*""([^""]*)""");
-    // The <:> alternative needs its own \s* just like its sibling: without it
-    // the key group cannot continue past a colon key, so any sequence with <:>
-    // followed by more keys never matched and was dropped in silence (a
-    // non-match produces no log line). That cost every emoji whose name has a
-    // colon in it -- the 260 skin-tone and hair variants in Emoji.txt.
-    private static Regex m_r1 = new Regex(@"^\s*(<:>\s*|<[^:]*>\s*)*:\s*(""(\\""|\\.|[^""])*""|[A-Za-z0-9_]*)[^#]*#?\s*(.*)");
-        //                                      ^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^           ^^^^
-        //                                              keys                result 1         result 2             desc
+    // Two things are needed to read a sequence containing the colon key, and
+    // the first one alone is a trap.
+    //
+    // 1. The <:> alternative needs its own \s* just like its sibling, or the key
+    //    group cannot continue past a colon key and the line does not match at
+    //    all -- silently, since a non-match produces no log line.
+    //
+    // 2. The key group must be ONE capture. ParseRule reads Groups[1].Captures[0],
+    //    and for an ordinary rule that is the whole key list: <[^:]*> is greedy
+    //    and [^:] admits < and >, so it swallows "<Multi_key> <a> <b>" in a single
+    //    repetition. A <:> breaks that run, and the alternation then yields three
+    //    captures -- "<Multi_key> <a> ", "<:> ", "<b> " -- of which only the first
+    //    is read. The rule matches and registers a sequence TRUNCATED at the colon,
+    //    which is worse than not matching: all 260 colon rules in Emoji.txt collapse
+    //    onto two junk sequences (Compose f l a g, Compose flexed biceps), leaving
+    //    934 of 1192 emoji reachable and every flag unreachable. Hence the
+    //    non-capturing (?:...) inside one outer group.
+    private static Regex m_r1 = new Regex(@"^\s*((?:<:>\s*|<[^:]*>\s*)*):\s*(""(\\""|\\.|[^""])*""|[A-Za-z0-9_]*)[^#]*#?\s*(.*)");
+        //                                      ^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^           ^^^^
+        //                                              keys                    result 1         result 2             desc
 
     // Split along "^<", ">$", or "> <" to capture tag contents
     private static Regex m_r2 = new Regex(@"(?:^\s*<|>\s*<|>\s*$)");
