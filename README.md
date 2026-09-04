@@ -20,12 +20,14 @@ emoji output on Windows and needed a handful of fixes. It does not claim to
 succeed either repository; both are still there, and these changes are meant to
 go back upstream.
 
-Download latest: WinCompose 0.9.16 (August 1st, 2026) or [browse releases](https://github.com/thpoll83/wincompose/releases/)
-----------------
+Download
+--------
 
- * Installable version: [WinCompose 0.9.16 (installer)](https://github.com/thpoll83/wincompose/releases/download/PK-0.9.16/WinCompose-Setup-0.9.16.exe) — registers WinCompose to start with Windows.
+ * **[Latest release](https://github.com/thpoll83/wincompose/releases/latest)** —
+   `WinCompose-Setup-*.exe` is the installer and registers WinCompose to start with
+   Windows; `WinCompose-NoInstall-*.zip` is portable and runs from any folder.
 
- * Portable version: [WinCompose 0.9.16 (portable)](https://github.com/thpoll83/wincompose/releases/download/PK-0.9.16/WinCompose-NoInstall-0.9.16.zip) — runs from any folder.
+ * [All releases of this fork](https://github.com/thpoll83/wincompose/releases/).
 
  * Older versions are in [ell1010's releases](https://github.com/ell1010/wincompose/releases/) and in [Sam Hocevar's original releases](https://github.com/samhocevar/wincompose/releases/).
 
@@ -34,12 +36,11 @@ publisher is unrecognised — choose **More info → Run anyway** if you are hap
 proceed. Signing is planned and waits on a registered business entity, since the
 certificate has to be issued to one.
 
-Because they are unsigned, every release ships a
-[`SHA256SUMS.txt`](https://github.com/thpoll83/wincompose/releases/download/PK-0.9.16/SHA256SUMS.txt)
-listing the SHA-256 of each asset, written by the same CI run that built them:
+Because they are unsigned, every release ships a `SHA256SUMS.txt` listing the
+SHA-256 of each asset, written by the same CI run that built them:
 
 ```powershell
-Get-FileHash .\WinCompose-NoInstall-0.9.16.zip -Algorithm SHA256
+Get-FileHash .\WinCompose-NoInstall-<version>.zip -Algorithm SHA256
 ```
 
 Compare that against the matching line. It proves the file is byte-for-byte what
@@ -120,11 +121,9 @@ WinCompose supports early exits. For instance, <kbd>⎄ Compose</kbd> <kbd>Q</kb
 immediately type **Q** because there is currently no rule starting with the capital
 letter <kbd>Q</kbd>.
 
-As of now, WinCompose is almost fully translated to Afrikaans, Belarusian, Catalan, Chinese,
-Czech, Dutch, Estonian, French, German, Greek, Italian, Japanese, Lithuanian, Norwegian, Polish,
-Portuguese, Brazilian Portuguese, Russian, Sardinian, Spanish, and Swedish. It is partially
-translated to Danish, Esperanto, Finnish, Hungarian, Indonesian, Irish, Romanian, Serbian, Slovak,
-and Slovenian. You can help us translate it to more languages using the Weblate project:
+WinCompose carries translations for 47 languages, at varying completeness.
+Translation happens upstream on the Weblate project, so work done there reaches
+every fork; the badge is the live figure:
 
 <a href="https://hosted.weblate.org/engage/wincompose/?utm_source=widget"><img src="https://hosted.weblate.org/widgets/wincompose/-/svg-badge.svg" alt="Translation status" /></a>
 
