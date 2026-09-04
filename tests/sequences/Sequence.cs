@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WinCompose
@@ -89,6 +91,43 @@ namespace WinCompose
             var ret = new KeySequence();
             foreach (var ch in keys)
                 ret.Add(Key.FromKeySymOrChar(ch.ToString()));
+            return ret;
+        }
+
+        // A sequence may contain the colon key, and keys may follow it. The
+        // rule regex used to accept <:> without allowing whitespace after it,
+        // so the key group could not continue past a colon and the whole line
+        // failed to match -- silently, since a non-match is not logged. Every
+        // emoji whose name contains a colon was lost that way: 260 skin-tone
+        // and hair variants in Emoji.txt, e.g. "flexed biceps: light skin tone".
+        [TestMethod]
+        public void TestColonKeyInSequence()
+        {
+            var path = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            try
+            {
+                File.WriteAllText(path,
+                    "<Multi_key> <a> <:> <b> : \"X\" # colon between two keys\n" +
+                    "<Multi_key> <c> <:> : \"Y\" # colon as the last key\n",
+                    Encoding.UTF8);
+
+                var loaded = new SequenceTree();
+                loaded.LoadFile(path);
+
+                Assert.AreEqual("X", loaded.GetSequenceResult(Seq("a", ":", "b"), false));
+                Assert.AreEqual("Y", loaded.GetSequenceResult(Seq("c", ":"), false));
+            }
+            finally
+            {
+                File.Delete(path);
+            }
+        }
+
+        static KeySequence Seq(params string[] keys)
+        {
+            var ret = new KeySequence();
+            foreach (var k in keys)
+                ret.Add(Key.FromKeySymOrChar(k));
             return ret;
         }
     }
