@@ -37,10 +37,52 @@ public static class MemoryReport
     /// </summary>
     private static readonly TimeSpan Interval = TimeSpan.FromMinutes(5);
 
-    public static void Init()
+    /// <summary>
+    /// The -memprofile window. Five minutes between samples is right for a
+    /// day-long run and useless for the question "when did the heap grow",
+    /// because the growth all happens in the first of those intervals and a
+    /// sample that does not collect cannot separate live objects from garbage
+    /// anyway. Thirty seconds for ten minutes brackets it, at the cost of
+    /// twenty forced collections that only a diagnostic run should pay.
+    /// </summary>
+    private static readonly TimeSpan ProfileInterval = TimeSpan.FromSeconds(30);
+    private static readonly int ProfileSamples = 20;
+
+    /// <param name="profile">Start with the dense window described above.
+    /// Off by default: a full blocking collection twice a minute is fine when
+    /// someone is measuring and wrong to inflict on everyone else.</param>
+    public static void Init(bool profile = false)
     {
         Report("startup");
-        m_timer = new Timer(_ => Report("periodic"), null, Interval, Interval);
+        m_profile_left = profile ? ProfileSamples : 0;
+        if (m_profile_left > 0)
+            Logger.Info($"Memory profiling: {ProfileSamples} samples, "
+                      + $"one every {ProfileInterval.TotalSeconds:F0} s, each with a full collection.");
+        m_clock.Start();
+        // One-shot, rescheduled from the callback, so the cadence can change
+        // without a second timer or a period-change race.
+        m_timer = new Timer(OnTick, null, NextDelay(), Timeout.InfiniteTimeSpan);
+    }
+
+    private static TimeSpan NextDelay() => m_profile_left > 0 ? ProfileInterval : Interval;
+
+    private static void OnTick(object unused)
+    {
+        bool profiling = m_profile_left > 0;
+        var elapsed = m_clock.Elapsed;
+        Report(profiling ? $"profile +{elapsed.TotalSeconds:F0}s" : "periodic", collect: profiling);
+
+        if (profiling && --m_profile_left == 0)
+            Logger.Info("Memory profiling window over; back to the periodic sample.");
+
+        try
+        {
+            m_timer?.Change(NextDelay(), Timeout.InfiniteTimeSpan);
+        }
+        catch (ObjectDisposedException)
+        {
+            // Fini() won the race. Nothing to reschedule.
+        }
     }
 
     public static void Fini()
@@ -95,6 +137,10 @@ public static class MemoryReport
     private static string Mb(long bytes) => $"{bytes / 1048576.0:F1} MB";
 
     private static Timer m_timer;
+
+    private static int m_profile_left;
+
+    private static readonly Stopwatch m_clock = new Stopwatch();
 
     private static NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 }

@@ -101,7 +101,7 @@ namespace WinCompose
             MemoryReport.Report("metadata loaded", collect: true);
             KeyboardHook.Init();
             Updater.Init();
-            MemoryReport.Init();
+            MemoryReport.Init(profile: args.Contains("-memprofile"));
 
             Settings.StartWatchConfigFile();
 
