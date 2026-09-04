@@ -47,7 +47,10 @@ public static class MemoryReport
     {
         m_timer?.Dispose();
         m_timer = null;
-        Report("shutdown");
+        // The one place a full collection is free: the app is going away, so
+        // the pause is invisible and the reading is the session's only honest
+        // answer to "how much of the heap was actually live".
+        Report("shutdown", collect: true);
     }
 
     /// <summary>
@@ -57,16 +60,28 @@ public static class MemoryReport
     /// heap says how much of that is our own objects rather than WPF's
     /// unmanaged rendering and the framework itself. Without the third, there
     /// is no way to tell a data-structure problem from a WPF one.
+    ///
+    /// <paramref name="collect"/> decides whether the heap figure is what has
+    /// been allocated or what is still live, and the difference decides what
+    /// the number can be used for. A periodic sample must not perturb the app,
+    /// so it does not collect and its heap figure includes garbage awaiting a
+    /// GC. That makes it useless for measuring a *release*: freeing an object
+    /// graph moves nothing until something collects it, so an uncollected
+    /// reading after a release shows no drop and reads as "the release did
+    /// nothing". Pass true when the point of the reading is a before/after
+    /// difference -- it is a full blocking collection, so only at startup or
+    /// after a deliberate user action, never on the timer.
     /// </summary>
-    public static void Report(string reason)
+    public static void Report(string reason, bool collect = false)
     {
         try
         {
             using (var proc = Process.GetCurrentProcess())
             {
+                var heap = GC.GetTotalMemory(collect);
                 Logger.Info($"Memory ({reason}): working set {Mb(proc.WorkingSet64)}, "
                           + $"private {Mb(proc.PrivateMemorySize64)}, "
-                          + $"managed heap {Mb(GC.GetTotalMemory(false))}, "
+                          + $"{(collect ? "live heap" : "managed heap")} {Mb(heap)}, "
                           + $"collections {GC.CollectionCount(0)}/{GC.CollectionCount(1)}/{GC.CollectionCount(2)}");
             }
         }

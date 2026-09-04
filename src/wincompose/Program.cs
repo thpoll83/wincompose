@@ -90,8 +90,15 @@ namespace WinCompose
                     Logger.Warn($"Could not install scheduled task: {ret.Message}");
             }
 
+            // Bracket the two big loads so their cost is measured rather than
+            // guessed at. Everything else at startup is WPF and the framework,
+            // and the only way to tell those apart from our own data is to see
+            // the heap before and after the data lands.
+            MemoryReport.Report("before rules", collect: true);
             Settings.LoadSequences();
+            MemoryReport.Report("rules loaded", collect: true);
             Metadata.LoadDB();
+            MemoryReport.Report("metadata loaded", collect: true);
             KeyboardHook.Init();
             Updater.Init();
             MemoryReport.Init();
