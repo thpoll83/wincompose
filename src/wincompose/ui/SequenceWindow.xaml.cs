@@ -33,8 +33,43 @@ namespace WinCompose
             DataContext = new RootViewModel();
             Activated += OnActivated;
             Loaded += OnLoaded;
+            IsVisibleChanged += OnIsVisibleChanged;
             Settings.ThemeMode.ValueChanged += UpdateBackground;
         }
+
+        /// <summary>
+        /// This window is hidden rather than closed -- BaseWindow cancels
+        /// Closing -- and NotificationIcon keeps a reference to it, so it and
+        /// everything it points at live until the process exits. Once it has
+        /// been opened, that includes a RootViewModel holding a view model per
+        /// sequence (about 5,000 of them) and the category tree, none of which
+        /// is reachable by the user while the window is off screen.
+        ///
+        /// So release the view model when the window goes away and build a
+        /// fresh one when it comes back. Rebuilding costs a pass over the
+        /// sequence list on reopen, which is the trade: a little slower to open
+        /// the second time, nothing held in between.
+        /// </summary>
+        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+            {
+                if (DataContext == null)
+                {
+                    DataContext = new RootViewModel();
+                    // Reopening should not silently discard what was typed.
+                    if (!string.IsNullOrEmpty(m_saved_search))
+                        m_view_model.SearchText = m_saved_search;
+                }
+            }
+            else
+            {
+                m_saved_search = m_view_model?.SearchText ?? "";
+                DataContext = null;
+            }
+        }
+
+        private string m_saved_search = "";
 
         private void OnActivated(object sender, EventArgs e)
             => SearchBox.Focus();
