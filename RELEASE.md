@@ -48,11 +48,6 @@ Auth comes from `GH_TOKEN` / `GITHUB_TOKEN`, else `gh auth token`.
 `Latest` to the released version once the release exists — while it names a
 version that has no release, the tray offers a download that is not there.
 
-⑤ Update the README
--------------------
-
-The download links name the version explicitly, so point them at the new tag.
-
 If the release build fails
 --------------------------
 
