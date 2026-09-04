@@ -1,9 +1,16 @@
 name: Build
 
-# Compile-only check. Packaging (installer + portable zip) is not covered here:
-# src/Makefile additionally needs GitVersion, Inno Setup 6 and gettext, and the
-# solution's `installer` project shells out to iscc, which is why this builds the
-# wincompose project directly rather than wincompose.sln.
+# Builds and tests, then packages the PORTABLE build and uploads it, so any
+# commit or pull request can be downloaded and run without cutting a release.
+# Grab `wincompose-portable` from the run's Artifacts, unzip, run wincompose.exe.
+# NOTE: the app has no single-instance guard -- only the installer broadcasts
+# WM_WINCOMPOSE_EXIT -- so quit an installed copy from its tray menu first, or
+# you get two instances with two keyboard hooks.
+#
+# The INSTALLER is not built here: src/Makefile additionally needs GitVersion,
+# Inno Setup 6 and gettext, and the solution's `installer` project shells out to
+# iscc, which is why this builds the wincompose project directly rather than
+# wincompose.sln. release.yml is what produces the .exe installer.
 
 on:
   push:
