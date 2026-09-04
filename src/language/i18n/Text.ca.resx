@@ -517,4 +517,8 @@
     <value>Els donatius van a Sam Hocevar, l’autor original.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Obre la carpeta del registre</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

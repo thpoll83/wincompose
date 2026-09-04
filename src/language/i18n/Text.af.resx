@@ -522,4 +522,8 @@
     <value>Skenkings gaan aan Sam Hocevar, die oorspronklike outeur.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Open loglêergids</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

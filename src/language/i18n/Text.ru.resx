@@ -513,4 +513,8 @@
   <data name="DonationNote" xml:space="preserve">
     <value>Пожертвования идут Сэму Осевару, автору оригинала.</value>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Открыть папку с журналом</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

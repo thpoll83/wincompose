@@ -524,4 +524,8 @@
     <value>In alcune applicazioni la composizione non funziona se WinCompose non viene eseguito con privilegi elevati. Questa opzione riduce le probabilità che accada.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Apri la posizione del file di log</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

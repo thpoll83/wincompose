@@ -615,4 +615,8 @@
     <value>Donacije prejme Sam Hocevar, izvorni avtor.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Odpri mesto dnevniške datoteke</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

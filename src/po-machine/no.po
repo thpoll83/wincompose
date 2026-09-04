@@ -136,3 +136,8 @@ msgstr "Merke, omsluttende"
 #: Category ID:NonSpacingMark
 msgid "Mark, Non-Spacing"
 msgstr "Merke, uten mellomrom"
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Åpne loggfilens plassering"

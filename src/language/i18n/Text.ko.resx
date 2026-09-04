@@ -517,4 +517,8 @@
     <value>기부금은 원저자인 Sam Hocevar에게 전달됩니다.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>로그 파일 위치 열기</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

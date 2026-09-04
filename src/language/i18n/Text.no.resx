@@ -538,4 +538,8 @@
     <value>Donasjoner går til Sam Hocevar, den opprinnelige forfatteren.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Åpne loggfilens plassering</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

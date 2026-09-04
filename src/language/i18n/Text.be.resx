@@ -517,4 +517,8 @@
     <value>Ахвяраванні ідуць Sam Hocevar, аўтару арыгінала.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Адкрыць тэчку з журналам</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

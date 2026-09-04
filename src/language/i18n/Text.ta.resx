@@ -517,4 +517,8 @@
     <value>நன்கொடைகள் அசல் ஆசிரியரான Sam Hocevar அவர்களுக்குச் செல்கின்றன.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>பதிவுக் கோப்பின் இருப்பிடத்தைத் திற</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

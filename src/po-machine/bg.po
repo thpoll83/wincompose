@@ -26,3 +26,8 @@ msgstr "Посетете оригиналния проект"
 #: Text ID:DonationNote
 msgid "Donations go to Sam Hocevar, the original author."
 msgstr "Даренията отиват при Sam Hocevar, оригиналния автор."
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Отваряне на папката с дневника"

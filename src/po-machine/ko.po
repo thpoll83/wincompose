@@ -26,3 +26,8 @@ msgstr "원본 프로젝트 방문"
 #: Text ID:DonationNote
 msgid "Donations go to Sam Hocevar, the original author."
 msgstr "기부금은 원저자인 Sam Hocevar에게 전달됩니다."
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "로그 파일 위치 열기"

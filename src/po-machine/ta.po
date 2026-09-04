@@ -26,3 +26,8 @@ msgstr "அசல் திட்டத்தைப் பார்வையி�
 #: Text ID:DonationNote
 msgid "Donations go to Sam Hocevar, the original author."
 msgstr "நன்கொடைகள் அசல் ஆசிரியரான Sam Hocevar அவர்களுக்குச் செல்கின்றன."
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "பதிவுக் கோப்பின் இருப்பிடத்தைத் திற"

@@ -517,4 +517,8 @@
     <value>捐款將轉給原作者 Sam Hocevar。</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>開啟記錄檔位置</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

@@ -563,4 +563,8 @@
     <value>Achviaravańni iduć Sam Hocevar, aŭtaru aryhinała.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Adkryć tečku z žurnałam</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

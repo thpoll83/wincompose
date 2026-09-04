@@ -26,3 +26,8 @@ msgstr "Tabhair cuairt ar an mbunthionscadal"
 #: Text ID:DonationNote
 msgid "Donations go to Sam Hocevar, the original author."
 msgstr "Téann síntiúis chuig Sam Hocevar, an t-údar bunaidh."
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Oscail suíomh an chomhaid logála"

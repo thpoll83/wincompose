@@ -517,4 +517,8 @@
     <value>Donațiile merg către Sam Hocevar, autorul original.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Deschide locația fișierului jurnal</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

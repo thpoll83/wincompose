@@ -618,3 +618,8 @@ msgstr "Ločnica, odstavek"
 #: Category ID:SpaceSeparator
 msgid "Separator, Space"
 msgstr "Ločnica, presledek"
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Odpri mesto dnevniške datoteke"

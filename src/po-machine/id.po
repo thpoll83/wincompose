@@ -157,3 +157,8 @@ msgstr "Kunjungi proyek asli"
 #: Text ID:DonationNote
 msgid "Donations go to Sam Hocevar, the original author."
 msgstr "Donasi diberikan kepada Sam Hocevar, penulis aslinya."
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Buka lokasi berkas log"

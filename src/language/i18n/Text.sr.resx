@@ -585,4 +585,8 @@
     <value>Донације иду Sam Hocevar-у, изворном аутору.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Отвори локацију датотеке дневника</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

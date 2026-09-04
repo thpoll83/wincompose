@@ -517,4 +517,8 @@
     <value>Annetused lähevad algsele autorile Sam Hocevarile.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Ava logifaili asukoht</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

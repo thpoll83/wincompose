@@ -10,3 +10,8 @@
 #: Text ID:UnicodeInputToolTip
 msgid "Enable Unicode input for all characters, even those with no compose sequence defined. For instance, the following sequence will output character U+1A3F: Compose U 1 A 3 F Enter"
 msgstr "Umožnit zadání kódu Unicode pro všechny znaky, dokonce i ty, které nemají definovanou sekvenci. Například znak U+1A3F by bylo možné napsat následující sekvencí: Compose U 1 A 3 F Enter"
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Otevřít složku s protokolem"

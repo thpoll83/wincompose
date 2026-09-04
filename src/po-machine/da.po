@@ -344,3 +344,8 @@ msgstr "Kør med forhøjede rettigheder (anbefales)"
 #: Text ID:RunElevatedToolTip
 msgid "Composition will not work in some applications if WinCompose does not run with elevated privileges. This options reduces the chances that this will happen."
 msgstr "Komposition virker ikke i visse programmer, hvis WinCompose ikke kører med forhøjede rettigheder. Denne indstilling mindsker risikoen for, at det sker."
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Åbn logfilens placering"

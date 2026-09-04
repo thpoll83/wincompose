@@ -58,6 +58,14 @@ public class LogList : ObservableCollection<LogEntry>
 
 public static class Logging
 {
+    /// <summary>
+    /// Where the log is written. Exposed so the About tab can offer to open
+    /// it: %LOCALAPPDATA% is not a path a user can be expected to know, and
+    /// "send me your log" is a routine part of diagnosing anything. One
+    /// definition, so the button and the writer cannot drift apart.
+    /// </summary>
+    public static string FilePath => Path.Combine(Utils.LocalAppDataDir, "wincompose.log");
+
     public static void Init()
     {
         LoggingConfiguration config = new LoggingConfiguration();
@@ -77,7 +85,7 @@ public static class Logging
         var file_target = new FileTarget("File")
         {
             Layout = log_fmt,
-            FileName = Path.Combine(Utils.LocalAppDataDir, "wincompose.log"),
+            FileName = FilePath,
             ConcurrentWrites = true,
             ArchiveEvery = FileArchivePeriod.Day,
             EnableArchiveFileCompression = true,

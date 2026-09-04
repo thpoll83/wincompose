@@ -605,3 +605,8 @@ msgstr "Ndarës, paragraf"
 #: Category ID:SpaceSeparator
 msgid "Separator, Space"
 msgstr "Ndarës, hapësirë"
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Hap vendndodhjen e skedarit të regjistrit"

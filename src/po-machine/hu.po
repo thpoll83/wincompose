@@ -26,3 +26,8 @@ msgstr "Az eredeti projekt megnyitása"
 #: Text ID:DonationNote
 msgid "Donations go to Sam Hocevar, the original author."
 msgstr "Az adományok Sam Hocevarhoz, az eredeti szerzőhöz kerülnek."
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "A naplófájl helyének megnyitása"

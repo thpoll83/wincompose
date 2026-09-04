@@ -461,6 +461,10 @@
     <value>WinCompose needs to be restarted for some changes to take effect.</value>
     <comment>Warning message when the user changes the language in the settings window</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Open Log File Location</value>
+    <comment>A button on the About tab that opens the folder holding wincompose.log</comment>
+  </data>
   <data name="ReportBug" xml:space="preserve">
     <value>Report a Bug</value>
     <comment>A button to report bugs (opens web browser)</comment>
