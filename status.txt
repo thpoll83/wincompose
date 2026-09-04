@@ -7,6 +7,6 @@
 # release actually exists, or the tray will point at a download that is not
 # there.
 
-Latest:  0.9.16
+Latest:  0.9.17
 Installer:  https://github.com/thpoll83/wincompose/releases/latest
 Portable:  https://github.com/thpoll83/wincompose/releases/latest
