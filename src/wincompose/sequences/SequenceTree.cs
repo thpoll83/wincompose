@@ -278,8 +278,11 @@ public class SequenceNode
 
         // Check if the sequence exists in our tree
         SequenceNode subtree = GetSubtree(sequence, flags);
-        if (subtree != null && subtree.m_results != null && subtree.m_results.Count > 0)
-            return subtree.m_results[0].Result;
+        // Read the field once: Clear() can null it from the UI thread between
+        // the null check and the use. See the note on m_children below.
+        var results = subtree?.m_results;
+        if (results != null && results.Count > 0)
+            return results[0].Result;
 
         return "";
     }
@@ -317,9 +320,11 @@ public class SequenceNode
     {
         if (sequence.Count == 0)
         {
-            if ((flags & Search.Prefixes) != 0 && (m_children == null || m_children.Count == 0))
+            var kids = m_children;
+            var res = m_results;
+            if ((flags & Search.Prefixes) != 0 && (kids == null || kids.Count == 0))
                 return null;
-            if ((flags & Search.Sequences) != 0 && (m_results == null || m_results.Count == 0))
+            if ((flags & Search.Sequences) != 0 && (res == null || res.Count == 0))
                 return null;
             return this;
         }
@@ -336,16 +341,17 @@ public class SequenceNode
                 keys.Add(lower);
         }
 
-        if (m_children == null)
+        var children = m_children;
+        if (children == null)
             return null;
 
         foreach (Key k in keys)
         {
-            if (!m_children.ContainsKey(k))
+            if (!children.TryGetValue(k, out var node))
                 continue;
 
             var subsequence = sequence.GetRange(1, sequence.Count - 1);
-            var subtree = m_children[k].GetSubtree(subsequence, flags);
+            var subtree = node.GetSubtree(subsequence, flags);
             if (subtree != null)
                 return subtree;
         }
@@ -361,13 +367,15 @@ public class SequenceNode
     private void BuildSequenceDescriptions(List<SequenceDescription> list,
                                            KeySequence path)
     {
-        if (m_results != null)
-            list.AddRange(m_results);
+        var results = m_results;
+        if (results != null)
+            list.AddRange(results);
 
-        if (m_children == null)
+        var children = m_children;
+        if (children == null)
             return;
 
-        foreach (var pair in m_children)
+        foreach (var pair in children)
         {
             var newpath = new KeySequence(path);
             newpath.Add(pair.Key);
@@ -380,6 +388,20 @@ public class SequenceNode
     /// never need one of them. Of the 13,309 nodes the shipped rules build,
     /// 4,969 are leaves that would hold an empty dictionary for the life of
     /// the process and 8,303 carry no result at all.
+    ///
+    /// Because these can now be null, every READ must copy the field into a
+    /// local and test that, never test the field and then dereference it.
+    /// Settings.LoadSequences() calls Clear() from the UI thread (a settings
+    /// toggle, or opening the sequence window) while Composer looks sequences
+    /// up on the keyboard hook thread, so a null can land between the two.
+    /// Before these were lazy, Clear() emptied the dictionary in place and the
+    /// field was never null, so the check-then-use pattern was safe here.
+    ///
+    /// That makes the read paths NRE-free; it does not make the tree thread
+    /// safe. A lookup racing a reload still walks a half-loaded tree and
+    /// returns no match, exactly as it did before this change. Fixing that
+    /// properly means serialising Settings' access to the whole tree, which is
+    /// a pre-existing question and deliberately not attempted here.
     /// </summary>
     protected IDictionary<Key, SequenceNode> m_children;
     private IList<SequenceDescription> m_results;
