@@ -28,13 +28,20 @@
     <tb:TaskbarIcon.Resources>
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
         <BitmapImage x:Key="ComposeKeyImage" UriSource="../res/key_compose.png"/>
-        <Image Height="18" x:Key="SequencesEmoji" emoji:Image.Source="💬"/>
-        <Image Height="18" x:Key="OptionsEmoji"   emoji:Image.Source="🛠"/>
-        <Image Height="18" x:Key="AboutEmoji"     emoji:Image.Source="ℹ"/>
-        <Image Height="18" x:Key="DonateEmoji"    emoji:Image.Source="💸"/>
-        <Image Height="18" x:Key="DebugEmoji"     emoji:Image.Source="🔎"/>
-        <Image Height="18" x:Key="WebsiteEmoji"   emoji:Image.Source="🌐"/>
-        <Image Height="18" x:Key="ExitEmoji"      emoji:Image.Source="🚪"/>
+        <!-- PROBE: was emoji:Image.Source -->
+        <Image Height="18" x:Key="SequencesEmoji" Source="{StaticResource ComposeKeyImage}"/>
+        <!-- PROBE: was emoji:Image.Source -->
+        <Image Height="18" x:Key="OptionsEmoji" Source="{StaticResource ComposeKeyImage}"/>
+        <!-- PROBE: was emoji:Image.Source -->
+        <Image Height="18" x:Key="AboutEmoji"/>
+        <!-- PROBE: was emoji:Image.Source -->
+        <Image Height="18" x:Key="DonateEmoji"/>
+        <!-- PROBE: was emoji:Image.Source -->
+        <Image Height="18" x:Key="DebugEmoji" Source="{StaticResource ComposeKeyImage}"/>
+        <!-- PROBE: was emoji:Image.Source -->
+        <Image Height="18" x:Key="WebsiteEmoji"/>
+        <!-- PROBE: was emoji:Image.Source -->
+        <Image Height="18" x:Key="ExitEmoji" Source="{StaticResource ComposeKeyImage}"/>
     </tb:TaskbarIcon.Resources>
 
     <tb:TaskbarIcon.ContextMenu>
