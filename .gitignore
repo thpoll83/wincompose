@@ -1,2 +1,6 @@
 .vs/slnx.sqlite
 .vs/VSWorkspaceState.json
+
+# Python bytecode from the helper scripts in src/
+__pycache__/
+*.pyc
