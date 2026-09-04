@@ -134,6 +134,30 @@ def append_entries(path, entries):
         f.write(raw)
 
 
+def check_placeholders(english):
+    """A {0} that survives into the English but not the translation is a defect.
+
+    This looks at every locale, not only the ones we fill: `string.Format` is
+    what renders these, so a dropped or mistyped placeholder either loses the
+    value or throws, and nothing else in the build looks for it.
+    """
+    import glob
+    holes = re.compile(r"\{\d+\}")
+    problems = []
+    for kind, master, template in TARGETS:
+        prefix = template.split("{loc}")[0]
+        suffix = template.split("{loc}")[1]
+        for path in sorted(glob.glob(prefix + "*" + suffix)):
+            loc = os.path.basename(path)[len(os.path.basename(prefix)):-len(suffix)]
+            for ident, value in (read_resx(path) or {}).items():
+                want = sorted(set(holes.findall(english[kind].get(ident, ""))))
+                if want and sorted(set(holes.findall(value))) != want:
+                    problems.append((loc, ident, want, value))
+    for loc, ident, want, value in problems:
+        print(f"  WARNING {loc}/{ident}: expected {' '.join(want)}, got {value!r}")
+    return problems
+
+
 def main():
     check = "--check" in sys.argv[1:]
     os.chdir(HERE)
@@ -143,6 +167,8 @@ def main():
     for kind, master, _ in TARGETS:
         if english[kind] is None:
             sys.exit(f"apply-machine-translations: missing English master {master}")
+
+    check_placeholders(english)
 
     machine_dir = "po-machine"
     if not os.path.isdir(machine_dir):

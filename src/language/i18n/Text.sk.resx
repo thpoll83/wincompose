@@ -381,4 +381,180 @@
   <data name="KeyCompose" xml:space="preserve">
     <value>Aktuality</value>
   </data>
+  <data name="SwapOnInvalid" xml:space="preserve">
+    <value>Skúsiť prehodiť obe klávesy</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="SwapOnInvalidToolTip" xml:space="preserve">
+    <value>Skúsiť prehodiť klávesy dvojklávesovej sekvencie. Napríklad ak Compose E A nie je platná sekvencia, skúsi sa Compose A E.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ResetTimeout" xml:space="preserve">
+    <value>Deaktivovať po</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UnicodeInputToolTip" xml:space="preserve">
+    <value>Umožniť zadávanie kódu Unicode pre všetky znaky, aj tie, ktoré nemajú definovanú sekvenciu. Napríklad znak U+1A3F je možné napísať sekvenciou: Compose U 1 A 3 F Enter</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Kopírovať do schránky</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Emoji" xml:space="preserve">
+    <value>Emoji</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TestTyping" xml:space="preserve">
+    <value>Skúšobné písanie</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DelaySeconds" xml:space="preserve">
+    <value>{0} sekúnd</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Authors" xml:space="preserve">
+    <value>Autori</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyDisabled" xml:space="preserve">
+    <value>Vypnuté</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CheckUpdates" xml:space="preserve">
+    <value>Automaticky kontrolovať aktualizácie</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CheckUpdatesToolTip" xml:space="preserve">
+    <value>Ak je povolené, WinCompose sa bude v pravidelných intervaloch pripájať na internet a kontrolovať nové verzie. Aktualizácie sa neinštalujú automaticky.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepIconVisible" xml:space="preserve">
+    <value>Snažiť sa vždy zobrazovať ikonu v oblasti oznámení</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepIconVisibleToolTip" xml:space="preserve">
+    <value>Windows po chvíli ikonu z oblasti oznámení predvolene odstráni. Táto voľba sa ju snaží udržať stále viditeľnú.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ChangeComposeKey" xml:space="preserve">
+    <value>Zmeniť…</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CaptureComposeKey" xml:space="preserve">
+    <value>Stlačte kláves, ktorý chcete použiť ako kláves Compose.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AddToFavorites" xml:space="preserve">
+    <value>Pridať medzi obľúbené</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DisableIcon" xml:space="preserve">
+    <value>Vypnúť ikonu v oblasti oznámení</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DisableIconToolTip" xml:space="preserve">
+    <value>Ak je povolené, WinCompose už nebude zobrazovať ikonu v oblasti oznámení. Rozhranie WinCompose bude potom možné otvoriť len cez položky „WinCompose Settings“ a „WinCompose Sequences“ v ponuke Štart.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyHome" xml:space="preserve">
+    <value>Home</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyEnd" xml:space="preserve">
+    <value>End</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyTab" xml:space="preserve">
+    <value>Tab</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="NoTimeout" xml:space="preserve">
+    <value>Bez časového limitu</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Advanced" xml:space="preserve">
+    <value>Pokročilé</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="IgnoreRegex" xml:space="preserve">
+    <value>Ignorovať okná zodpovedajúce tomuto regulárnemu výrazu:</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="IgnoreRegexToolTip" xml:space="preserve">
+    <value>WinCompose sa úplne vypne, keď trieda alebo názov aktuálneho okna zodpovedá tomuto regulárnemu výrazu.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysCompose" xml:space="preserve">
+    <value>Alternatívny kláves Compose vždy funguje ako Compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysComposeToolTip" xml:space="preserve">
+    <value>Ak je povolené, všetky klávesy Compose sa v sekvencii budú považovať za Compose. Predvolene sa ako Compose správa len prvý stlačený kláves a alternatívne klávesy Compose si ponechajú svoju pôvodnú úlohu.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RemoveFromFavorites" xml:space="preserve">
+    <value>Odobrať z obľúbených</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>Obľúbené</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TimeoutToolTip" xml:space="preserve">
+    <value>Ak je nastavené, každá sekvencia Compose sa po určitom čase zruší, pokiaľ sa nezaznamená žiadna aktivita klávesnice.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyboardLed" xml:space="preserve">
+    <value>LED klávesnice</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyboardLedToolTip" xml:space="preserve">
+    <value>Ak je nastavené, počas prebiehajúcej sekvencie Compose bude svietiť príslušná LED klávesnice.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunch" xml:space="preserve">
+    <value>Spustiť WinCompose pri prihlásení</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunchToolTip" xml:space="preserve">
+    <value>Ak je nastavené, WinCompose sa spustí pri prihlásení používateľa.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Accessibility" xml:space="preserve">
+    <value>Zjednodušenie ovládania</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLock" xml:space="preserve">
+    <value>Caps Lock je aktívny len počas držania</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLockToolTip" xml:space="preserve">
+    <value>Uvoľnenie klávesu Caps Lock ho okamžite vypne namiesto obvyklého správania, keď je potrebné stlačiť ho druhýkrát.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevated" xml:space="preserve">
+    <value>Spustiť so zvýšenými oprávneniami (odporúčané)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevatedToolTip" xml:space="preserve">
+    <value>V niektorých aplikáciách skladanie nebude fungovať, ak WinCompose nebeží so zvýšenými oprávneniami. Táto voľba znižuje pravdepodobnosť, že sa to stane.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Fork PolyKybd programu WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Založené na pôvodnom WinCompose od Sama Hocevara a prispievateľov.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Navštíviť pôvodný projekt</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Dary putujú Samovi Hocevarovi, pôvodnému autorovi.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>
