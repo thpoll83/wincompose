@@ -501,4 +501,20 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Комбинирането на знаци може да не работи в някои приложения ако WinCompose не работи с повишени права. Тази настройка намалява риска това да се случи.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>PolyKybd форк на WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Базирано на оригиналния WinCompose от Sam Hocevar и сътрудници.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Посетете оригиналния проект</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Даренията отиват при Sam Hocevar, оригиналния автор.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

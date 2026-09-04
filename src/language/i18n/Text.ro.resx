@@ -501,4 +501,20 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Compunerea nu va funcționa în unele aplicații dacă WinCompose nu rulează cu privilegii elevate. Această opțiune reduce șansele ca acest lucru să se întâmple.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Fork PolyKybd al WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Bazat pe WinCompose original, de Sam Hocevar și contribuitori.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Vizitează proiectul original</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Donațiile merg către Sam Hocevar, autorul original.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

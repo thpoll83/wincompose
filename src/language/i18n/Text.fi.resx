@@ -501,4 +501,20 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Kirjoitus ei toimi joissakin sovelluksissa, jos WinComposea ei suoriteta korotetuilla oikeuksilla. Tämä vaihtoehto vähentää mahdollisuuksia, että näin tapahtuu.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>WinComposen PolyKybd-haara</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Perustuu Sam Hocevarin ja avustajien alkuperäiseen WinComposeen.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Siirry alkuperäiseen projektiin</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Lahjoitukset menevät alkuperäiselle tekijälle Sam Hocevarille.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

@@ -480,4 +480,48 @@
   <data name="DonationNote" xml:space="preserve">
     <value>Darowizny trafiają do Sama Hocevara, oryginalnego autora.</value>
   </data>
+  <data name="AlwaysCompose" xml:space="preserve">
+    <value>Alternatywny klawisz Compose zawsze działa jako Compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysComposeToolTip" xml:space="preserve">
+    <value>Jeśli ta opcja jest włączona, wszystkie klawisze Compose będą traktowane w sekwencji jako Compose. Domyślnie tylko pierwszy naciśnięty klawisz działa jako Compose, a alternatywne klawisze Compose zachowują swoją pierwotną rolę.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyboardLedToolTip" xml:space="preserve">
+    <value>Jeśli ta opcja jest ustawiona, odpowiednia dioda LED klawiatury będzie się świecić w trakcie sekwencji Compose.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyCompose" xml:space="preserve">
+    <value>Compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunch" xml:space="preserve">
+    <value>Uruchamiaj WinCompose przy logowaniu</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunchToolTip" xml:space="preserve">
+    <value>Jeśli ta opcja jest ustawiona, program WinCompose będzie uruchamiany podczas logowania użytkownika.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Accessibility" xml:space="preserve">
+    <value>Ułatwienia dostępu</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLock" xml:space="preserve">
+    <value>Caps Lock jest aktywny tylko wtedy, gdy jest przytrzymany</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLockToolTip" xml:space="preserve">
+    <value>Zwolnienie klawisza Caps Lock natychmiast go wyłącza, zamiast standardowego zachowania wymagającego ponownego naciśnięcia.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevated" xml:space="preserve">
+    <value>Uruchamiaj z podwyższonymi uprawnieniami (zalecane)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevatedToolTip" xml:space="preserve">
+    <value>W niektórych aplikacjach komponowanie nie zadziała, jeśli program WinCompose nie działa z podwyższonymi uprawnieniami. Ta opcja zmniejsza ryzyko wystąpienia takiej sytuacji.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

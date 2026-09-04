@@ -438,4 +438,104 @@
   <data name="AutoLaunch" xml:space="preserve">
     <value>Kjør WinCompose ved innlogging</value>
   </data>
+  <data name="Composing" xml:space="preserve">
+    <value>Sammenfatting</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXorgRulesToolTip" xml:space="preserve">
+    <value>Bruk de 3 000 sammenfattingssekvensene fra Xorg-prosjektet (http://www.x.org/). Dette er sekvensene man oftest finner på et vanlig Linux-system.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ResetTimeout" xml:space="preserve">
+    <value>Tidsavbrudd</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="InsertZwsp" xml:space="preserve">
+    <value>Sett inn mellomrom uten bredde i Office-programmer</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TestTyping" xml:space="preserve">
+    <value>Prøveskriving</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UpdatesToolTip" xml:space="preserve">
+    <value>Oppdateringer er tilgjengelige.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AllowInjected" xml:space="preserve">
+    <value>Tillat injiserte tastetrykk</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AllowInjectedToolTip" xml:space="preserve">
+    <value>Ikke overse tastetrykk sendt av annen programvare, som AutoHotkey eller Synergy</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CheckUpdates" xml:space="preserve">
+    <value>Se etter oppdateringer automatisk</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CheckUpdatesToolTip" xml:space="preserve">
+    <value>Hvis dette er på, kobler WinCompose seg til Internett med jevne mellomrom for å se etter nye versjoner. Oppdateringer installeres ikke automatisk.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CaptureComposeKey" xml:space="preserve">
+    <value>Trykk på tasten du vil bruke som sammenfattingstast.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="NoTimeout" xml:space="preserve">
+    <value>Uten tidsavbrudd</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysCompose" xml:space="preserve">
+    <value>Alternativ sammenfattingstast er alltid Compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TimeoutToolTip" xml:space="preserve">
+    <value>Hvis dette er satt, avbrytes enhver sammenfattingssekvens etter en viss forsinkelse dersom ingen tastaturaktivitet oppdages.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyCompose" xml:space="preserve">
+    <value>Compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunchToolTip" xml:space="preserve">
+    <value>Hvis dette er satt, startes WinCompose når brukeren logger inn.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Accessibility" xml:space="preserve">
+    <value>Tilgjengelighet</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLock" xml:space="preserve">
+    <value>Caps Lock er bare aktiv mens tasten holdes nede</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLockToolTip" xml:space="preserve">
+    <value>Når Caps Lock-tasten slippes, slås den av umiddelbart, i stedet for den vanligere oppførselen der den må trykkes en gang til.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevated" xml:space="preserve">
+    <value>Kjør med forhøyede rettigheter (anbefalt)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevatedToolTip" xml:space="preserve">
+    <value>Sammenfatting vil ikke fungere i enkelte programmer hvis WinCompose ikke kjører med forhøyede rettigheter. Dette valget reduserer sjansen for at det skjer.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>PolyKybd-forgrening av WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Basert på det opprinnelige WinCompose av Sam Hocevar og bidragsytere.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Besøk det opprinnelige prosjektet</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Donasjoner går til Sam Hocevar, den opprinnelige forfatteren.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

@@ -1,0 +1,53 @@
+# Machine-translated fallback strings for Polish (pl).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/pl.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#: Text ID:AlwaysCompose
+msgid "Alternate compose key is always Compose"
+msgstr "Alternatywny klawisz Compose zawsze działa jako Compose"
+
+#: Text ID:AlwaysComposeToolTip
+msgid "If enabled, all compose keys will be treated as Compose in a sequence. By default, only the first pressed key will act as Compose, and alternate compose keys will keep their original role."
+msgstr "Jeśli ta opcja jest włączona, wszystkie klawisze Compose będą traktowane w sekwencji jako Compose. Domyślnie tylko pierwszy naciśnięty klawisz działa jako Compose, a alternatywne klawisze Compose zachowują swoją pierwotną rolę."
+
+#: Text ID:KeyboardLedToolTip
+msgid "If set, the corresponding keyboard LED will be lit when a compose sequence is in progress."
+msgstr "Jeśli ta opcja jest ustawiona, odpowiednia dioda LED klawiatury będzie się świecić w trakcie sekwencji Compose."
+
+#. The short name of the compose key
+#: Text ID:KeyCompose
+msgid "Compose"
+msgstr "Compose"
+
+#: Text ID:AutoLaunch
+msgid "Launch WinCompose on login"
+msgstr "Uruchamiaj WinCompose przy logowaniu"
+
+#: Text ID:AutoLaunchToolTip
+msgid "If set, WinCompose will be started when the user logs in."
+msgstr "Jeśli ta opcja jest ustawiona, program WinCompose będzie uruchamiany podczas logowania użytkownika."
+
+#: Text ID:Accessibility
+msgid "Accessibility"
+msgstr "Ułatwienia dostępu"
+
+#: Text ID:MustHoldCapsLock
+msgid "Caps Lock is only active while being held down"
+msgstr "Caps Lock jest aktywny tylko wtedy, gdy jest przytrzymany"
+
+#: Text ID:MustHoldCapsLockToolTip
+msgid "Releasing the Caps Lock key will immediately disable it, instead of the more standard behaviour of having to press it a second time."
+msgstr "Zwolnienie klawisza Caps Lock natychmiast go wyłącza, zamiast standardowego zachowania wymagającego ponownego naciśnięcia."
+
+#: Text ID:RunElevated
+msgid "Run with elevated privileges (recommended)"
+msgstr "Uruchamiaj z podwyższonymi uprawnieniami (zalecane)"
+
+#: Text ID:RunElevatedToolTip
+msgid "Composition will not work in some applications if WinCompose does not run with elevated privileges. This options reduces the chances that this will happen."
+msgstr "W niektórych aplikacjach komponowanie nie zadziała, jeśli program WinCompose nie działa z podwyższonymi uprawnieniami. Ta opcja zmniejsza ryzyko wystąpienia takiej sytuacji."

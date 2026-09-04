@@ -117,4 +117,124 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Control" xml:space="preserve">
+    <value>Tjetër, kontroll</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Format" xml:space="preserve">
+    <value>Tjetër, format</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="OtherNotAssigned" xml:space="preserve">
+    <value>Tjetër, e pacaktuar</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="PrivateUse" xml:space="preserve">
+    <value>Tjetër, përdorim privat</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Surrogate" xml:space="preserve">
+    <value>Tjetër, surrogat</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="LowercaseLetter" xml:space="preserve">
+    <value>Shkronjë, e vogël</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ModifierLetter" xml:space="preserve">
+    <value>Shkronjë, modifikuese</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="OtherLetter" xml:space="preserve">
+    <value>Shkronjë, tjetër</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TitlecaseLetter" xml:space="preserve">
+    <value>Shkronjë, titull</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UppercaseLetter" xml:space="preserve">
+    <value>Shkronjë, e madhe</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="SpacingCombiningMark" xml:space="preserve">
+    <value>Shenjë, kombinuese me hapësirë</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="EnclosingMark" xml:space="preserve">
+    <value>Shenjë, rrethuese</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="NonSpacingMark" xml:space="preserve">
+    <value>Shenjë, pa hapësirë</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DecimalDigitNumber" xml:space="preserve">
+    <value>Numër, shifër dhjetore</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="LetterNumber" xml:space="preserve">
+    <value>Numër, shkronjë</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="OtherNumber" xml:space="preserve">
+    <value>Numër, tjetër</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ConnectorPunctuation" xml:space="preserve">
+    <value>Pikësim, lidhës</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DashPunctuation" xml:space="preserve">
+    <value>Pikësim, vizë</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ClosePunctuation" xml:space="preserve">
+    <value>Pikësim, mbyllës</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="FinalQuotePunctuation" xml:space="preserve">
+    <value>Pikësim, thonjëz mbyllëse</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="InitialQuotePunctuation" xml:space="preserve">
+    <value>Pikësim, thonjëz hapëse</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="OtherPunctuation" xml:space="preserve">
+    <value>Pikësim, tjetër</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="OpenPunctuation" xml:space="preserve">
+    <value>Pikësim, hapës</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CurrencySymbol" xml:space="preserve">
+    <value>Simbol, monedhë</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ModifierSymbol" xml:space="preserve">
+    <value>Simbol, modifikues</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MathSymbol" xml:space="preserve">
+    <value>Simbol, matematikor</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="OtherSymbol" xml:space="preserve">
+    <value>Simbol, tjetër</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="LineSeparator" xml:space="preserve">
+    <value>Ndarës, rresht</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ParagraphSeparator" xml:space="preserve">
+    <value>Ndarës, paragraf</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="SpaceSeparator" xml:space="preserve">
+    <value>Ndarës, hapësirë</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

@@ -501,4 +501,20 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Комбінування не працюватиме в деяких програмах, якщо WinCompose запускається без підвищених привілеїв. Цей параметр зменшує ймовірність того, що це станеться.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Форк PolyKybd програми WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Засновано на оригінальному WinCompose від Sam Hocevar та учасників проєкту.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Відвідати оригінальний проєкт</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Пожертви надходять до Sam Hocevar, оригінального автора.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

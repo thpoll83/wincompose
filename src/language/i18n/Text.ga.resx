@@ -501,4 +501,20 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>Ní oibreoidh comhdhéanamh i roinnt feidhmchlár mura ritheann WinCompose le pribhléidí ardaithe. Laghdaíonn na roghanna seo an seans go dtarlóidh sé seo.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Forc PolyKybd de WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Bunaithe ar an WinCompose bunaidh le Sam Hocevar agus rannpháirtithe.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Tabhair cuairt ar an mbunthionscadal</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Téann síntiúis chuig Sam Hocevar, an t-údar bunaidh.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

@@ -501,4 +501,20 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>A komponálás néhány alkalmazásban nem működik, ha a WinCompose nem emelt jogosultságokkal fut. Ez az opció csökkenti ennek előfordulási valószínűségét.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>A WinCompose PolyKybd-forkja</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Az eredeti, Sam Hocevar és közreműködői által készített WinCompose alapján.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Az eredeti projekt megnyitása</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Az adományok Sam Hocevarhoz, az eredeti szerzőhöz kerülnek.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

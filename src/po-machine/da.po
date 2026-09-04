@@ -1,0 +1,346 @@
+# Machine-translated fallback strings for Danish (da).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/da.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#. The "Composing" section in the settings window
+#: Text ID:Composing
+msgid "Composing"
+msgstr "Komposition"
+
+#: Text ID:UseXorgRules
+msgid "Use sequences from the Xorg project"
+msgstr "Brug sekvenser fra Xorg-projektet"
+
+#: Text ID:UseXorgRulesToolTip
+msgid "Use the 3,000 compose sequences from the Xorg project (http://www.x.org/). These are the sequences most commonly found on a standard Linux system."
+msgstr "Brug de 3.000 compose-sekvenser fra Xorg-projektet (http://www.x.org/). Det er de sekvenser, man oftest finder på et almindeligt Linux-system."
+
+#: Text ID:UseXComposeRules
+msgid "Use sequences from the XCompose project"
+msgstr "Brug sekvenser fra XCompose-projektet"
+
+#: Text ID:UseXComposeRulesToolTip
+msgid "Use the 1,000 compose sequences from the XCompose opensource project (https://github.com/kragen/xcompose). These sequences may sometimes conflict with the Xorg ones."
+msgstr "Brug de 1.000 compose-sekvenser fra open source-projektet XCompose (https://github.com/kragen/xcompose). Disse sekvenser kan somme tider være i konflikt med Xorg-sekvenserne."
+
+#: Text ID:UseEmojiRules
+msgid "Use WinCompose emoji sequences"
+msgstr "Brug WinCompose-emojisekvenser"
+
+#: Text ID:UseEmojiRulesToolTip
+msgid "Use the compose sequences for Emoji provided by the WinCompose author and contributors."
+msgstr "Brug de compose-sekvenser til emoji, som WinCompose-forfatteren og bidragyderne stiller til rådighed."
+
+#. Menu entry to show the debug window
+#: Text ID:DebugWindow
+msgid "Debug Window"
+msgstr "Fejlsøgningsvindue"
+
+#. A button to visit the donation page (http://wincompose.info/donate/)
+#: Text ID:DonationPage
+msgid "Donation Page"
+msgstr "Donationsside"
+
+#. Name of the category (Unicode characters, Emoji, User macros, Favorites)
+#: Text ID:UnicodeCharacters
+msgid "Unicode characters"
+msgstr "Unicode-tegn"
+
+#: Text ID:SwapOnInvalid
+msgid "Try to swap the two keys"
+msgstr "Prøv at bytte om på de to taster"
+
+#: Text ID:SwapOnInvalidToolTip
+msgid "Try to swap the keys of a two-key sequence. For instance, if Compose E A is not a valid sequence, try Compose A E instead."
+msgstr "Prøv at bytte om på tasterne i en sekvens med to taster. Hvis Compose E A for eksempel ikke er en gyldig sekvens, så prøv Compose A E i stedet."
+
+#: Text ID:ComposeKeyToolTip
+msgid "Select the key that should act as the Compose key."
+msgstr "Vælg den tast, der skal fungere som Compose-tast."
+
+#. The compose key deactivates itself after a certain configurable delay
+#: Text ID:ResetTimeout
+msgid "Reset timeout"
+msgstr "Tidsgrænse for nulstilling"
+
+#: Text ID:UnicodeInput
+msgid "Advanced Unicode input"
+msgstr "Avanceret Unicode-indtastning"
+
+#: Text ID:UnicodeInputToolTip
+msgid "Enable Unicode input for all characters, even those with no compose sequence defined. For instance, the following sequence will output character U+1A3F: Compose U 1 A 3 F Enter"
+msgstr "Aktivér Unicode-indtastning for alle tegn, også dem uden en defineret compose-sekvens. For eksempel giver følgende sekvens tegnet U+1A3F: Compose U 1 A 3 F Enter"
+
+#. This is the name of a category of settings about what happens when invalid sequences are typed
+#: Text ID:InvalidSequences
+msgid "On invalid sequences"
+msgstr "Ved ugyldige sekvenser"
+
+#: Text ID:CaseInsensitiveToolTip
+msgid "If the entered sequence does not exist, but there is one that only differs by case, automatically correct it."
+msgstr "Hvis den indtastede sekvens ikke findes, men der findes en, som kun adskiller sig ved store og små bogstaver, rettes den automatisk."
+
+#: Text ID:DiscardOnInvalid
+msgid "Discard all typed characters"
+msgstr "Kassér alle indtastede tegn"
+
+#: Text ID:DiscardOnInvalidToolTip
+msgid "If the entered sequence does not exist, discard all the characters that were typed. The default behaviour is to output the characters as if the compose key had not been used."
+msgstr "Hvis den indtastede sekvens ikke findes, kasseres alle de tegn, der blev tastet. Standardopførslen er at skrive tegnene, som om Compose-tasten ikke var brugt."
+
+#: Text ID:BeepOnInvalid
+msgid "Emit a beep"
+msgstr "Afspil et bip"
+
+#: Text ID:BeepOnInvalidToolTip
+msgid "If the entered sequence does not exist, emit a system sound."
+msgstr "Hvis den indtastede sekvens ikke findes, afspilles en systemlyd."
+
+#: Text ID:LanguageToolTip
+msgid "Select the language that WinCompose uses for the interface. By default the operating system language is used."
+msgstr "Vælg det sprog, WinCompose bruger til brugerfladen. Som standard bruges operativsystemets sprog."
+
+#. Copy character or symbol to the clipboard
+#: Text ID:CopyToClipboard
+msgid "Copy to clipboard"
+msgstr "Kopiér til udklipsholder"
+
+#. Name of the category (Unicode characters, Emoji, User macros, Favorites)
+#: Text ID:Emoji
+msgid "Emoji"
+msgstr "Emoji"
+
+#: Text ID:KeepOriginalKeyToolTip
+msgid "This tells WinCompose to make a best effort to retain the original key’s behaviour. For instance, the Alt-Tab shortcut will still work even if Alt is used as the compose key."
+msgstr "Dette beder WinCompose om efter bedste evne at bevare tastens oprindelige opførsel. For eksempel virker genvejen Alt-Tab stadig, selv om Alt bruges som Compose-tast."
+
+#: Text ID:InsertZwspToolTip
+msgid "Microsoft Office applications sometimes change the document font on the fly when entering certain Unicode characters. This feature inserts an invisible character after the Unicode character to work around the bug."
+msgstr "Microsoft Office-programmer skifter somme tider dokumentets skrifttype undervejs, når man indtaster bestemte Unicode-tegn. Denne funktion indsætter et usynligt tegn efter Unicode-tegnet for at omgå fejlen."
+
+#: Text ID:EmulateCapsLockToolTip
+msgid "If Caps Lock is used as the compose key, the original behaviour of the key becomes unavailable. This feature allows to turn Caps Lock on by pressing both Shift keys simultaneously."
+msgstr "Hvis Caps Lock bruges som Compose-tast, bliver tastens oprindelige opførsel utilgængelig. Denne funktion gør det muligt at slå Caps Lock til ved at trykke på begge Skift-taster samtidig."
+
+#: Text ID:ShiftDisablesCapsLockToolTip
+msgid "If Caps Lock is used as the compose key, the original behaviour of the key becomes unavailable. This feature allows to turn Caps Lock off by pressing the Shift key."
+msgstr "Hvis Caps Lock bruges som Compose-tast, bliver tastens oprindelige opførsel utilgængelig. Denne funktion gør det muligt at slå Caps Lock fra ved at trykke på Skift-tasten."
+
+#: Text ID:CapsLockCapitalizes
+msgid "Caps Lock always capitalizes letters"
+msgstr "Caps Lock skriver altid store bogstaver"
+
+#: Text ID:CapsLockCapitalizesToolTip
+msgid "When Caps Lock is on, typing an accented letter such as “é” will always output the corresponding capitalized letter, in this case “É”."
+msgstr "Når Caps Lock er slået til, giver et accenttegn som “é” altid det tilsvarende store bogstav, i dette tilfælde “É”."
+
+#. The “general” tab of the options window
+#: Text ID:General
+msgid "General"
+msgstr "Generelt"
+
+#: Text ID:Behavior
+msgid "Behavior"
+msgstr "Opførsel"
+
+#. Format string to display the current reset delay
+#: Text ID:DelaySeconds
+msgid "{0} seconds"
+msgstr "{0} sekunder"
+
+#. Download new version menu entry. {0}: version number
+#: Text ID:Download
+msgid "Download WinCompose {0}"
+msgstr "Hent WinCompose {0}"
+
+#. The tab item to see all the program authors.
+#: Text ID:Authors
+msgid "Authors"
+msgstr "Forfattere"
+
+#. A button to report bugs (opens web browser)
+#: Text ID:ReportBug
+msgid "Report a Bug"
+msgstr "Rapportér en fejl"
+
+#. The context menu for about, help, and software updates
+#: Text ID:Help
+msgid "Help"
+msgstr "Hjælp"
+
+#. Message displayed in the notification area tooltip.
+#: Text ID:UpdatesToolTip
+msgid "Updates are available."
+msgstr "Der er opdateringer tilgængelige."
+
+#: Text ID:UserDefinedSequences
+msgid "User-defined sequences"
+msgstr "Brugerdefinerede sekvenser"
+
+#. A button to open the file containing the user-defined sequences.
+#: Text ID:UserDefinedSequencesEdit
+msgid "Edit"
+msgstr "Redigér"
+
+#. A button to reload the user-defined sequences.
+#: Text ID:UserDefinedSequencesReload
+msgid "Reload"
+msgstr "Genindlæs"
+
+#: Text ID:AllowInjected
+msgid "Allow Injected Keys"
+msgstr "Tillad injicerede tastetryk"
+
+#: Text ID:AllowInjectedToolTip
+msgid "Do not ignore keys sent by other software like AutoHotkey or Synergy"
+msgstr "Ignorér ikke tastetryk sendt af anden software som AutoHotkey eller Synergy"
+
+#. The name of the “Print Screen” key on the keyboard
+#: Text ID:KeyPrint
+msgid "Prt Scrn"
+msgstr "Prt Scrn"
+
+#. String to show instead of the key name when no compose key is configured
+#: Text ID:KeyDisabled
+msgid "Disabled"
+msgstr "Deaktiveret"
+
+#: Text ID:CheckUpdates
+msgid "Automatically check for updates"
+msgstr "Søg automatisk efter opdateringer"
+
+#: Text ID:CheckUpdatesToolTip
+msgid "If enabled, WinCompose will connect to the Internet at regular intervals to check for new versions. Updates are not installed automatically."
+msgstr "Hvis dette er slået til, forbinder WinCompose med jævne mellemrum til internettet for at se efter nye versioner. Opdateringer installeres ikke automatisk."
+
+#: Text ID:KeepIconVisible
+msgid "Try to keep notification area icon always visible"
+msgstr "Forsøg altid at holde ikonet i meddelelsesområdet synligt"
+
+#: Text ID:KeepIconVisibleToolTip
+msgid "By default, Windows will remove the icon from the notification area after a short while. This option attempts to keep it always visible."
+msgstr "Som standard fjerner Windows ikonet fra meddelelsesområdet efter kort tid. Denne indstilling forsøger at holde det synligt hele tiden."
+
+#. The user can click on this button to change the current compose key.
+#: Text ID:ChangeComposeKey
+msgid "Change…"
+msgstr "Ændr…"
+
+#: Text ID:CaptureComposeKey
+msgid "Please press a key to use as your compose key."
+msgstr "Tryk på den tast, du vil bruge som Compose-tast."
+
+#. Add sequence to the list of favorites.
+#: Text ID:AddToFavorites
+msgid "Add to favorites"
+msgstr "Tilføj til favoritter"
+
+#: Text ID:DisableIcon
+msgid "Disable notification area icon"
+msgstr "Deaktivér ikonet i meddelelsesområdet"
+
+#: Text ID:DisableIconToolTip
+msgid "If enabled, WinCompose will no longer display an icon in the notification area. The only way to open the WinCompose interface will then be through the “WinCompose Settings” and “WinCompose Sequences” entries in the startup menu."
+msgstr "Hvis dette er slået til, viser WinCompose ikke længere et ikon i meddelelsesområdet. Den eneste måde at åbne WinCompose-brugerfladen på bliver da via punkterne “WinCompose Settings” og “WinCompose Sequences” i startmenuen."
+
+#. The name of the “Home” key on the keyboard
+#: Text ID:KeyHome
+msgid "Home"
+msgstr "Home"
+
+#. The name of the “End” key on the keyboard
+#: Text ID:KeyEnd
+msgid "End"
+msgstr "End"
+
+#. The name of the “Tab” key on the keyboard
+#: Text ID:KeyTab
+msgid "Tab"
+msgstr "Tab"
+
+#. Text to show instead of a value in seconds when the reset timeout feature is disabled
+#: Text ID:NoTimeout
+msgid "No timeout"
+msgstr "Ingen tidsgrænse"
+
+#. The “Advanced” section in the settings.
+#: Text ID:Advanced
+msgid "Advanced"
+msgstr "Avanceret"
+
+#. “regex” is shorthand for “regular expression”.
+#: Text ID:IgnoreRegex
+msgid "Ignore windows matching this regex:"
+msgstr "Ignorér vinduer, der matcher dette regulære udtryk:"
+
+#: Text ID:IgnoreRegexToolTip
+msgid "WinCompose will be completely disabled when the current window class or window name matches this regular expression."
+msgstr "WinCompose deaktiveres helt, når det aktuelle vindues klasse eller navn matcher dette regulære udtryk."
+
+#: Text ID:AlwaysCompose
+msgid "Alternate compose key is always Compose"
+msgstr "Alternativ Compose-tast er altid Compose"
+
+#: Text ID:AlwaysComposeToolTip
+msgid "If enabled, all compose keys will be treated as Compose in a sequence. By default, only the first pressed key will act as Compose, and alternate compose keys will keep their original role."
+msgstr "Hvis dette er slået til, behandles alle Compose-taster som Compose i en sekvens. Som standard fungerer kun den først trykkede tast som Compose, og alternative Compose-taster beholder deres oprindelige rolle."
+
+#. Remove sequence from the list of favorites.
+#: Text ID:RemoveFromFavorites
+msgid "Remove from favorites"
+msgstr "Fjern fra favoritter"
+
+#. Name of the category (Unicode characters, Emoji, User macros, Favorites)
+#: Text ID:Favorites
+msgid "Favorites"
+msgstr "Favoritter"
+
+#: Text ID:TimeoutToolTip
+msgid "If set, any compose sequence will be cancelled after a certain delay if no keyboard activity is detected."
+msgstr "Hvis dette er sat, annulleres enhver compose-sekvens efter en vis forsinkelse, hvis der ikke registreres tastaturaktivitet."
+
+#: Text ID:KeyboardLed
+msgid "Keyboard LED"
+msgstr "Tastatur-LED"
+
+#: Text ID:KeyboardLedToolTip
+msgid "If set, the corresponding keyboard LED will be lit when a compose sequence is in progress."
+msgstr "Hvis dette er sat, lyser den tilsvarende LED på tastaturet, mens en compose-sekvens er i gang."
+
+#. The short name of the compose key
+#: Text ID:KeyCompose
+msgid "Compose"
+msgstr "Compose"
+
+#: Text ID:AutoLaunch
+msgid "Launch WinCompose on login"
+msgstr "Start WinCompose ved login"
+
+#: Text ID:AutoLaunchToolTip
+msgid "If set, WinCompose will be started when the user logs in."
+msgstr "Hvis dette er sat, startes WinCompose, når brugeren logger ind."
+
+#: Text ID:Accessibility
+msgid "Accessibility"
+msgstr "Tilgængelighed"
+
+#: Text ID:MustHoldCapsLock
+msgid "Caps Lock is only active while being held down"
+msgstr "Caps Lock er kun aktiv, mens tasten holdes nede"
+
+#: Text ID:MustHoldCapsLockToolTip
+msgid "Releasing the Caps Lock key will immediately disable it, instead of the more standard behaviour of having to press it a second time."
+msgstr "Når Caps Lock-tasten slippes, slås den fra med det samme i stedet for den mere almindelige opførsel, hvor man skal trykke på den en gang til."
+
+#: Text ID:RunElevated
+msgid "Run with elevated privileges (recommended)"
+msgstr "Kør med forhøjede rettigheder (anbefales)"
+
+#: Text ID:RunElevatedToolTip
+msgid "Composition will not work in some applications if WinCompose does not run with elevated privileges. This options reduces the chances that this will happen."
+msgstr "Komposition virker ikke i visse programmer, hvis WinCompose ikke kører med forhøjede rettigheder. Denne indstilling mindsker risikoen for, at det sker."

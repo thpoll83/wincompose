@@ -2,7 +2,7 @@
 
 set -e
 
-STEPS=5
+STEPS=6
 
 INSTALLER=installer/installer.iss
 
@@ -174,10 +174,19 @@ done
 echo "done."
 
 #
+# Fill any string the translations do not cover with a machine translation,
+# so it renders in the user's language instead of English.  This never
+# overrides a human translation -- see apply-machine-translations.py.
+#
+
+echo "[4/${STEPS}] Layer machine-translated fallbacks…"
+python3 apply-machine-translations.py
+
+#
 # Check some language.csproj consistency
 #
 
-echo "[4/${STEPS}] Check consistency…"
+echo "[5/${STEPS}] Check consistency…"
 for x in language/unicode/*.*.resx language/i18n/*.*.resx; do
     reslang="$(echo $x | cut -f2 -d.)"
     if ! grep -q '"'$(echo $x | cut -f2- -d/ | tr / .)'"' language/language.csproj; then
@@ -213,7 +222,7 @@ done
 # Build translator list
 #
 
-echo "[5/${STEPS}] Update contributor list…"
+echo "[6/${STEPS}] Update contributor list…"
 printf '﻿' > wincompose/res/.contributors.html
 cat >> wincompose/res/.contributors.html << EOF
 <html>

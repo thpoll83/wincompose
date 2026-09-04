@@ -1,0 +1,229 @@
+# Machine-translated fallback strings for Belarusian (Latin script) (be@latin).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/be@latin.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#. The "Composing" section in the settings window
+#: Text ID:Composing
+msgid "Composing"
+msgstr "Kambinavańnie"
+
+#: Text ID:UseXorgRules
+msgid "Use sequences from the Xorg project"
+msgstr "Vykarystoŭvać pasliadoŭnaści z Xorg"
+
+#: Text ID:UseXorgRulesToolTip
+msgid "Use the 3,000 compose sequences from the Xorg project (http://www.x.org/). These are the sequences most commonly found on a standard Linux system."
+msgstr "Vykarystoŭvać 3 000 pasliadoŭnaściej z Xorg (http://x.org/). Hetyja kambinacyi čaściej sustrakajucca ŭ Linux-sistemach."
+
+#: Text ID:UseXComposeRules
+msgid "Use sequences from the XCompose project"
+msgstr "Vykarystoŭvać pasliadoŭnaści z XCompose"
+
+#: Text ID:UseXComposeRulesToolTip
+msgid "Use the 1,000 compose sequences from the XCompose opensource project (https://github.com/kragen/xcompose). These sequences may sometimes conflict with the Xorg ones."
+msgstr "Vykarystoŭvać 1 000 pasliadoŭnaściej z XCompose (https://github.com/kragen/xcompose). Niekatoryja kambinacyi mohuć kanfliktavać z kambinacyjami Xorg."
+
+#: Text ID:UseEmojiRules
+msgid "Use WinCompose emoji sequences"
+msgstr "Vykarystoŭvać pasliadoŭnaści WinCompose dlia emodzi"
+
+#: Text ID:UseEmojiRulesToolTip
+msgid "Use the compose sequences for Emoji provided by the WinCompose author and contributors."
+msgstr "Vykarystoŭvać pasliadoŭnaści dlia emodzi ad aŭtaraŭ WinCompose."
+
+#. A button to visit the donation page (http://wincompose.info/donate/)
+#: Text ID:DonationPage
+msgid "Donation Page"
+msgstr "Achviaravać"
+
+#: Text ID:SwapOnInvalid
+msgid "Try to swap the two keys"
+msgstr "Sprabavać dzvie klavišy ŭ advarotnym paradku"
+
+#: Text ID:SwapOnInvalidToolTip
+msgid "Try to swap the keys of a two-key sequence. For instance, if Compose E A is not a valid sequence, try Compose A E instead."
+msgstr "Sprabavać pasliadoŭnaści z dzvuch klaviš u advarotnym paradku. Napryklad, kali pasliadoŭnaści E A nie isnuje, sprabavać pasliadoŭnaść A E."
+
+#. The compose key deactivates itself after a certain configurable delay
+#: Text ID:ResetTimeout
+msgid "Reset timeout"
+msgstr "Čas da admieny ŭvoda pasliadoŭnaści"
+
+#: Text ID:UnicodeInputToolTip
+msgid "Enable Unicode input for all characters, even those with no compose sequence defined. For instance, the following sequence will output character U+1A3F: Compose U 1 A 3 F Enter"
+msgstr "Uklučyć uvod Junikodu dlia ŭsich simvalaŭ, u tym liku dlia tych, što nie majuć ulasnaj pasliadoŭnaści. Napryklad pasliadoŭnaść Compose U 1 A 3 F Enter uviadzie simval Junikodu U+1A3F"
+
+#. Copy character or symbol to the clipboard
+#: Text ID:CopyToClipboard
+msgid "Copy to clipboard"
+msgstr "Skapijavać u bufier abmienu"
+
+#. Format string to display the current reset delay
+#: Text ID:DelaySeconds
+msgid "{0} seconds"
+msgstr "{0} sekund"
+
+#. The tab item to see all the program authors.
+#: Text ID:Authors
+msgid "Authors"
+msgstr "Aŭtary"
+
+#: Text ID:CheckUpdates
+msgid "Automatically check for updates"
+msgstr "Praviarać abnaŭlienni aŭtamatyčna"
+
+#: Text ID:CheckUpdatesToolTip
+msgid "If enabled, WinCompose will connect to the Internet at regular intervals to check for new versions. Updates are not installed automatically."
+msgstr "Kali ŭklučana, WinCompose budzie čas ad času praviarać u internece najaŭnaść novych viersij. Abnaŭlienni nie ŭstaloŭvajucca aŭtamatyčna."
+
+#: Text ID:KeepIconVisible
+msgid "Try to keep notification area icon always visible"
+msgstr "Pa mahčymaści pakidać bačnym značok u vobłaści paviedamlienniaŭ"
+
+#: Text ID:KeepIconVisibleToolTip
+msgid "By default, Windows will remove the icon from the notification area after a short while. This option attempts to keep it always visible."
+msgstr "Pa zmaŭčanni, Windows budzie chavać značok z vobłaści paviedamlienniaŭ praz niekatory čas. Hety parametr pasprabuje zrabić značok zaŭsiody bačnym."
+
+#. The user can click on this button to change the current compose key.
+#: Text ID:ChangeComposeKey
+msgid "Change…"
+msgstr "Zmianić…"
+
+#: Text ID:CaptureComposeKey
+msgid "Please press a key to use as your compose key."
+msgstr "Nacisnicie na klavišu, kab vyznačyć jaje jak klavišu compose."
+
+#. Add sequence to the list of favorites.
+#: Text ID:AddToFavorites
+msgid "Add to favorites"
+msgstr "Dadać u abranaje"
+
+#: Text ID:DisableIcon
+msgid "Disable notification area icon"
+msgstr "Vyklučyć značok u vobłaści paviedamlienniaŭ"
+
+#: Text ID:DisableIconToolTip
+msgid "If enabled, WinCompose will no longer display an icon in the notification area. The only way to open the WinCompose interface will then be through the “WinCompose Settings” and “WinCompose Sequences” entries in the startup menu."
+msgstr "Kali ŭklučana, WinCompose bolš nie budzie pakazvać značok u vobłaści paviedamlienniaŭ. Adzinym sposabam adkryć interfejs WinCompose zastaniecca — praz «WinCompose Settings» ci «WinCompose Sequences» u meniu «Pusk»."
+
+#. The name of the “Home” key on the keyboard
+#: Text ID:KeyHome
+msgid "Home"
+msgstr "Home"
+
+#. The name of the “End” key on the keyboard
+#: Text ID:KeyEnd
+msgid "End"
+msgstr "End"
+
+#. The name of the “Tab” key on the keyboard
+#: Text ID:KeyTab
+msgid "Tab"
+msgstr "Tab"
+
+#. Text to show instead of a value in seconds when the reset timeout feature is disabled
+#: Text ID:NoTimeout
+msgid "No timeout"
+msgstr "Biez skidvańnia"
+
+#. The “Advanced” section in the settings.
+#: Text ID:Advanced
+msgid "Advanced"
+msgstr "Pašyranyja nałady"
+
+#. “regex” is shorthand for “regular expression”.
+#: Text ID:IgnoreRegex
+msgid "Ignore windows matching this regex:"
+msgstr "Ihnaravać vokny, jakija adpaviadajuć rehularnamu vyrazu:"
+
+#: Text ID:IgnoreRegexToolTip
+msgid "WinCompose will be completely disabled when the current window class or window name matches this regular expression."
+msgstr "WinCompose budzie całkam adklučana, kali klas biahučaha akna budzie adpaviadać rehularnamu vyrazu."
+
+#: Text ID:AlwaysCompose
+msgid "Alternate compose key is always Compose"
+msgstr "Alternatyŭnyja klavišy compose zaŭsiody imi zastajucca"
+
+#: Text ID:AlwaysComposeToolTip
+msgid "If enabled, all compose keys will be treated as Compose in a sequence. By default, only the first pressed key will act as Compose, and alternate compose keys will keep their original role."
+msgstr "Kali ŭklučana, usie klavišy compose u pasliadoŭnaści buduć ličycca hetakimi. Pa zmaŭčanni, klavišaj compose ličycca tolki taja, z jakoj pasliadoŭnaść pačałasia, a astatnija vykonvajuć svaju pieršapačatkovuju funkcyju."
+
+#. Remove sequence from the list of favorites.
+#: Text ID:RemoveFromFavorites
+msgid "Remove from favorites"
+msgstr "Vydalić z abranych"
+
+#. Name of the category (Unicode characters, Emoji, User macros, Favorites)
+#: Text ID:Favorites
+msgid "Favorites"
+msgstr "Abranyja"
+
+#: Text ID:TimeoutToolTip
+msgid "If set, any compose sequence will be cancelled after a certain delay if no keyboard activity is detected."
+msgstr "Kali ŭklučana, liubaja pasliadoŭnaść budzie skinuta pry adsutnaści aktyŭnaści klaviatury ŭ peŭny termin."
+
+#: Text ID:KeyboardLed
+msgid "Keyboard LED"
+msgstr "Uklučać śviatłodyjod na klaviatury"
+
+#: Text ID:KeyboardLedToolTip
+msgid "If set, the corresponding keyboard LED will be lit when a compose sequence is in progress."
+msgstr "Kali ŭklučana, na klaviatury budzie zaharacca adpaviedny śviatłodyjod padčas uvodu pasliadoŭnaści."
+
+#. The short name of the compose key
+#: Text ID:KeyCompose
+msgid "Compose"
+msgstr "Compose"
+
+#: Text ID:AutoLaunch
+msgid "Launch WinCompose on login"
+msgstr "Zapuskać WinCompose pry ŭvachodzie"
+
+#: Text ID:AutoLaunchToolTip
+msgid "If set, WinCompose will be started when the user logs in."
+msgstr "Kali ŭklučana, WinCompose budzie zapuskacca pry ŭvachodzie ŭ sistemu."
+
+#: Text ID:Accessibility
+msgid "Accessibility"
+msgstr "Dastupnaść"
+
+#: Text ID:MustHoldCapsLock
+msgid "Caps Lock is only active while being held down"
+msgstr "«Caps Lock» aktyŭny tolki pry ŭtrymańni"
+
+#: Text ID:MustHoldCapsLockToolTip
+msgid "Releasing the Caps Lock key will immediately disable it, instead of the more standard behaviour of having to press it a second time."
+msgstr "«Caps Lock» budzie aŭtamatyčna vyklučany pry adpuskańni klavišy, zamiest taho, kab naciskać jaho paŭtorna."
+
+#: Text ID:RunElevated
+msgid "Run with elevated privileges (recommended)"
+msgstr "Zapuskać z pavyšanymi pravami (rekamiendujecca)"
+
+#: Text ID:RunElevatedToolTip
+msgid "Composition will not work in some applications if WinCompose does not run with elevated privileges. This options reduces the chances that this will happen."
+msgstr "Kambinavańnie nie budzie pracavać u niekatorych prahramach, kali WinCompose budzie zapuščany biez pavyšanych praŭ. Hety parametr pamianšaje vieragodnaść takich vypadkaŭ."
+
+#. Subtitle on the About tab identifying this build as a fork
+#: Text ID:ForkTagline
+msgid "PolyKybd fork of WinCompose"
+msgstr "Fork PolyKybd prahramy WinCompose"
+
+#. Attribution line on the About tab
+#: Text ID:ForkBasedOn
+msgid "Based on the original WinCompose by Sam Hocevar and contributors."
+msgstr "Zasnavana na aryhinalnym WinCompose ad Sam Hocevar i ŭdzielnikaŭ prajekta."
+
+#. A button to open the original upstream project page
+#: Text ID:VisitUpstream
+msgid "Visit the original project"
+msgstr "Naviedać aryhinalny prajekt"
+
+#. Note under the donation button on the About tab
+#: Text ID:DonationNote
+msgid "Donations go to Sam Hocevar, the original author."
+msgstr "Achviaravańni iduć Sam Hocevar, aŭtaru aryhinała."

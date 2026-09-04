@@ -213,4 +213,404 @@
   <data name="ShowOptions" xml:space="preserve">
     <value>Opcionet…</value>
   </data>
+  <data name="KeyConvert" xml:space="preserve">
+    <value>Konvertim</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyNonConvert" xml:space="preserve">
+    <value>Pa konvertim</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Composing" xml:space="preserve">
+    <value>Kompozimi</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXorgRules" xml:space="preserve">
+    <value>Përdor sekuencat nga projekti Xorg</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXorgRulesToolTip" xml:space="preserve">
+    <value>Përdor 3.000 sekuencat e kompozimit nga projekti Xorg (http://www.x.org/). Këto janë sekuencat që haseni më shpesh në një sistem të zakonshëm Linux.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXComposeRules" xml:space="preserve">
+    <value>Përdor sekuencat nga projekti XCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXComposeRulesToolTip" xml:space="preserve">
+    <value>Përdor 1.000 sekuencat e kompozimit nga projekti me burim të hapur XCompose (https://github.com/kragen/xcompose). Këto sekuenca ndonjëherë mund të bien ndesh me ato të Xorg.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseEmojiRules" xml:space="preserve">
+    <value>Përdor sekuencat emoji të WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseEmojiRulesToolTip" xml:space="preserve">
+    <value>Përdor sekuencat e kompozimit për emoji të ofruara nga autori i WinCompose dhe kontribuuesit.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DebugWindow" xml:space="preserve">
+    <value>Dritarja e diagnostikimit</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationPage" xml:space="preserve">
+    <value>Faqja e donacioneve</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UnicodeCharacters" xml:space="preserve">
+    <value>Karaktere Unicode</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="SwapOnInvalid" xml:space="preserve">
+    <value>Provo t’i këmbesh të dy kyçet</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="SwapOnInvalidToolTip" xml:space="preserve">
+    <value>Provo t’i këmbesh kyçet e një sekuence me dy kyçe. Për shembull, nëse Compose E A nuk është sekuencë e vlefshme, provo Compose A E.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ComposeKeyToolTip" xml:space="preserve">
+    <value>Zgjidh kyçin që do të shërbejë si kyç kompozimi.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ResetTimeout" xml:space="preserve">
+    <value>Koha e rivendosjes</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UnicodeInput" xml:space="preserve">
+    <value>Hyrje Unicode e avancuar</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UnicodeInputToolTip" xml:space="preserve">
+    <value>Aktivizo hyrjen Unicode për të gjithë karakteret, edhe për ata pa sekuencë kompozimi të përcaktuar. Për shembull, sekuenca në vijim jep karakterin U+1A3F: Compose U 1 A 3 F Enter</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CaseInsensitive" xml:space="preserve">
+    <value>Kthehu te përputhjet pa dallim shkronjash të mëdha e të vogla</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CaseInsensitiveToolTip" xml:space="preserve">
+    <value>Nëse sekuenca e shtypur nuk ekziston, por ka një tjetër që ndryshon vetëm nga shkronjat e mëdha ose të vogla, korrigjoje automatikisht.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DiscardOnInvalid" xml:space="preserve">
+    <value>Hidh tej të gjithë karakteret e shtypur</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DiscardOnInvalidToolTip" xml:space="preserve">
+    <value>Nëse sekuenca e shtypur nuk ekziston, hidh tej të gjithë karakterët e shtypur. Sjellja e parazgjedhur është t’i shfaqë ata sikur kyçi i kompozimit të mos ishte përdorur.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="BeepOnInvalid" xml:space="preserve">
+    <value>Lësho një bip</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="BeepOnInvalidToolTip" xml:space="preserve">
+    <value>Nëse sekuenca e shtypur nuk ekziston, lësho një tingull sistemi.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="LanguageToolTip" xml:space="preserve">
+    <value>Zgjidh gjuhën që WinCompose përdor për ndërfaqen. Si parazgjedhje përdoret gjuha e sistemit operativ.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Kopjo në kujtesën e fragmenteve</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Emoji" xml:space="preserve">
+    <value>Emoji</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepOriginalKey" xml:space="preserve">
+    <value>Ruaj sjelljen origjinale të kyçit të kompozimit</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepOriginalKeyToolTip" xml:space="preserve">
+    <value>Kjo i kërkon WinCompose të bëjë çmos për të ruajtur sjelljen origjinale të kyçit. Për shembull, shkurtorja Alt-Tab do të vazhdojë të funksionojë edhe nëse Alt përdoret si kyç kompozimi.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="InsertZwsp" xml:space="preserve">
+    <value>Fut hapësira me gjerësi zero në aplikacionet Office</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="InsertZwspToolTip" xml:space="preserve">
+    <value>Aplikacionet Microsoft Office ndonjëherë ndryshojnë fontin e dokumentit gjatë shtypjes së disa karaktereve Unicode. Kjo veçori fut një karakter të padukshëm pas karakterit Unicode për ta anashkaluar këtë defekt.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="EmulateCapsLock" xml:space="preserve">
+    <value>Emulo Caps Lock duke përdorur të dy kyçet Shift</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="EmulateCapsLockToolTip" xml:space="preserve">
+    <value>Nëse Caps Lock përdoret si kyç kompozimi, sjellja origjinale e kyçit bëhet e padisponueshme. Kjo veçori lejon aktivizimin e Caps Lock duke shtypur njëkohësisht të dy kyçet Shift.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ShiftDisablesCapsLockToolTip" xml:space="preserve">
+    <value>Nëse Caps Lock përdoret si kyç kompozimi, sjellja origjinale e kyçit bëhet e padisponueshme. Kjo veçori lejon çaktivizimin e Caps Lock duke shtypur kyçin Shift.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CapsLockCapitalizes" xml:space="preserve">
+    <value>Caps Lock i shkruan gjithmonë shkronjat të mëdha</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CapsLockCapitalizesToolTip" xml:space="preserve">
+    <value>Kur Caps Lock është aktiv, shtypja e një shkronje me theks si „é“ jep gjithmonë shkronjën përkatëse të madhe, në këtë rast „É“.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TrayToolTip" xml:space="preserve">
+    <value>WinCompose v{2} në {0} ({1} sekuenca)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Të përgjithshme</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Behavior" xml:space="preserve">
+    <value>Sjellja</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>Sekuencat — WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UserMacros" xml:space="preserve">
+    <value>Makro të përcaktuara nga përdoruesi</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DisabledToolTip" xml:space="preserve">
+    <value>WinCompose është i çaktivizuar</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyInsert" xml:space="preserve">
+    <value>Insert</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TestTyping" xml:space="preserve">
+    <value>Provë shtypjeje</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Tweaks" xml:space="preserve">
+    <value>Rregullime</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DelaySeconds" xml:space="preserve">
+    <value>{0} sekonda</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>Rreth</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Shkarko WinCompose {0}</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AboutBoxTitle" xml:space="preserve">
+    <value>Rreth WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Programming" xml:space="preserve">
+    <value>Programimi</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Translators" xml:space="preserve">
+    <value>Përkthimi</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Authors" xml:space="preserve">
+    <value>Autorët</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>Licenca</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="NeedRestart" xml:space="preserve">
+    <value>WinCompose duhet të rinisë që disa ndryshime të hyjnë në fuqi.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ReportBug" xml:space="preserve">
+    <value>Raporto një defekt</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Ndihmë</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UpdatesToolTip" xml:space="preserve">
+    <value>Ka përditësime të disponueshme.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UserDefinedSequences" xml:space="preserve">
+    <value>Sekuenca të përcaktuara nga përdoruesi</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UserDefinedSequencesEdit" xml:space="preserve">
+    <value>Redakto</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UserDefinedSequencesReload" xml:space="preserve">
+    <value>Ringarko</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AllowInjected" xml:space="preserve">
+    <value>Lejo kyçet e injektuar</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AllowInjectedToolTip" xml:space="preserve">
+    <value>Mos i shpërfill kyçet e dërguar nga programe të tjera si AutoHotkey ose Synergy</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyPrint" xml:space="preserve">
+    <value>Prt Scrn</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyDisabled" xml:space="preserve">
+    <value>Çaktivizuar</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CheckUpdates" xml:space="preserve">
+    <value>Kontrollo automatikisht për përditësime</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CheckUpdatesToolTip" xml:space="preserve">
+    <value>Nëse aktivizohet, WinCompose do të lidhet me internetin në intervale të rregullta për të kontrolluar versione të reja. Përditësimet nuk instalohen automatikisht.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepIconVisible" xml:space="preserve">
+    <value>Provo ta mbash ikonën e zonës së njoftimeve gjithmonë të dukshme</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepIconVisibleToolTip" xml:space="preserve">
+    <value>Si parazgjedhje, Windows e heq ikonën nga zona e njoftimeve pas pak kohe. Ky opsion përpiqet ta mbajë gjithmonë të dukshme.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ChangeComposeKey" xml:space="preserve">
+    <value>Ndrysho…</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CaptureComposeKey" xml:space="preserve">
+    <value>Ju lutemi shtypni një kyç për ta përdorur si kyç kompozimi.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AddToFavorites" xml:space="preserve">
+    <value>Shto te të parapëlqyerat</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DisableIcon" xml:space="preserve">
+    <value>Çaktivizo ikonën e zonës së njoftimeve</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DisableIconToolTip" xml:space="preserve">
+    <value>Nëse aktivizohet, WinCompose nuk do të shfaqë më ikonë në zonën e njoftimeve. Mënyra e vetme për të hapur ndërfaqen e WinCompose do të jetë përmes zërave „WinCompose Settings“ dhe „WinCompose Sequences“ në menynë e nisjes.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyHome" xml:space="preserve">
+    <value>Home</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyEnd" xml:space="preserve">
+    <value>End</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyTab" xml:space="preserve">
+    <value>Tab</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="NoTimeout" xml:space="preserve">
+    <value>Pa kufi kohor</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Advanced" xml:space="preserve">
+    <value>Të avancuara</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="IgnoreRegex" xml:space="preserve">
+    <value>Shpërfill dritaret që përputhen me këtë shprehje të rregullt:</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="IgnoreRegexToolTip" xml:space="preserve">
+    <value>WinCompose do të çaktivizohet plotësisht kur klasa ose emri i dritares aktuale përputhet me këtë shprehje të rregullt.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysCompose" xml:space="preserve">
+    <value>Kyçi alternativ i kompozimit është gjithmonë Compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysComposeToolTip" xml:space="preserve">
+    <value>Nëse aktivizohet, të gjithë kyçet e kompozimit do të trajtohen si Compose brenda një sekuence. Si parazgjedhje, vetëm kyçi i parë i shtypur vepron si Compose, ndërsa kyçet e tjerë ruajnë rolin e tyre fillestar.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="SpecialThanks" xml:space="preserve">
+    <value>Falënderime të veçanta</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RemoveFromFavorites" xml:space="preserve">
+    <value>Hiq nga të parapëlqyerat</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>Të parapëlqyerat</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TimeoutToolTip" xml:space="preserve">
+    <value>Nëse vendoset, çdo sekuencë kompozimi do të anulohet pas një vonese të caktuar nëse nuk zbulohet aktivitet i tastierës.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyboardLed" xml:space="preserve">
+    <value>LED-i i tastierës</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyboardLedToolTip" xml:space="preserve">
+    <value>Nëse vendoset, LED-i përkatës i tastierës do të ndriçojë gjatë një sekuence kompozimi.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyCompose" xml:space="preserve">
+    <value>Compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunch" xml:space="preserve">
+    <value>Nis WinCompose në hyrje</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunchToolTip" xml:space="preserve">
+    <value>Nëse vendoset, WinCompose do të nisë kur përdoruesi hyn në sistem.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Accessibility" xml:space="preserve">
+    <value>Aksesueshmëria</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLock" xml:space="preserve">
+    <value>Caps Lock është aktiv vetëm sa kohë mbahet i shtypur</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLockToolTip" xml:space="preserve">
+    <value>Lëshimi i kyçit Caps Lock e çaktivizon menjëherë, në vend të sjelljes më të zakonshme ku duhet shtypur një herë të dytë.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevated" xml:space="preserve">
+    <value>Ekzekuto me privilegje të ngritura (rekomandohet)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevatedToolTip" xml:space="preserve">
+    <value>Kompozimi nuk do të funksionojë në disa aplikacione nëse WinCompose nuk ekzekutohet me privilegje të ngritura. Ky opsion e zvogëlon mundësinë që kjo të ndodhë.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Forku PolyKybd i WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Bazuar në WinCompose origjinal nga Sam Hocevar dhe kontribuuesit.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Vizito projektin origjinal</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Donacionet shkojnë te Sam Hocevar, autori origjinal.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

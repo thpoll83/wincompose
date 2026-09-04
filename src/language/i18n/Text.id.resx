@@ -405,4 +405,148 @@
   <data name="AutoLaunch" xml:space="preserve">
     <value>Luncurkan WinCompose saat masuk</value>
   </data>
+  <data name="UseEmojiRulesToolTip" xml:space="preserve">
+    <value>Gunakan urutan compose untuk Emoji yang disediakan oleh penulis WinCompose dan para kontributor.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UnicodeInputToolTip" xml:space="preserve">
+    <value>Aktifkan masukan Unicode untuk semua karakter, bahkan yang tidak memiliki urutan compose. Misalnya, urutan berikut akan menghasilkan karakter U+1A3F: Compose U 1 A 3 F Enter</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="InvalidSequences" xml:space="preserve">
+    <value>Pada urutan yang tidak valid</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CaseInsensitive" xml:space="preserve">
+    <value>Gunakan pencocokan tanpa memperhatikan huruf besar/kecil</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CaseInsensitiveToolTip" xml:space="preserve">
+    <value>Jika urutan yang dimasukkan tidak ada, tetapi ada yang hanya berbeda huruf besar/kecilnya, perbaiki secara otomatis.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DiscardOnInvalid" xml:space="preserve">
+    <value>Buang semua karakter yang diketik</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DiscardOnInvalidToolTip" xml:space="preserve">
+    <value>Jika urutan yang dimasukkan tidak ada, buang semua karakter yang telah diketik. Perilaku bawaannya adalah menampilkan karakter tersebut seolah-olah tombol compose tidak digunakan.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="BeepOnInvalid" xml:space="preserve">
+    <value>Bunyikan bip</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="BeepOnInvalidToolTip" xml:space="preserve">
+    <value>Jika urutan yang dimasukkan tidak ada, bunyikan suara sistem.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepOriginalKey" xml:space="preserve">
+    <value>Pertahankan perilaku asli tombol compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepOriginalKeyToolTip" xml:space="preserve">
+    <value>Ini meminta WinCompose berusaha sebaik mungkin mempertahankan perilaku asli tombol tersebut. Misalnya, pintasan Alt-Tab akan tetap berfungsi meskipun Alt digunakan sebagai tombol compose.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="InsertZwsp" xml:space="preserve">
+    <value>Sisipkan spasi tanpa lebar di aplikasi Office</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="EmulateCapsLockToolTip" xml:space="preserve">
+    <value>Jika Caps Lock digunakan sebagai tombol compose, perilaku asli tombol itu menjadi tidak tersedia. Fitur ini memungkinkan Caps Lock dinyalakan dengan menekan kedua tombol Shift bersamaan.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ShiftDisablesCapsLockToolTip" xml:space="preserve">
+    <value>Jika Caps Lock digunakan sebagai tombol compose, perilaku asli tombol itu menjadi tidak tersedia. Fitur ini memungkinkan Caps Lock dimatikan dengan menekan tombol Shift.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="InSelectedCategories" xml:space="preserve">
+    <value>Dalam kategori terpilih</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AllowInjected" xml:space="preserve">
+    <value>Izinkan tombol yang disuntikkan</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AllowInjectedToolTip" xml:space="preserve">
+    <value>Jangan abaikan tombol yang dikirim oleh perangkat lunak lain seperti AutoHotkey atau Synergy</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CheckUpdatesToolTip" xml:space="preserve">
+    <value>Jika diaktifkan, WinCompose akan terhubung ke Internet secara berkala untuk memeriksa versi baru. Pembaruan tidak dipasang secara otomatis.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepIconVisible" xml:space="preserve">
+    <value>Usahakan ikon area notifikasi selalu terlihat</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepIconVisibleToolTip" xml:space="preserve">
+    <value>Secara bawaan, Windows akan menghapus ikon dari area notifikasi setelah beberapa saat. Opsi ini berusaha membuatnya selalu terlihat.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CaptureComposeKey" xml:space="preserve">
+    <value>Silakan tekan tombol yang ingin dijadikan tombol compose.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DisableIconToolTip" xml:space="preserve">
+    <value>Jika diaktifkan, WinCompose tidak lagi menampilkan ikon di area notifikasi. Satu-satunya cara membuka antarmuka WinCompose adalah melalui entri “WinCompose Settings” dan “WinCompose Sequences” di menu mulai.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="IgnoreRegex" xml:space="preserve">
+    <value>Abaikan jendela yang cocok dengan regex ini:</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="IgnoreRegexToolTip" xml:space="preserve">
+    <value>WinCompose akan dinonaktifkan sepenuhnya ketika kelas atau nama jendela saat ini cocok dengan ekspresi reguler ini.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysCompose" xml:space="preserve">
+    <value>Tombol compose alternatif selalu berperan sebagai Compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysComposeToolTip" xml:space="preserve">
+    <value>Jika diaktifkan, semua tombol compose akan diperlakukan sebagai Compose dalam sebuah urutan. Secara bawaan, hanya tombol pertama yang ditekan yang berperan sebagai Compose, dan tombol compose lainnya mempertahankan perannya semula.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunchToolTip" xml:space="preserve">
+    <value>Jika disetel, WinCompose akan dijalankan saat pengguna masuk.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Accessibility" xml:space="preserve">
+    <value>Aksesibilitas</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLock" xml:space="preserve">
+    <value>Caps Lock hanya aktif selama ditahan</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLockToolTip" xml:space="preserve">
+    <value>Melepaskan tombol Caps Lock akan langsung menonaktifkannya, alih-alih perilaku umum yang mengharuskan menekannya sekali lagi.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevated" xml:space="preserve">
+    <value>Jalankan dengan hak istimewa yang ditinggikan (disarankan)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevatedToolTip" xml:space="preserve">
+    <value>Penyusunan tidak akan berfungsi di sebagian aplikasi jika WinCompose tidak dijalankan dengan hak istimewa yang ditinggikan. Opsi ini mengurangi kemungkinan hal itu terjadi.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Fork PolyKybd dari WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Berdasarkan WinCompose asli karya Sam Hocevar dan para kontributor.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Kunjungi proyek asli</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Donasi diberikan kepada Sam Hocevar, penulis aslinya.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

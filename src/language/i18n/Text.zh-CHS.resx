@@ -501,4 +501,20 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>若不提权运行WinCompose，组合键会在某些应用程序中失效。本选项减小失效的可能。</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>WinCompose 的 PolyKybd 分支</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>基于 Sam Hocevar 及贡献者的原始 WinCompose。</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>访问原始项目</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>捐赠将转给原作者 Sam Hocevar。</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

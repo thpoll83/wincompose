@@ -1,0 +1,159 @@
+# Machine-translated fallback strings for Indonesian (id).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/id.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#: Text ID:UseEmojiRulesToolTip
+msgid "Use the compose sequences for Emoji provided by the WinCompose author and contributors."
+msgstr "Gunakan urutan compose untuk Emoji yang disediakan oleh penulis WinCompose dan para kontributor."
+
+#: Text ID:UnicodeInputToolTip
+msgid "Enable Unicode input for all characters, even those with no compose sequence defined. For instance, the following sequence will output character U+1A3F: Compose U 1 A 3 F Enter"
+msgstr "Aktifkan masukan Unicode untuk semua karakter, bahkan yang tidak memiliki urutan compose. Misalnya, urutan berikut akan menghasilkan karakter U+1A3F: Compose U 1 A 3 F Enter"
+
+#. This is the name of a category of settings about what happens when invalid sequences are typed
+#: Text ID:InvalidSequences
+msgid "On invalid sequences"
+msgstr "Pada urutan yang tidak valid"
+
+#: Text ID:CaseInsensitive
+msgid "Fall back to case insensitive matches"
+msgstr "Gunakan pencocokan tanpa memperhatikan huruf besar/kecil"
+
+#: Text ID:CaseInsensitiveToolTip
+msgid "If the entered sequence does not exist, but there is one that only differs by case, automatically correct it."
+msgstr "Jika urutan yang dimasukkan tidak ada, tetapi ada yang hanya berbeda huruf besar/kecilnya, perbaiki secara otomatis."
+
+#: Text ID:DiscardOnInvalid
+msgid "Discard all typed characters"
+msgstr "Buang semua karakter yang diketik"
+
+#: Text ID:DiscardOnInvalidToolTip
+msgid "If the entered sequence does not exist, discard all the characters that were typed. The default behaviour is to output the characters as if the compose key had not been used."
+msgstr "Jika urutan yang dimasukkan tidak ada, buang semua karakter yang telah diketik. Perilaku bawaannya adalah menampilkan karakter tersebut seolah-olah tombol compose tidak digunakan."
+
+#: Text ID:BeepOnInvalid
+msgid "Emit a beep"
+msgstr "Bunyikan bip"
+
+#: Text ID:BeepOnInvalidToolTip
+msgid "If the entered sequence does not exist, emit a system sound."
+msgstr "Jika urutan yang dimasukkan tidak ada, bunyikan suara sistem."
+
+#. Should this say “retain” instead of “maintain”?
+#: Text ID:KeepOriginalKey
+msgid "Maintain original compose key behaviour"
+msgstr "Pertahankan perilaku asli tombol compose"
+
+#: Text ID:KeepOriginalKeyToolTip
+msgid "This tells WinCompose to make a best effort to retain the original key’s behaviour. For instance, the Alt-Tab shortcut will still work even if Alt is used as the compose key."
+msgstr "Ini meminta WinCompose berusaha sebaik mungkin mempertahankan perilaku asli tombol tersebut. Misalnya, pintasan Alt-Tab akan tetap berfungsi meskipun Alt digunakan sebagai tombol compose."
+
+#: Text ID:InsertZwsp
+msgid "Insert zero-width spaces in Office apps"
+msgstr "Sisipkan spasi tanpa lebar di aplikasi Office"
+
+#: Text ID:EmulateCapsLockToolTip
+msgid "If Caps Lock is used as the compose key, the original behaviour of the key becomes unavailable. This feature allows to turn Caps Lock on by pressing both Shift keys simultaneously."
+msgstr "Jika Caps Lock digunakan sebagai tombol compose, perilaku asli tombol itu menjadi tidak tersedia. Fitur ini memungkinkan Caps Lock dinyalakan dengan menekan kedua tombol Shift bersamaan."
+
+#: Text ID:ShiftDisablesCapsLockToolTip
+msgid "If Caps Lock is used as the compose key, the original behaviour of the key becomes unavailable. This feature allows to turn Caps Lock off by pressing the Shift key."
+msgstr "Jika Caps Lock digunakan sebagai tombol compose, perilaku asli tombol itu menjadi tidak tersedia. Fitur ini memungkinkan Caps Lock dimatikan dengan menekan tombol Shift."
+
+#: Text ID:InSelectedCategories
+msgid "In selected categories"
+msgstr "Dalam kategori terpilih"
+
+#: Text ID:AllowInjected
+msgid "Allow Injected Keys"
+msgstr "Izinkan tombol yang disuntikkan"
+
+#: Text ID:AllowInjectedToolTip
+msgid "Do not ignore keys sent by other software like AutoHotkey or Synergy"
+msgstr "Jangan abaikan tombol yang dikirim oleh perangkat lunak lain seperti AutoHotkey atau Synergy"
+
+#: Text ID:CheckUpdatesToolTip
+msgid "If enabled, WinCompose will connect to the Internet at regular intervals to check for new versions. Updates are not installed automatically."
+msgstr "Jika diaktifkan, WinCompose akan terhubung ke Internet secara berkala untuk memeriksa versi baru. Pembaruan tidak dipasang secara otomatis."
+
+#: Text ID:KeepIconVisible
+msgid "Try to keep notification area icon always visible"
+msgstr "Usahakan ikon area notifikasi selalu terlihat"
+
+#: Text ID:KeepIconVisibleToolTip
+msgid "By default, Windows will remove the icon from the notification area after a short while. This option attempts to keep it always visible."
+msgstr "Secara bawaan, Windows akan menghapus ikon dari area notifikasi setelah beberapa saat. Opsi ini berusaha membuatnya selalu terlihat."
+
+#: Text ID:CaptureComposeKey
+msgid "Please press a key to use as your compose key."
+msgstr "Silakan tekan tombol yang ingin dijadikan tombol compose."
+
+#: Text ID:DisableIconToolTip
+msgid "If enabled, WinCompose will no longer display an icon in the notification area. The only way to open the WinCompose interface will then be through the “WinCompose Settings” and “WinCompose Sequences” entries in the startup menu."
+msgstr "Jika diaktifkan, WinCompose tidak lagi menampilkan ikon di area notifikasi. Satu-satunya cara membuka antarmuka WinCompose adalah melalui entri “WinCompose Settings” dan “WinCompose Sequences” di menu mulai."
+
+#. “regex” is shorthand for “regular expression”.
+#: Text ID:IgnoreRegex
+msgid "Ignore windows matching this regex:"
+msgstr "Abaikan jendela yang cocok dengan regex ini:"
+
+#: Text ID:IgnoreRegexToolTip
+msgid "WinCompose will be completely disabled when the current window class or window name matches this regular expression."
+msgstr "WinCompose akan dinonaktifkan sepenuhnya ketika kelas atau nama jendela saat ini cocok dengan ekspresi reguler ini."
+
+#: Text ID:AlwaysCompose
+msgid "Alternate compose key is always Compose"
+msgstr "Tombol compose alternatif selalu berperan sebagai Compose"
+
+#: Text ID:AlwaysComposeToolTip
+msgid "If enabled, all compose keys will be treated as Compose in a sequence. By default, only the first pressed key will act as Compose, and alternate compose keys will keep their original role."
+msgstr "Jika diaktifkan, semua tombol compose akan diperlakukan sebagai Compose dalam sebuah urutan. Secara bawaan, hanya tombol pertama yang ditekan yang berperan sebagai Compose, dan tombol compose lainnya mempertahankan perannya semula."
+
+#: Text ID:AutoLaunchToolTip
+msgid "If set, WinCompose will be started when the user logs in."
+msgstr "Jika disetel, WinCompose akan dijalankan saat pengguna masuk."
+
+#: Text ID:Accessibility
+msgid "Accessibility"
+msgstr "Aksesibilitas"
+
+#: Text ID:MustHoldCapsLock
+msgid "Caps Lock is only active while being held down"
+msgstr "Caps Lock hanya aktif selama ditahan"
+
+#: Text ID:MustHoldCapsLockToolTip
+msgid "Releasing the Caps Lock key will immediately disable it, instead of the more standard behaviour of having to press it a second time."
+msgstr "Melepaskan tombol Caps Lock akan langsung menonaktifkannya, alih-alih perilaku umum yang mengharuskan menekannya sekali lagi."
+
+#: Text ID:RunElevated
+msgid "Run with elevated privileges (recommended)"
+msgstr "Jalankan dengan hak istimewa yang ditinggikan (disarankan)"
+
+#: Text ID:RunElevatedToolTip
+msgid "Composition will not work in some applications if WinCompose does not run with elevated privileges. This options reduces the chances that this will happen."
+msgstr "Penyusunan tidak akan berfungsi di sebagian aplikasi jika WinCompose tidak dijalankan dengan hak istimewa yang ditinggikan. Opsi ini mengurangi kemungkinan hal itu terjadi."
+
+#. Subtitle on the About tab identifying this build as a fork
+#: Text ID:ForkTagline
+msgid "PolyKybd fork of WinCompose"
+msgstr "Fork PolyKybd dari WinCompose"
+
+#. Attribution line on the About tab
+#: Text ID:ForkBasedOn
+msgid "Based on the original WinCompose by Sam Hocevar and contributors."
+msgstr "Berdasarkan WinCompose asli karya Sam Hocevar dan para kontributor."
+
+#. A button to open the original upstream project page
+#: Text ID:VisitUpstream
+msgid "Visit the original project"
+msgstr "Kunjungi proyek asli"
+
+#. Note under the donation button on the About tab
+#: Text ID:DonationNote
+msgid "Donations go to Sam Hocevar, the original author."
+msgstr "Donasi diberikan kepada Sam Hocevar, penulis aslinya."

@@ -1,0 +1,48 @@
+# Machine-translated fallback strings for Afrikaans (af).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/af.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#: Text ID:Accessibility
+msgid "Accessibility"
+msgstr "Toeganklikheid"
+
+#: Text ID:MustHoldCapsLock
+msgid "Caps Lock is only active while being held down"
+msgstr "Caps Lock is net aktief solank dit ingedruk gehou word"
+
+#: Text ID:MustHoldCapsLockToolTip
+msgid "Releasing the Caps Lock key will immediately disable it, instead of the more standard behaviour of having to press it a second time."
+msgstr "Wanneer die Caps Lock-sleutel losgelaat word, word dit onmiddellik afgeskakel, in plaas van die meer gebruiklike gedrag waar dit ’n tweede keer gedruk moet word."
+
+#: Text ID:RunElevated
+msgid "Run with elevated privileges (recommended)"
+msgstr "Loop met verhoogde regte (aanbeveel)"
+
+#: Text ID:RunElevatedToolTip
+msgid "Composition will not work in some applications if WinCompose does not run with elevated privileges. This options reduces the chances that this will happen."
+msgstr "Komponering sal in sommige toepassings nie werk as WinCompose nie met verhoogde regte loop nie. Hierdie opsie verminder die kans dat dit gebeur."
+
+#. Subtitle on the About tab identifying this build as a fork
+#: Text ID:ForkTagline
+msgid "PolyKybd fork of WinCompose"
+msgstr "PolyKybd-fork van WinCompose"
+
+#. Attribution line on the About tab
+#: Text ID:ForkBasedOn
+msgid "Based on the original WinCompose by Sam Hocevar and contributors."
+msgstr "Gebaseer op die oorspronklike WinCompose deur Sam Hocevar en bydraers."
+
+#. A button to open the original upstream project page
+#: Text ID:VisitUpstream
+msgid "Visit the original project"
+msgstr "Besoek die oorspronklike projek"
+
+#. Note under the donation button on the About tab
+#: Text ID:DonationNote
+msgid "Donations go to Sam Hocevar, the original author."
+msgstr "Skenkings gaan aan Sam Hocevar, die oorspronklike outeur."

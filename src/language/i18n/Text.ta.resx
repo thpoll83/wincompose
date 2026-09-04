@@ -501,4 +501,20 @@
   <data name="RunElevatedToolTip" xml:space="preserve">
     <value>வின்கோம்போச் உயர்ந்த சலுகைகளுடன் இயங்கவில்லை என்றால் சில பயன்பாடுகளில் கலவை இயங்காது. இந்த விருப்பங்கள் இது நடக்கும் வாய்ப்புகளை குறைக்கிறது.</value>
   </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>WinCompose இன் PolyKybd பிரிவு</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Sam Hocevar மற்றும் பங்களிப்பாளர்களின் அசல் WinCompose ஐ அடிப்படையாகக் கொண்டது.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>அசல் திட்டத்தைப் பார்வையிடு</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>நன்கொடைகள் அசல் ஆசிரியரான Sam Hocevar அவர்களுக்குச் செல்கின்றன.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

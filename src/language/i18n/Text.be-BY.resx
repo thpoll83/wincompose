@@ -363,4 +363,204 @@
   <data name="SpecialThanks" xml:space="preserve">
     <value>Padziaki</value>
   </data>
+  <data name="Composing" xml:space="preserve">
+    <value>Kambinavańnie</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXorgRules" xml:space="preserve">
+    <value>Vykarystoŭvać pasliadoŭnaści z Xorg</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXorgRulesToolTip" xml:space="preserve">
+    <value>Vykarystoŭvać 3 000 pasliadoŭnaściej z Xorg (http://x.org/). Hetyja kambinacyi čaściej sustrakajucca ŭ Linux-sistemach.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXComposeRules" xml:space="preserve">
+    <value>Vykarystoŭvać pasliadoŭnaści z XCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXComposeRulesToolTip" xml:space="preserve">
+    <value>Vykarystoŭvać 1 000 pasliadoŭnaściej z XCompose (https://github.com/kragen/xcompose). Niekatoryja kambinacyi mohuć kanfliktavać z kambinacyjami Xorg.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseEmojiRules" xml:space="preserve">
+    <value>Vykarystoŭvać pasliadoŭnaści WinCompose dlia emodzi</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseEmojiRulesToolTip" xml:space="preserve">
+    <value>Vykarystoŭvać pasliadoŭnaści dlia emodzi ad aŭtaraŭ WinCompose.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationPage" xml:space="preserve">
+    <value>Achviaravać</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="SwapOnInvalid" xml:space="preserve">
+    <value>Sprabavać dzvie klavišy ŭ advarotnym paradku</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="SwapOnInvalidToolTip" xml:space="preserve">
+    <value>Sprabavać pasliadoŭnaści z dzvuch klaviš u advarotnym paradku. Napryklad, kali pasliadoŭnaści E A nie isnuje, sprabavać pasliadoŭnaść A E.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ResetTimeout" xml:space="preserve">
+    <value>Čas da admieny ŭvoda pasliadoŭnaści</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UnicodeInputToolTip" xml:space="preserve">
+    <value>Uklučyć uvod Junikodu dlia ŭsich simvalaŭ, u tym liku dlia tych, što nie majuć ulasnaj pasliadoŭnaści. Napryklad pasliadoŭnaść Compose U 1 A 3 F Enter uviadzie simval Junikodu U+1A3F</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Skapijavać u bufier abmienu</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DelaySeconds" xml:space="preserve">
+    <value>{0} sekund</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Authors" xml:space="preserve">
+    <value>Aŭtary</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CheckUpdates" xml:space="preserve">
+    <value>Praviarać abnaŭlienni aŭtamatyčna</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CheckUpdatesToolTip" xml:space="preserve">
+    <value>Kali ŭklučana, WinCompose budzie čas ad času praviarać u internece najaŭnaść novych viersij. Abnaŭlienni nie ŭstaloŭvajucca aŭtamatyčna.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepIconVisible" xml:space="preserve">
+    <value>Pa mahčymaści pakidać bačnym značok u vobłaści paviedamlienniaŭ</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepIconVisibleToolTip" xml:space="preserve">
+    <value>Pa zmaŭčanni, Windows budzie chavać značok z vobłaści paviedamlienniaŭ praz niekatory čas. Hety parametr pasprabuje zrabić značok zaŭsiody bačnym.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ChangeComposeKey" xml:space="preserve">
+    <value>Zmianić…</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CaptureComposeKey" xml:space="preserve">
+    <value>Nacisnicie na klavišu, kab vyznačyć jaje jak klavišu compose.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AddToFavorites" xml:space="preserve">
+    <value>Dadać u abranaje</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DisableIcon" xml:space="preserve">
+    <value>Vyklučyć značok u vobłaści paviedamlienniaŭ</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DisableIconToolTip" xml:space="preserve">
+    <value>Kali ŭklučana, WinCompose bolš nie budzie pakazvać značok u vobłaści paviedamlienniaŭ. Adzinym sposabam adkryć interfejs WinCompose zastaniecca — praz «WinCompose Settings» ci «WinCompose Sequences» u meniu «Pusk».</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyHome" xml:space="preserve">
+    <value>Home</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyEnd" xml:space="preserve">
+    <value>End</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyTab" xml:space="preserve">
+    <value>Tab</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="NoTimeout" xml:space="preserve">
+    <value>Biez skidvańnia</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Advanced" xml:space="preserve">
+    <value>Pašyranyja nałady</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="IgnoreRegex" xml:space="preserve">
+    <value>Ihnaravać vokny, jakija adpaviadajuć rehularnamu vyrazu:</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="IgnoreRegexToolTip" xml:space="preserve">
+    <value>WinCompose budzie całkam adklučana, kali klas biahučaha akna budzie adpaviadać rehularnamu vyrazu.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysCompose" xml:space="preserve">
+    <value>Alternatyŭnyja klavišy compose zaŭsiody imi zastajucca</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysComposeToolTip" xml:space="preserve">
+    <value>Kali ŭklučana, usie klavišy compose u pasliadoŭnaści buduć ličycca hetakimi. Pa zmaŭčanni, klavišaj compose ličycca tolki taja, z jakoj pasliadoŭnaść pačałasia, a astatnija vykonvajuć svaju pieršapačatkovuju funkcyju.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RemoveFromFavorites" xml:space="preserve">
+    <value>Vydalić z abranych</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>Abranyja</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TimeoutToolTip" xml:space="preserve">
+    <value>Kali ŭklučana, liubaja pasliadoŭnaść budzie skinuta pry adsutnaści aktyŭnaści klaviatury ŭ peŭny termin.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyboardLed" xml:space="preserve">
+    <value>Uklučać śviatłodyjod na klaviatury</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyboardLedToolTip" xml:space="preserve">
+    <value>Kali ŭklučana, na klaviatury budzie zaharacca adpaviedny śviatłodyjod padčas uvodu pasliadoŭnaści.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyCompose" xml:space="preserve">
+    <value>Compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunch" xml:space="preserve">
+    <value>Zapuskać WinCompose pry ŭvachodzie</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunchToolTip" xml:space="preserve">
+    <value>Kali ŭklučana, WinCompose budzie zapuskacca pry ŭvachodzie ŭ sistemu.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Accessibility" xml:space="preserve">
+    <value>Dastupnaść</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLock" xml:space="preserve">
+    <value>«Caps Lock» aktyŭny tolki pry ŭtrymańni</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLockToolTip" xml:space="preserve">
+    <value>«Caps Lock» budzie aŭtamatyčna vyklučany pry adpuskańni klavišy, zamiest taho, kab naciskać jaho paŭtorna.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevated" xml:space="preserve">
+    <value>Zapuskać z pavyšanymi pravami (rekamiendujecca)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevatedToolTip" xml:space="preserve">
+    <value>Kambinavańnie nie budzie pracavać u niekatorych prahramach, kali WinCompose budzie zapuščany biez pavyšanych praŭ. Hety parametr pamianšaje vieragodnaść takich vypadkaŭ.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Fork PolyKybd prahramy WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Zasnavana na aryhinalnym WinCompose ad Sam Hocevar i ŭdzielnikaŭ prajekta.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Naviedać aryhinalny prajekt</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Achviaravańni iduć Sam Hocevar, aŭtaru aryhinała.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

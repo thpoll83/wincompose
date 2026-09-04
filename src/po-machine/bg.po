@@ -1,0 +1,28 @@
+# Machine-translated fallback strings for Bulgarian (bg).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/bg.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#. Subtitle on the About tab identifying this build as a fork
+#: Text ID:ForkTagline
+msgid "PolyKybd fork of WinCompose"
+msgstr "PolyKybd форк на WinCompose"
+
+#. Attribution line on the About tab
+#: Text ID:ForkBasedOn
+msgid "Based on the original WinCompose by Sam Hocevar and contributors."
+msgstr "Базирано на оригиналния WinCompose от Sam Hocevar и сътрудници."
+
+#. A button to open the original upstream project page
+#: Text ID:VisitUpstream
+msgid "Visit the original project"
+msgstr "Посетете оригиналния проект"
+
+#. Note under the donation button on the About tab
+#: Text ID:DonationNote
+msgid "Donations go to Sam Hocevar, the original author."
+msgstr "Даренията отиват при Sam Hocevar, оригиналния автор."

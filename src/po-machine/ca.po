@@ -1,0 +1,28 @@
+# Machine-translated fallback strings for Catalan (ca).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/ca.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#. Subtitle on the About tab identifying this build as a fork
+#: Text ID:ForkTagline
+msgid "PolyKybd fork of WinCompose"
+msgstr "Bifurcació PolyKybd del WinCompose"
+
+#. Attribution line on the About tab
+#: Text ID:ForkBasedOn
+msgid "Based on the original WinCompose by Sam Hocevar and contributors."
+msgstr "Basat en el WinCompose original de Sam Hocevar i col·laboradors."
+
+#. A button to open the original upstream project page
+#: Text ID:VisitUpstream
+msgid "Visit the original project"
+msgstr "Visita el projecte original"
+
+#. Note under the donation button on the About tab
+#: Text ID:DonationNote
+msgid "Donations go to Sam Hocevar, the original author."
+msgstr "Els donatius van a Sam Hocevar, l’autor original."

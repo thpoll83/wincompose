@@ -1,0 +1,620 @@
+# Machine-translated fallback strings for Slovenian (sl).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/sl.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#. The name of the 変換 key on a Japanese keyboard
+#: Text ID:KeyConvert
+msgid "Conversion"
+msgstr "Pretvorba"
+
+#. The name of the 無変換 key on a Japanese keyboard
+#: Text ID:KeyNonConvert
+msgid "Non-conversion"
+msgstr "Brez pretvorbe"
+
+#. The "Composing" section in the settings window
+#: Text ID:Composing
+msgid "Composing"
+msgstr "Sestavljanje"
+
+#: Text ID:UseXorgRules
+msgid "Use sequences from the Xorg project"
+msgstr "Uporabi zaporedja iz projekta Xorg"
+
+#: Text ID:UseXorgRulesToolTip
+msgid "Use the 3,000 compose sequences from the Xorg project (http://www.x.org/). These are the sequences most commonly found on a standard Linux system."
+msgstr "Uporabi 3.000 zaporedij iz projekta Xorg (http://www.x.org/). To so zaporedja, ki jih najpogosteje najdemo na običajnem sistemu Linux."
+
+#: Text ID:UseXComposeRules
+msgid "Use sequences from the XCompose project"
+msgstr "Uporabi zaporedja iz projekta XCompose"
+
+#: Text ID:UseXComposeRulesToolTip
+msgid "Use the 1,000 compose sequences from the XCompose opensource project (https://github.com/kragen/xcompose). These sequences may sometimes conflict with the Xorg ones."
+msgstr "Uporabi 1.000 zaporedij iz odprtokodnega projekta XCompose (https://github.com/kragen/xcompose). Ta zaporedja so lahko včasih v sporu z zaporedji Xorg."
+
+#: Text ID:UseEmojiRules
+msgid "Use WinCompose emoji sequences"
+msgstr "Uporabi zaporedja WinCompose za emodžije"
+
+#: Text ID:UseEmojiRulesToolTip
+msgid "Use the compose sequences for Emoji provided by the WinCompose author and contributors."
+msgstr "Uporabi zaporedja za emodžije, ki jih ponujajo avtor programa WinCompose in sodelavci."
+
+#. Menu entry to show the debug window
+#: Text ID:DebugWindow
+msgid "Debug Window"
+msgstr "Razhroščevalno okno"
+
+#. A button to visit the donation page (http://wincompose.info/donate/)
+#: Text ID:DonationPage
+msgid "Donation Page"
+msgstr "Stran za donacije"
+
+#. Name of the category (Unicode characters, Emoji, User macros, Favorites)
+#: Text ID:UnicodeCharacters
+msgid "Unicode characters"
+msgstr "Znaki Unicode"
+
+#: Text ID:SwapOnInvalid
+msgid "Try to swap the two keys"
+msgstr "Poskusi zamenjati tipki"
+
+#: Text ID:SwapOnInvalidToolTip
+msgid "Try to swap the keys of a two-key sequence. For instance, if Compose E A is not a valid sequence, try Compose A E instead."
+msgstr "Poskusi zamenjati tipki v zaporedju dveh tipk. Če na primer Compose E A ni veljavno zaporedje, poskusi Compose A E."
+
+#. The compose key deactivates itself after a certain configurable delay
+#: Text ID:ResetTimeout
+msgid "Reset timeout"
+msgstr "Časovna omejitev ponastavitve"
+
+#: Text ID:UnicodeInputToolTip
+msgid "Enable Unicode input for all characters, even those with no compose sequence defined. For instance, the following sequence will output character U+1A3F: Compose U 1 A 3 F Enter"
+msgstr "Omogoči vnos Unicode za vse znake, tudi tiste brez določenega zaporedja. Naslednje zaporedje na primer izpiše znak U+1A3F: Compose U 1 A 3 F Enter"
+
+#: Text ID:BeepOnInvalid
+msgid "Emit a beep"
+msgstr "Zapiskaj"
+
+#: Text ID:BeepOnInvalidToolTip
+msgid "If the entered sequence does not exist, emit a system sound."
+msgstr "Če vneseno zaporedje ne obstaja, predvajaj sistemski zvok."
+
+#: Text ID:Language
+msgid "Interface language:"
+msgstr "Jezik vmesnika:"
+
+#: Text ID:LanguageToolTip
+msgid "Select the language that WinCompose uses for the interface. By default the operating system language is used."
+msgstr "Izberite jezik, ki ga WinCompose uporablja za vmesnik. Privzeto se uporabi jezik operacijskega sistema."
+
+#. Close the settings window
+#: Text ID:Close
+msgid "Close"
+msgstr "Zapri"
+
+#. Copy character or symbol to the clipboard
+#: Text ID:CopyToClipboard
+msgid "Copy to clipboard"
+msgstr "Kopiraj v odložišče"
+
+#. Name of the category (Unicode characters, Emoji, User macros, Favorites)
+#: Text ID:Emoji
+msgid "Emoji"
+msgstr "Emodži"
+
+#. Apply changes from the settings window
+#: Text ID:Apply
+msgid "Apply"
+msgstr "Uporabi"
+
+#. Should this say “retain” instead of “maintain”?
+#: Text ID:KeepOriginalKey
+msgid "Maintain original compose key behaviour"
+msgstr "Ohrani izvorno delovanje Compose tipke"
+
+#: Text ID:KeepOriginalKeyToolTip
+msgid "This tells WinCompose to make a best effort to retain the original key’s behaviour. For instance, the Alt-Tab shortcut will still work even if Alt is used as the compose key."
+msgstr "Programu WinCompose naroči, naj se po najboljših močeh potrudi ohraniti izvorno delovanje tipke. Bližnjica Alt-Tab bo na primer še vedno delovala, tudi če je Alt uporabljen kot Compose tipka."
+
+#: Text ID:InsertZwsp
+msgid "Insert zero-width spaces in Office apps"
+msgstr "Vstavi presledke nične širine v programih Office"
+
+#: Text ID:InsertZwspToolTip
+msgid "Microsoft Office applications sometimes change the document font on the fly when entering certain Unicode characters. This feature inserts an invisible character after the Unicode character to work around the bug."
+msgstr "Programi Microsoft Office včasih med tipkanjem zamenjajo pisavo dokumenta, ko vnesete določene znake Unicode. Ta možnost za znakom Unicode vstavi neviden znak, da se napaki izogne."
+
+#: Text ID:EmulateCapsLock
+msgid "Emulate Caps Lock using both Shift keys"
+msgstr "Posnemaj Caps Lock z obema tipkama Shift"
+
+#: Text ID:EmulateCapsLockToolTip
+msgid "If Caps Lock is used as the compose key, the original behaviour of the key becomes unavailable. This feature allows to turn Caps Lock on by pressing both Shift keys simultaneously."
+msgstr "Če je Caps Lock uporabljen kot Compose tipka, izvorno delovanje te tipke ni več na voljo. Ta možnost omogoča vklop Caps Lock s hkratnim pritiskom obeh tipk Shift."
+
+#: Text ID:ShiftDisablesCapsLock
+msgid "Shift key disables Caps Lock"
+msgstr "Tipka Shift izklopi Caps Lock"
+
+#: Text ID:ShiftDisablesCapsLockToolTip
+msgid "If Caps Lock is used as the compose key, the original behaviour of the key becomes unavailable. This feature allows to turn Caps Lock off by pressing the Shift key."
+msgstr "Če je Caps Lock uporabljen kot Compose tipka, izvorno delovanje te tipke ni več na voljo. Ta možnost omogoča izklop Caps Lock s pritiskom tipke Shift."
+
+#: Text ID:CapsLockCapitalizes
+msgid "Caps Lock always capitalizes letters"
+msgstr "Caps Lock vedno piše velike črke"
+
+#: Text ID:CapsLockCapitalizesToolTip
+msgid "When Caps Lock is on, typing an accented letter such as “é” will always output the corresponding capitalized letter, in this case “É”."
+msgstr "Ko je Caps Lock vklopljen, tipkanje naglašene črke, na primer »é«, vedno izpiše ustrezno veliko črko, v tem primeru »É«."
+
+#. Header for the list of Unicode character categories
+#: Text ID:Categories
+msgid "Categories"
+msgstr "Kategorije"
+
+#: Text ID:InSelectedCategories
+msgid "In selected categories"
+msgstr "V izbranih kategorijah"
+
+#. The title of the Options window
+#: Text ID:Options
+msgid "Options — WinCompose"
+msgstr "Možnosti — WinCompose"
+
+#. Microsoft recommends using this instead of Settings or Preferences (https://msdn.microsoft.com/en-us/library/dn742392.aspx)
+#: Text ID:ShowOptions
+msgid "Options…"
+msgstr "Možnosti…"
+
+#. {0}: compose key name, {1}: number of sequences, {2}: program version number
+#: Text ID:TrayToolTip
+msgid "WinCompose v{2} on {0} ({1} sequences)"
+msgstr "WinCompose v{2} na {0} ({1} zaporedij)"
+
+#. The “general” tab of the options window
+#: Text ID:General
+msgid "General"
+msgstr "Splošno"
+
+#: Text ID:Behavior
+msgid "Behavior"
+msgstr "Delovanje"
+
+#. The title of the Sequences window
+#: Text ID:WindowTitle
+msgid "Sequences — WinCompose"
+msgstr "Zaporedja — WinCompose"
+
+#. Name of the category (Unicode characters, Emoji, User macros, Favorites)
+#: Text ID:UserMacros
+msgid "User-defined macros"
+msgstr "Uporabniško določeni makri"
+
+#: Text ID:DisabledToolTip
+msgid "WinCompose is disabled"
+msgstr "WinCompose je izklopljen"
+
+#. The name of the "Insert" key on the keyboard
+#: Text ID:KeyInsert
+msgid "Insert"
+msgstr "tipka Insert"
+
+#. The "Test Typing" section in the settings window
+#: Text ID:TestTyping
+msgid "Test Typing"
+msgstr "Preizkus tipkanja"
+
+#. The "Tweaks" section in the settings window
+#: Text ID:Tweaks
+msgid "Tweaks"
+msgstr "Prilagoditve"
+
+#. Format string to display the current reset delay
+#: Text ID:DelaySeconds
+msgid "{0} seconds"
+msgstr "{0} sekund"
+
+#. About box menu entry
+#: Text ID:About
+msgid "About"
+msgstr "O programu"
+
+#. Download new version menu entry. {0}: version number
+#: Text ID:Download
+msgid "Download WinCompose {0}"
+msgstr "Prenesi WinCompose {0}"
+
+#. Window title of the About box
+#: Text ID:AboutBoxTitle
+msgid "About WinCompose"
+msgstr "O programu WinCompose"
+
+#. The section where we list all programmers.
+#: Text ID:Programming
+msgid "Programming"
+msgstr "Programiranje"
+
+#. The section where we list all translators. If you’re reading this, you’re probably a translator, so thank you! You rock!
+#: Text ID:Translators
+msgid "Translation"
+msgstr "Prevajanje"
+
+#. The tab item to see all the program authors.
+#: Text ID:Authors
+msgid "Authors"
+msgstr "Avtorji"
+
+#. US: License, UK: Licence
+#: Text ID:License
+msgid "License"
+msgstr "Licenca"
+
+#. Warning message when the user changes the language in the settings window
+#: Text ID:NeedRestart
+msgid "WinCompose needs to be restarted for some changes to take effect."
+msgstr "Za uveljavitev nekaterih sprememb je treba WinCompose ponovno zagnati."
+
+#. A button to report bugs (opens web browser)
+#: Text ID:ReportBug
+msgid "Report a Bug"
+msgstr "Prijavi napako"
+
+#. The context menu for about, help, and software updates
+#: Text ID:Help
+msgid "Help"
+msgstr "Pomoč"
+
+#. Message displayed in the notification area tooltip.
+#: Text ID:UpdatesToolTip
+msgid "Updates are available."
+msgstr "Na voljo so posodobitve."
+
+#: Text ID:UserDefinedSequences
+msgid "User-defined sequences"
+msgstr "Uporabniško določena zaporedja"
+
+#. A button to open the file containing the user-defined sequences.
+#: Text ID:UserDefinedSequencesEdit
+msgid "Edit"
+msgstr "Uredi"
+
+#. A button to reload the user-defined sequences.
+#: Text ID:UserDefinedSequencesReload
+msgid "Reload"
+msgstr "Ponovno naloži"
+
+#: Text ID:AllowInjected
+msgid "Allow Injected Keys"
+msgstr "Dovoli vstavljene tipke"
+
+#: Text ID:AllowInjectedToolTip
+msgid "Do not ignore keys sent by other software like AutoHotkey or Synergy"
+msgstr "Ne prezri tipk, ki jih pošlje druga programska oprema, na primer AutoHotkey ali Synergy"
+
+#. The name of the “Print Screen” key on the keyboard
+#: Text ID:KeyPrint
+msgid "Prt Scrn"
+msgstr "Prt Scrn"
+
+#. String to show instead of the key name when no compose key is configured
+#: Text ID:KeyDisabled
+msgid "Disabled"
+msgstr "Izklopljeno"
+
+#: Text ID:CheckUpdates
+msgid "Automatically check for updates"
+msgstr "Samodejno preveri za posodobitvami"
+
+#: Text ID:CheckUpdatesToolTip
+msgid "If enabled, WinCompose will connect to the Internet at regular intervals to check for new versions. Updates are not installed automatically."
+msgstr "Če je vklopljeno, se bo WinCompose v rednih presledkih povezal z internetom in preveril, ali so na voljo nove različice. Posodobitve se ne namestijo samodejno."
+
+#: Text ID:KeepIconVisible
+msgid "Try to keep notification area icon always visible"
+msgstr "Poskusi ohraniti ikono v območju za obvestila vedno vidno"
+
+#: Text ID:KeepIconVisibleToolTip
+msgid "By default, Windows will remove the icon from the notification area after a short while. This option attempts to keep it always visible."
+msgstr "Windows privzeto po kratkem času odstrani ikono iz območja za obvestila. Ta možnost jo poskuša ohraniti vedno vidno."
+
+#. The user can click on this button to change the current compose key.
+#: Text ID:ChangeComposeKey
+msgid "Change…"
+msgstr "Spremeni…"
+
+#: Text ID:CaptureComposeKey
+msgid "Please press a key to use as your compose key."
+msgstr "Pritisnite tipko, ki jo želite uporabiti kot Compose tipko."
+
+#. Add sequence to the list of favorites.
+#: Text ID:AddToFavorites
+msgid "Add to favorites"
+msgstr "Dodaj med priljubljene"
+
+#: Text ID:DisableIcon
+msgid "Disable notification area icon"
+msgstr "Izklopi ikono v območju za obvestila"
+
+#: Text ID:DisableIconToolTip
+msgid "If enabled, WinCompose will no longer display an icon in the notification area. The only way to open the WinCompose interface will then be through the “WinCompose Settings” and “WinCompose Sequences” entries in the startup menu."
+msgstr "Če je vklopljeno, WinCompose ne bo več prikazoval ikone v območju za obvestila. Vmesnik WinCompose bo tedaj mogoče odpreti le prek vnosov »WinCompose Settings« in »WinCompose Sequences« v začetnem meniju."
+
+#. The name of the “Home” key on the keyboard
+#: Text ID:KeyHome
+msgid "Home"
+msgstr "Home"
+
+#. The name of the “End” key on the keyboard
+#: Text ID:KeyEnd
+msgid "End"
+msgstr "End"
+
+#. The name of the “Tab” key on the keyboard
+#: Text ID:KeyTab
+msgid "Tab"
+msgstr "Tab"
+
+#. Text to show instead of a value in seconds when the reset timeout feature is disabled
+#: Text ID:NoTimeout
+msgid "No timeout"
+msgstr "Brez časovne omejitve"
+
+#. The “Advanced” section in the settings.
+#: Text ID:Advanced
+msgid "Advanced"
+msgstr "Napredno"
+
+#. “regex” is shorthand for “regular expression”.
+#: Text ID:IgnoreRegex
+msgid "Ignore windows matching this regex:"
+msgstr "Prezri okna, ki ustrezajo temu regularnemu izrazu:"
+
+#: Text ID:IgnoreRegexToolTip
+msgid "WinCompose will be completely disabled when the current window class or window name matches this regular expression."
+msgstr "WinCompose bo popolnoma izklopljen, kadar razred ali ime trenutnega okna ustreza temu regularnemu izrazu."
+
+#: Text ID:AlwaysCompose
+msgid "Alternate compose key is always Compose"
+msgstr "Nadomestna Compose tipka je vedno Compose"
+
+#: Text ID:AlwaysComposeToolTip
+msgid "If enabled, all compose keys will be treated as Compose in a sequence. By default, only the first pressed key will act as Compose, and alternate compose keys will keep their original role."
+msgstr "Če je vklopljeno, bodo vse Compose tipke v zaporedju obravnavane kot Compose. Privzeto kot Compose deluje le prva pritisnjena tipka, nadomestne Compose tipke pa ohranijo svojo izvorno vlogo."
+
+#. The section for random contributors who aren’t programmers or translators. Might be empty.
+#: Text ID:SpecialThanks
+msgid "Special Thanks"
+msgstr "Posebna zahvala"
+
+#. Remove sequence from the list of favorites.
+#: Text ID:RemoveFromFavorites
+msgid "Remove from favorites"
+msgstr "Odstrani iz priljubljenih"
+
+#. Name of the category (Unicode characters, Emoji, User macros, Favorites)
+#: Text ID:Favorites
+msgid "Favorites"
+msgstr "Priljubljene"
+
+#: Text ID:TimeoutToolTip
+msgid "If set, any compose sequence will be cancelled after a certain delay if no keyboard activity is detected."
+msgstr "Če je nastavljeno, bo vsako zaporedje preklicano po določenem zamiku, če ni zaznane dejavnosti tipkovnice."
+
+#: Text ID:KeyboardLed
+msgid "Keyboard LED"
+msgstr "LED tipkovnice"
+
+#: Text ID:KeyboardLedToolTip
+msgid "If set, the corresponding keyboard LED will be lit when a compose sequence is in progress."
+msgstr "Če je nastavljeno, bo med potekom zaporedja svetila ustrezna LED na tipkovnici."
+
+#. The short name of the compose key
+#: Text ID:KeyCompose
+msgid "Compose"
+msgstr "Compose"
+
+#: Text ID:AutoLaunch
+msgid "Launch WinCompose on login"
+msgstr "Zaženi WinCompose ob prijavi"
+
+#: Text ID:AutoLaunchToolTip
+msgid "If set, WinCompose will be started when the user logs in."
+msgstr "Če je nastavljeno, se bo WinCompose zagnal, ko se uporabnik prijavi."
+
+#: Text ID:Accessibility
+msgid "Accessibility"
+msgstr "Dostopnost"
+
+#: Text ID:MustHoldCapsLock
+msgid "Caps Lock is only active while being held down"
+msgstr "Caps Lock je dejaven le, dokler je pritisnjen"
+
+#: Text ID:MustHoldCapsLockToolTip
+msgid "Releasing the Caps Lock key will immediately disable it, instead of the more standard behaviour of having to press it a second time."
+msgstr "Ob spustu tipke Caps Lock se ta takoj izklopi, namesto običajnega delovanja, kjer jo je treba pritisniti še enkrat."
+
+#: Text ID:RunElevated
+msgid "Run with elevated privileges (recommended)"
+msgstr "Zaženi s povišanimi pravicami (priporočeno)"
+
+#: Text ID:RunElevatedToolTip
+msgid "Composition will not work in some applications if WinCompose does not run with elevated privileges. This options reduces the chances that this will happen."
+msgstr "V nekaterih programih sestavljanje ne bo delovalo, če se WinCompose ne izvaja s povišanimi pravicami. Ta možnost zmanjša verjetnost, da se to zgodi."
+
+#. Subtitle on the About tab identifying this build as a fork
+#: Text ID:ForkTagline
+msgid "PolyKybd fork of WinCompose"
+msgstr "Različica PolyKybd programa WinCompose"
+
+#. Attribution line on the About tab
+#: Text ID:ForkBasedOn
+msgid "Based on the original WinCompose by Sam Hocevar and contributors."
+msgstr "Temelji na izvornem programu WinCompose avtorja Sam Hocevar in sodelavcev."
+
+#. A button to open the original upstream project page
+#: Text ID:VisitUpstream
+msgid "Visit the original project"
+msgstr "Obišči izvorni projekt"
+
+#. Note under the donation button on the About tab
+#: Text ID:DonationNote
+msgid "Donations go to Sam Hocevar, the original author."
+msgstr "Donacije prejme Sam Hocevar, izvorni avtor."
+
+#. Unicode designation “Cc” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:Control
+msgid "Other, Control"
+msgstr "Drugo, kontrolni"
+
+#. Unicode designation “Cf” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:Format
+msgid "Other, Format"
+msgstr "Drugo, oblikovni"
+
+#. Unicode designation “Cn” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:OtherNotAssigned
+msgid "Other, Not Assigned"
+msgstr "Drugo, nedodeljeno"
+
+#. Unicode designation “Co” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:PrivateUse
+msgid "Other, Private Use"
+msgstr "Drugo, zasebna raba"
+
+#. Unicode designation “Cs” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:Surrogate
+msgid "Other, Surrogate"
+msgstr "Drugo, nadomestni"
+
+#. Unicode designation “Ll” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:LowercaseLetter
+msgid "Letter, Lowercase"
+msgstr "Črka, mala"
+
+#. Unicode designation “Lm” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:ModifierLetter
+msgid "Letter, Modifier"
+msgstr "Črka, spremenilna"
+
+#. Unicode designation “Lo” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:OtherLetter
+msgid "Letter, Other"
+msgstr "Črka, druga"
+
+#. Unicode designation “Lt” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:TitlecaseLetter
+msgid "Letter, Titlecase"
+msgstr "Črka, naslovna"
+
+#. Unicode designation “Lu” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:UppercaseLetter
+msgid "Letter, Uppercase"
+msgstr "Črka, velika"
+
+#. Unicode designation “Mc” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:SpacingCombiningMark
+msgid "Mark, Spacing Combining"
+msgstr "Znamenje, združevalno s presledkom"
+
+#. Unicode designation “Me” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:EnclosingMark
+msgid "Mark, Enclosing"
+msgstr "Znamenje, obdajajoče"
+
+#. Unicode designation “Mn” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:NonSpacingMark
+msgid "Mark, Non-Spacing"
+msgstr "Znamenje, brez presledka"
+
+#. Unicode designation “Nd” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:DecimalDigitNumber
+msgid "Number, Decimal Digit"
+msgstr "Število, desetiška števka"
+
+#. Unicode designation “Nl” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:LetterNumber
+msgid "Number, Letter"
+msgstr "Število, črkovno"
+
+#. Unicode designation “No” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:OtherNumber
+msgid "Number, Other"
+msgstr "Število, drugo"
+
+#. Unicode designation “Pc” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:ConnectorPunctuation
+msgid "Punctuation, Connector"
+msgstr "Ločilo, povezovalno"
+
+#. Unicode designation “Pd” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:DashPunctuation
+msgid "Punctuation, Dash"
+msgstr "Ločilo, pomišljaj"
+
+#. Unicode designation “Pe” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:ClosePunctuation
+msgid "Punctuation, Close"
+msgstr "Ločilo, zaklepaj"
+
+#. Unicode designation “Pf” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:FinalQuotePunctuation
+msgid "Punctuation, Final Quote"
+msgstr "Ločilo, končni narekovaj"
+
+#. Unicode designation “Pi” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:InitialQuotePunctuation
+msgid "Punctuation, Initial Quote"
+msgstr "Ločilo, začetni narekovaj"
+
+#. Unicode designation “Po” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:OtherPunctuation
+msgid "Punctuation, Other"
+msgstr "Ločilo, drugo"
+
+#. Unicode designation “Ps” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:OpenPunctuation
+msgid "Punctuation, Open"
+msgstr "Ločilo, oklepaj"
+
+#. Unicode designation “Sc” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:CurrencySymbol
+msgid "Symbol, Currency"
+msgstr "Simbol, valuta"
+
+#. Unicode designation “Sk” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:ModifierSymbol
+msgid "Symbol, Modifier"
+msgstr "Simbol, spremenilni"
+
+#. Unicode designation “Sm” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:MathSymbol
+msgid "Symbol, Math"
+msgstr "Simbol, matematični"
+
+#. Unicode designation “So” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:OtherSymbol
+msgid "Symbol, Other"
+msgstr "Simbol, drugi"
+
+#. Unicode designation “Zl” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:LineSeparator
+msgid "Separator, Line"
+msgstr "Ločnica, vrstica"
+
+#. Unicode designation “Zp” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:ParagraphSeparator
+msgid "Separator, Paragraph"
+msgstr "Ločnica, odstavek"
+
+#. Unicode designation “Zs” (https://msdn.microsoft.com/en-us/library/system.globalization.unicodecategory%28v=vs.110%29.aspx), see also Gucharmap translations (https://git.gnome.org/browse/gucharmap/tree/po)
+#: Category ID:SpaceSeparator
+msgid "Separator, Space"
+msgstr "Ločnica, presledek"
