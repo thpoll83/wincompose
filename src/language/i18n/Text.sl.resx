@@ -207,4 +207,412 @@
   <data name="DiscardOnInvalidToolTip" xml:space="preserve">
     <value>Če vneseno zaporedje ne obstaja, zavrzi vse vtipkane znake. Privzeti pristop je da se ohrani znake, kot da Compose tipka ne bi bila pritisnjena.</value>
   </data>
+  <data name="KeyConvert" xml:space="preserve">
+    <value>Pretvorba</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyNonConvert" xml:space="preserve">
+    <value>Brez pretvorbe</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Composing" xml:space="preserve">
+    <value>Sestavljanje</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXorgRules" xml:space="preserve">
+    <value>Uporabi zaporedja iz projekta Xorg</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXorgRulesToolTip" xml:space="preserve">
+    <value>Uporabi 3.000 zaporedij iz projekta Xorg (http://www.x.org/). To so zaporedja, ki jih najpogosteje najdemo na običajnem sistemu Linux.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXComposeRules" xml:space="preserve">
+    <value>Uporabi zaporedja iz projekta XCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseXComposeRulesToolTip" xml:space="preserve">
+    <value>Uporabi 1.000 zaporedij iz odprtokodnega projekta XCompose (https://github.com/kragen/xcompose). Ta zaporedja so lahko včasih v sporu z zaporedji Xorg.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseEmojiRules" xml:space="preserve">
+    <value>Uporabi zaporedja WinCompose za emodžije</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UseEmojiRulesToolTip" xml:space="preserve">
+    <value>Uporabi zaporedja za emodžije, ki jih ponujajo avtor programa WinCompose in sodelavci.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DebugWindow" xml:space="preserve">
+    <value>Razhroščevalno okno</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationPage" xml:space="preserve">
+    <value>Stran za donacije</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UnicodeCharacters" xml:space="preserve">
+    <value>Znaki Unicode</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="SwapOnInvalid" xml:space="preserve">
+    <value>Poskusi zamenjati tipki</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="SwapOnInvalidToolTip" xml:space="preserve">
+    <value>Poskusi zamenjati tipki v zaporedju dveh tipk. Če na primer Compose E A ni veljavno zaporedje, poskusi Compose A E.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ResetTimeout" xml:space="preserve">
+    <value>Časovna omejitev ponastavitve</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UnicodeInputToolTip" xml:space="preserve">
+    <value>Omogoči vnos Unicode za vse znake, tudi tiste brez določenega zaporedja. Naslednje zaporedje na primer izpiše znak U+1A3F: Compose U 1 A 3 F Enter</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="BeepOnInvalid" xml:space="preserve">
+    <value>Zapiskaj</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="BeepOnInvalidToolTip" xml:space="preserve">
+    <value>Če vneseno zaporedje ne obstaja, predvajaj sistemski zvok.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Jezik vmesnika:</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="LanguageToolTip" xml:space="preserve">
+    <value>Izberite jezik, ki ga WinCompose uporablja za vmesnik. Privzeto se uporabi jezik operacijskega sistema.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Zapri</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Kopiraj v odložišče</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Emoji" xml:space="preserve">
+    <value>Emodži</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Uporabi</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepOriginalKey" xml:space="preserve">
+    <value>Ohrani izvorno delovanje Compose tipke</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepOriginalKeyToolTip" xml:space="preserve">
+    <value>Programu WinCompose naroči, naj se po najboljših močeh potrudi ohraniti izvorno delovanje tipke. Bližnjica Alt-Tab bo na primer še vedno delovala, tudi če je Alt uporabljen kot Compose tipka.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="InsertZwsp" xml:space="preserve">
+    <value>Vstavi presledke nične širine v programih Office</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="InsertZwspToolTip" xml:space="preserve">
+    <value>Programi Microsoft Office včasih med tipkanjem zamenjajo pisavo dokumenta, ko vnesete določene znake Unicode. Ta možnost za znakom Unicode vstavi neviden znak, da se napaki izogne.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="EmulateCapsLock" xml:space="preserve">
+    <value>Posnemaj Caps Lock z obema tipkama Shift</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="EmulateCapsLockToolTip" xml:space="preserve">
+    <value>Če je Caps Lock uporabljen kot Compose tipka, izvorno delovanje te tipke ni več na voljo. Ta možnost omogoča vklop Caps Lock s hkratnim pritiskom obeh tipk Shift.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ShiftDisablesCapsLock" xml:space="preserve">
+    <value>Tipka Shift izklopi Caps Lock</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ShiftDisablesCapsLockToolTip" xml:space="preserve">
+    <value>Če je Caps Lock uporabljen kot Compose tipka, izvorno delovanje te tipke ni več na voljo. Ta možnost omogoča izklop Caps Lock s pritiskom tipke Shift.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CapsLockCapitalizes" xml:space="preserve">
+    <value>Caps Lock vedno piše velike črke</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CapsLockCapitalizesToolTip" xml:space="preserve">
+    <value>Ko je Caps Lock vklopljen, tipkanje naglašene črke, na primer »é«, vedno izpiše ustrezno veliko črko, v tem primeru »É«.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Kategorije</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="InSelectedCategories" xml:space="preserve">
+    <value>V izbranih kategorijah</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Možnosti — WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ShowOptions" xml:space="preserve">
+    <value>Možnosti…</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TrayToolTip" xml:space="preserve">
+    <value>WinCompose v{2} na {0} ({1} zaporedij)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Splošno</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Behavior" xml:space="preserve">
+    <value>Delovanje</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>Zaporedja — WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UserMacros" xml:space="preserve">
+    <value>Uporabniško določeni makri</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DisabledToolTip" xml:space="preserve">
+    <value>WinCompose je izklopljen</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyInsert" xml:space="preserve">
+    <value>tipka Insert</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TestTyping" xml:space="preserve">
+    <value>Preizkus tipkanja</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Tweaks" xml:space="preserve">
+    <value>Prilagoditve</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DelaySeconds" xml:space="preserve">
+    <value>{0} sekund</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>O programu</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Prenesi WinCompose {0}</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AboutBoxTitle" xml:space="preserve">
+    <value>O programu WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Programming" xml:space="preserve">
+    <value>Programiranje</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Translators" xml:space="preserve">
+    <value>Prevajanje</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Authors" xml:space="preserve">
+    <value>Avtorji</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>Licenca</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="NeedRestart" xml:space="preserve">
+    <value>Za uveljavitev nekaterih sprememb je treba WinCompose ponovno zagnati.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ReportBug" xml:space="preserve">
+    <value>Prijavi napako</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Pomoč</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UpdatesToolTip" xml:space="preserve">
+    <value>Na voljo so posodobitve.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UserDefinedSequences" xml:space="preserve">
+    <value>Uporabniško določena zaporedja</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UserDefinedSequencesEdit" xml:space="preserve">
+    <value>Uredi</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="UserDefinedSequencesReload" xml:space="preserve">
+    <value>Ponovno naloži</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AllowInjected" xml:space="preserve">
+    <value>Dovoli vstavljene tipke</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AllowInjectedToolTip" xml:space="preserve">
+    <value>Ne prezri tipk, ki jih pošlje druga programska oprema, na primer AutoHotkey ali Synergy</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyPrint" xml:space="preserve">
+    <value>Prt Scrn</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyDisabled" xml:space="preserve">
+    <value>Izklopljeno</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CheckUpdates" xml:space="preserve">
+    <value>Samodejno preveri za posodobitvami</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CheckUpdatesToolTip" xml:space="preserve">
+    <value>Če je vklopljeno, se bo WinCompose v rednih presledkih povezal z internetom in preveril, ali so na voljo nove različice. Posodobitve se ne namestijo samodejno.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepIconVisible" xml:space="preserve">
+    <value>Poskusi ohraniti ikono v območju za obvestila vedno vidno</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeepIconVisibleToolTip" xml:space="preserve">
+    <value>Windows privzeto po kratkem času odstrani ikono iz območja za obvestila. Ta možnost jo poskuša ohraniti vedno vidno.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ChangeComposeKey" xml:space="preserve">
+    <value>Spremeni…</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="CaptureComposeKey" xml:space="preserve">
+    <value>Pritisnite tipko, ki jo želite uporabiti kot Compose tipko.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AddToFavorites" xml:space="preserve">
+    <value>Dodaj med priljubljene</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DisableIcon" xml:space="preserve">
+    <value>Izklopi ikono v območju za obvestila</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DisableIconToolTip" xml:space="preserve">
+    <value>Če je vklopljeno, WinCompose ne bo več prikazoval ikone v območju za obvestila. Vmesnik WinCompose bo tedaj mogoče odpreti le prek vnosov »WinCompose Settings« in »WinCompose Sequences« v začetnem meniju.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyHome" xml:space="preserve">
+    <value>Home</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyEnd" xml:space="preserve">
+    <value>End</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyTab" xml:space="preserve">
+    <value>Tab</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="NoTimeout" xml:space="preserve">
+    <value>Brez časovne omejitve</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Advanced" xml:space="preserve">
+    <value>Napredno</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="IgnoreRegex" xml:space="preserve">
+    <value>Prezri okna, ki ustrezajo temu regularnemu izrazu:</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="IgnoreRegexToolTip" xml:space="preserve">
+    <value>WinCompose bo popolnoma izklopljen, kadar razred ali ime trenutnega okna ustreza temu regularnemu izrazu.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysCompose" xml:space="preserve">
+    <value>Nadomestna Compose tipka je vedno Compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AlwaysComposeToolTip" xml:space="preserve">
+    <value>Če je vklopljeno, bodo vse Compose tipke v zaporedju obravnavane kot Compose. Privzeto kot Compose deluje le prva pritisnjena tipka, nadomestne Compose tipke pa ohranijo svojo izvorno vlogo.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="SpecialThanks" xml:space="preserve">
+    <value>Posebna zahvala</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RemoveFromFavorites" xml:space="preserve">
+    <value>Odstrani iz priljubljenih</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>Priljubljene</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="TimeoutToolTip" xml:space="preserve">
+    <value>Če je nastavljeno, bo vsako zaporedje preklicano po določenem zamiku, če ni zaznane dejavnosti tipkovnice.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyboardLed" xml:space="preserve">
+    <value>LED tipkovnice</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyboardLedToolTip" xml:space="preserve">
+    <value>Če je nastavljeno, bo med potekom zaporedja svetila ustrezna LED na tipkovnici.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="KeyCompose" xml:space="preserve">
+    <value>Compose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunch" xml:space="preserve">
+    <value>Zaženi WinCompose ob prijavi</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="AutoLaunchToolTip" xml:space="preserve">
+    <value>Če je nastavljeno, se bo WinCompose zagnal, ko se uporabnik prijavi.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="Accessibility" xml:space="preserve">
+    <value>Dostopnost</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLock" xml:space="preserve">
+    <value>Caps Lock je dejaven le, dokler je pritisnjen</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="MustHoldCapsLockToolTip" xml:space="preserve">
+    <value>Ob spustu tipke Caps Lock se ta takoj izklopi, namesto običajnega delovanja, kjer jo je treba pritisniti še enkrat.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevated" xml:space="preserve">
+    <value>Zaženi s povišanimi pravicami (priporočeno)</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="RunElevatedToolTip" xml:space="preserve">
+    <value>V nekaterih programih sestavljanje ne bo delovalo, če se WinCompose ne izvaja s povišanimi pravicami. Ta možnost zmanjša verjetnost, da se to zgodi.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkTagline" xml:space="preserve">
+    <value>Različica PolyKybd programa WinCompose</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="ForkBasedOn" xml:space="preserve">
+    <value>Temelji na izvornem programu WinCompose avtorja Sam Hocevar in sodelavcev.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="VisitUpstream" xml:space="preserve">
+    <value>Obišči izvorni projekt</value>
+    <comment>machine-translated fallback</comment>
+  </data>
+  <data name="DonationNote" xml:space="preserve">
+    <value>Donacije prejme Sam Hocevar, izvorni avtor.</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>
