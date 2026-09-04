@@ -46,7 +46,7 @@ namespace WinCompose
         /// this reading is "up and idle, nothing opened, nothing typed" -- the
         /// baseline every later sample should be read against.
         /// </summary>
-        protected override void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             base.OnStartup(e);
             Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,
