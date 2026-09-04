@@ -94,12 +94,18 @@ namespace WinCompose
             return ret;
         }
 
-        // A sequence may contain the colon key, and keys may follow it. The
-        // rule regex used to accept <:> without allowing whitespace after it,
-        // so the key group could not continue past a colon and the whole line
-        // failed to match -- silently, since a non-match is not logged. Every
-        // emoji whose name contains a colon was lost that way: 260 skin-tone
-        // and hair variants in Emoji.txt, e.g. "flexed biceps: light skin tone".
+        // A sequence may contain the colon key, and keys may follow it.
+        //
+        // Two separate defects had to be fixed for that to hold, and the second
+        // is why this test asserts the prefix does NOT resolve. First the <:>
+        // alternative had no trailing \s*, so the line did not match at all and
+        // was dropped silently. Fixing that alone made it match while ParseRule
+        // still read only the first capture of the repeated key group -- so the
+        // sequence was registered TRUNCATED at the colon, which is worse than
+        // being dropped: it binds the emoji to a short prefix that collides with
+        // other rules. In Emoji.txt all 260 colon rules collapsed onto two junk
+        // sequences (Compose f l a g, Compose flexed biceps) and every flag was
+        // unreachable -- 934 of 1192 emoji.
         [TestMethod]
         public void TestColonKeyInSequence()
         {
@@ -116,6 +122,12 @@ namespace WinCompose
 
                 Assert.AreEqual("X", loaded.GetSequenceResult(Seq("a", ":", "b"), false));
                 Assert.AreEqual("Y", loaded.GetSequenceResult(Seq("c", ":"), false));
+
+                // The part before the colon must not be a sequence of its own.
+                // This is the assertion that fails when only the \s* half of the
+                // fix is present: the rule matches, but binds "X" to <a> alone.
+                Assert.AreEqual("", loaded.GetSequenceResult(Seq("a"), false));
+                Assert.AreEqual("", loaded.GetSequenceResult(Seq("c"), false));
             }
             finally
             {
