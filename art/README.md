@@ -38,10 +38,12 @@ constraint on any future edit:
     weak signal at 16px and no signal at all to a red-green colour-blind
     reader.  The wash is not the green an "active" state usually gets because
     the pairs were measured, as mean per-pixel RGB distance between the idle
-    and composing renders at 16px: cyan-to-blue scores 49 against 32 for a
-    green wash, cyan being far brighter than a mid-green.  Colouring the CAP
-    blue instead scores worst of all (27) — it reads as already lit, and
-    leaves the lit state nowhere to go.
+    and composing renders at 16px.  As a soft radial glow, cyan scored 49
+    against 32 for green — cyan being far brighter than a mid-green.  The
+    diagonal fill that replaced it is opaque edge to edge rather than fading
+    out, and that, more than the direction, is what takes the figure to 150.
+    Colouring the CAP blue instead scored worst of all (27): it reads as
+    already lit, and leaves the lit state nowhere to go.
 
   * **The cap stays dark while composing**, so the fork is recognisable in every
     state rather than only at rest.

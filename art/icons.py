@@ -42,7 +42,11 @@ LEGEND_LIT = "#f2fbff"                     # legend while composing
 # change here is carried by brightness over the whole face.  A blue CAP scored
 # worst of all (27) — it reads as already lit, and leaves the lit state
 # nowhere to go.
-GLOW_A, GLOW_B = "#3fe0ff", "#1550c8"      # the "key is lit" wash
+# Blue at the top-left corner, cyan at the bottom-right.  Note this runs
+# COUNTER to the cap's own diagonal, which goes light at the top-left to dark at
+# the bottom-right: the lit face brightens the way the cap darkens, so it reads
+# as its own light source rather than as more of the cap's shading.
+GLOW_A, GLOW_B = "#1550c8", "#3fe0ff"      # the "key is lit" wash: TL -> BR
 
 
 def _cap_d():
@@ -91,17 +95,15 @@ def decal_idle():
 
 
 def decal_active():
-    """Composing: the display lights up.  The wash covers most of the face so
-    the change is a large brightness step, not a recoloured 5px diamond."""
+    """Composing: the display lights up.  The wash covers the whole face so the
+    change is a large brightness step, not a recoloured 5px diamond."""
     return f'''{_HEAD}
 <defs>
- <radialGradient id="halo" cx="0.5" cy="0.49" r="0.62">
-  <stop offset="0" stop-color="{GLOW_A}" stop-opacity="0.95"/>
-  <stop offset="0.45" stop-color="{GLOW_B}" stop-opacity="0.6"/>
-  <stop offset="1" stop-color="{GLOW_B}" stop-opacity="0"/></radialGradient>
+ <linearGradient id="lit" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="{GLOW_A}"/><stop offset="1" stop-color="{GLOW_B}"/></linearGradient>
 </defs>
-<path d="{_face_d()}" fill="url(#halo)"/>
-<path d="{_face_d()}" fill="none" stroke="{GLOW_A}" stroke-opacity="0.55" stroke-width="5"/>
+<path d="{_face_d()}" fill="url(#lit)"/>
+<path d="{_face_d()}" fill="none" stroke="{GLOW_B}" stroke-opacity="0.5" stroke-width="5"/>
 <path d="{_diamond_d()}" fill="{LEGEND_LIT}"/>
 </svg>'''
 
