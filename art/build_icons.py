@@ -33,7 +33,14 @@ RES = ROOT / "src" / "wincompose" / "res"
 UI = ROOT / "src" / "wincompose" / "ui"
 ART = ROOT / "art"
 
-ICO_SIZES = [(16, 16), (32, 32), (48, 48), (256, 256)]
+# Every size the Windows shell asks for, rather than the four upstream shipped.
+# The shell scales a missing size from whichever frame is present, so 20 and 24
+# (the small icon at 125% and 150% display scaling) and 40 and 64 (large icons
+# at 125% and 200%) were being derived from 16 or 32 rather than drawn.  Each
+# frame here is rendered natively from the vector, so adding a size costs only
+# its bytes: icon_normal.ico goes 31 KB -> 57 KB, about what upstream's was.
+ICO_SIZES = [(16, 16), (20, 20), (24, 24), (32, 32),
+             (40, 40), (48, 48), (64, 64), (256, 256)]
 
 
 def keycap_with(overlay=None, size=icons.S):
@@ -170,9 +177,18 @@ def outputs():
         RES / "icon_sequences.ico": ico_bytes(glyph_at("sequences")),
         RES / "icon_settings.ico": ico_bytes(glyph_at("settings")),
 
-        # small window/menu icon
-        RES / "key_compose.png": png_bytes(normal.resize((32, 32), Image.LANCZOS), (96, 96)),
-        UI / "key_compose.png": png_bytes(normal.resize((32, 32), Image.LANCZOS), (96, 96)),
+        # Small window/menu icon: Window.Icon for KeySelector, AboutBox and
+        # DebugWindow, the AboutBox title-bar ImageIcon, and the tray menu's
+        # 16x16 item icon.
+        #
+        # 128 px at 384 DPI, NOT 32 px at 96.  WPF sizes a BitmapImage as
+        # pixels * 96 / DPI, so both are 32 DIP and nothing in the layout moves
+        # — but the 128 px one still has pixels left at 150% and 200% display
+        # scaling, where the 32 px original was upscaled.  Shipping 128 px at
+        # 96 DPI instead would make it a 128 DIP icon and blow the title bar
+        # apart; the DPI is what keeps the size fixed.
+        RES / "key_compose.png": png_bytes(normal.resize((128, 128), Image.LANCZOS), (384, 384)),
+        UI / "key_compose.png": png_bytes(normal.resize((128, 128), Image.LANCZOS), (384, 384)),
 
         # loose artwork
         ROOT / "src" / "icon.png": png_bytes(normal.resize((32, 32), Image.LANCZOS), (96, 96)),
