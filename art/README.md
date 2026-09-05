@@ -59,6 +59,17 @@ constraint on any future edit:
     strokes reach the light corner where a light ink measures 1.55:1 and the
     gear's lower teeth disappeared.
 
+    Those two legends are **raised** rather than flat: their ink runs dark navy
+    to a lighter slate along the same diagonal, with a lit sliver on their
+    top-left edges and a shadow on their bottom-right.  A conventional shine —
+    a bright band across the glyph — was tried first and does not work here,
+    because a light area anywhere on the face's cyan half measures 1.2–1.5:1.
+    The lift on its own also costs ink at small sizes; the emboss shadow is
+    what pays it back, which is why they arrived together.  Measured as how
+    much ink survives the downscale to 16px, the raised legends land at 41.1
+    and 31.9 against 41.5 and 33.6 for the flat navy they replace — parity,
+    which is the constraint any future tweak here has to meet.
+
 The update marker (`decal_update.png`) and the unreferenced `decal_disabled.png`
 are upstream's and are deliberately not generated here.
 

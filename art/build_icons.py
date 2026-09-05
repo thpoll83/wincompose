@@ -23,7 +23,7 @@ import pathlib
 import struct
 import sys
 
-from PIL import Image
+from PIL import Image, ImageChops, ImageDraw
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import icons  # noqa: E402
@@ -45,17 +45,57 @@ def keycap_with(overlay=None, size=icons.S):
     return im
 
 
-def glyph(name, color=icons.LEGEND_DARK):
-    """A legend lifted from upstream's artwork (art/glyph_*.png is an alpha
-    mask extracted from it) and recoloured for the lit face.
+def _rgb(h):
+    return tuple(int(h[i:i + 2], 16) for i in (1, 3, 5))
 
-    Dark, not light: these legends have thin strokes that reach the face's
+
+def _diagonal_ramp(size, start, end):
+    """A top-left to bottom-right linear gradient, drawn as the 2*size-1 lines
+    of constant x+y.  Pure PIL on purpose: the whole art pipeline is pillow and
+    cairosvg, and a gradient is not worth adding numpy for."""
+    a, b = _rgb(start), _rgb(end)
+    im = Image.new("RGB", (size, size))
+    draw = ImageDraw.Draw(im)
+    span = 2 * size - 2
+    for k in range(span + 1):
+        t = k / span
+        draw.line([(k, 0), (0, k)],
+                  fill=tuple(round(a[i] + (b[i] - a[i]) * t) for i in range(3)))
+    return im
+
+
+def _shifted(mask, dx, dy):
+    out = Image.new("L", mask.size, 0)
+    out.paste(mask, (dx, dy))
+    return out
+
+
+def glyph(name, depth=3, light_alpha=200, shadow_alpha=150):
+    """A window legend: upstream's artwork (art/glyph_*.png is an alpha mask
+    extracted from it), inked for the lit face and raised.
+
+    Dark ink, not light: these legends have thin strokes that reach the face's
     light-cyan corner, where a light ink measures 1.55:1 — see the contrast
-    table in icons.py."""
+    table in icons.py.  The gradient and the lit edge are how they still catch
+    light without a bright area anywhere.
+    """
     mask = Image.open(ART / f"glyph_{name}.png").convert("RGBA").split()[3]
-    tinted = Image.new("RGBA", mask.size, color)
-    tinted.putalpha(mask)
-    return tinted
+    size = mask.size[0]
+
+    out = Image.new("RGBA", mask.size, (0, 0, 0, 0))
+    for offset, colour, alpha in ((-depth, icons.EMBOSS_LIGHT, light_alpha),
+                                  (depth, icons.EMBOSS_SHADOW, shadow_alpha)):
+        # the sliver that a copy of the glyph, nudged diagonally, leaves
+        # OUTSIDE the glyph itself — one edge lit, the opposite one shadowed
+        sliver = ImageChops.subtract(_shifted(mask, offset, offset), mask)
+        layer = Image.new("RGBA", mask.size, colour)
+        layer.putalpha(sliver.point(lambda v: v * alpha // 255))
+        out.alpha_composite(layer)
+
+    body = _diagonal_ramp(size, icons.LEGEND_DARK, icons.LEGEND_SHEEN).convert("RGBA")
+    body.putalpha(mask)
+    out.alpha_composite(body)
+    return out
 
 
 def png_bytes(im, dpi):

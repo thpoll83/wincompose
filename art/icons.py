@@ -64,6 +64,26 @@ FACE_A, FACE_B = "#1550c8", "#3fe0ff"
 LEGEND_LIGHT = "#e9eefa"
 LEGEND_DARK = "#0a1830"
 
+# The window legends (Aβ¿Δ, the gear) are raised rather than flat: their ink
+# runs from LEGEND_DARK at the top-left to LEGEND_SHEEN at the bottom-right,
+# and build_icons.py adds a lit sliver along their top-left edges with a shadow
+# along their bottom-right — a legend lit from the top-left, matching the cap
+# body's own gradient.
+#
+# LEGEND_SHEEN is as light as it can be without costing anything at small
+# sizes.  Measured as how much ink survives the downscale (mean per-pixel RGB
+# distance between the rendered icon and the bare key at 16px), against the
+# flat navy it replaces:
+#
+#     flat navy   41.5   #283042  42.9   #343c50  41.2   #3c465c  39.9   #465068  38.5
+#
+# The lift alone costs presence — the gradient's light end is closer to the
+# face — and the emboss shadow is what pays it back.  A LIGHT sheen was tried
+# first and abandoned: a bright band anywhere on the face's cyan half measures
+# 1.2-1.5:1, and the gear's lower teeth vanished into it.
+LEGEND_SHEEN = "#343c50"
+EMBOSS_LIGHT, EMBOSS_SHADOW = "#d6e4ff", "#040812"
+
 
 def _cap_d():
     r = 40
