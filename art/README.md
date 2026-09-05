@@ -20,10 +20,12 @@ their original lettering on the new cap.
 What the design is doing
 ------------------------
 
-This fork's cap is dark with a lit legend, where upstream's is cream.  That is
-the fork mark: PolyKybd's keycaps are per-key OLED displays, and unlike a corner
-badge a whole-cap change is still legible at the 16×16 the notification area
-actually uses.
+The key is lit blue where upstream's is a cream keycap.  That is the fork mark:
+PolyKybd's keycaps are per-key OLED displays, and unlike a corner badge a
+whole-cap change is still legible at the 16×16 the notification area actually
+uses.  The key is lit in **both** states — only the legend changes, white at
+rest and knocked out dark while composing, the way a real keycap's legend would
+invert.
 
 Three things were measured at 16px rather than judged at 256px, and each is a
 constraint on any future edit:
@@ -32,21 +34,30 @@ constraint on any future edit:
     fraction of the icon at every size, and at 16px upstream's left about five
     pixels for the legend.
 
-  * **Idle and composing differ over a large area, not in hue.**  Composing
-    lights the whole face cyan-to-blue; the legend stays near-white in both
-    states.  Upstream swapped a small dark diamond for a green one, which is a
-    weak signal at 16px and no signal at all to a red-green colour-blind
-    reader.  The wash is not the green an "active" state usually gets because
-    the pairs were measured, as mean per-pixel RGB distance between the idle
-    and composing renders at 16px.  As a soft radial glow, cyan scored 49
-    against 32 for green — cyan being far brighter than a mid-green.  The
-    diagonal fill that replaced it is opaque edge to edge rather than fading
-    out, and that, more than the direction, is what takes the figure to 150.
-    Colouring the CAP blue instead scored worst of all (27): it reads as
-    already lit, and leaves the lit state nowhere to go.
+  * **The state pair was chosen from four candidates**, scored as mean
+    per-pixel RGB distance between the idle and composing renders at 16px:
 
-  * **The cap stays dark while composing**, so the fork is recognisable in every
-    state rather than only at rest.
+    | states | score |
+    |---|---|
+    | dark key ⇄ lit key (either direction) | 150 |
+    | lit key, legend lights only | 173 |
+    | **lit key, legend inverts** | **48** |
+    | bare lit key ⇄ diamond appears | 28 |
+
+    Inverting the legend is not the strongest signal, and was picked anyway:
+    it keeps one identity in the tray at all times, and the difference is
+    black-versus-white rather than a hue swap, so it survives greyscale and
+    colour-blindness.  Upstream's states differed only in the hue of a
+    five-pixel diamond, which does neither.  If the state ever needs to shout
+    louder, the 150 and 173 rows are where to go.
+
+  * **Which ink a legend takes is measured, not chosen.**  The face runs dark
+    blue at the top-left to light cyan at the bottom-right, so the two inks are
+    not interchangeable across it — the contrast table is in `icons.py`.  The
+    resting diamond is light (it sits centred, and is a solid shape rather than
+    text); the Aβ¿Δ and gear window legends are dark, because their thin
+    strokes reach the light corner where a light ink measures 1.55:1 and the
+    gear's lower teeth disappeared.
 
 The update marker (`decal_update.png`) and the unreferenced `decal_disabled.png`
 are upstream's and are deliberately not generated here.

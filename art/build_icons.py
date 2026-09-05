@@ -45,9 +45,13 @@ def keycap_with(overlay=None, size=icons.S):
     return im
 
 
-def glyph(name, color=icons.LEGEND):
+def glyph(name, color=icons.LEGEND_DARK):
     """A legend lifted from upstream's artwork (art/glyph_*.png is an alpha
-    mask extracted from it) and recoloured for the dark face."""
+    mask extracted from it) and recoloured for the lit face.
+
+    Dark, not light: these legends have thin strokes that reach the face's
+    light-cyan corner, where a light ink measures 1.55:1 — see the contrast
+    table in icons.py."""
     mask = Image.open(ART / f"glyph_{name}.png").convert("RGBA").split()[3]
     tinted = Image.new("RGBA", mask.size, color)
     tinted.putalpha(mask)
