@@ -34,8 +34,15 @@ LEGEND = "#e9eefa"                         # legend at rest
 # The legend stays near-white in both states on purpose: it is the key's
 # identity, and what changes is the FACE.  A legend that changed colour instead
 # would put the whole state difference back into a five-pixel shape.
-LEGEND_LIT = "#ecfff4"                     # legend while composing
-GLOW_A, GLOW_B = "#2ce072", "#0f7f38"      # the "key is lit" wash
+LEGEND_LIT = "#f2fbff"                     # legend while composing
+# Cyan fading to PolyKybd blue, not the green an "active" state usually gets.
+# Measured over the four candidates at 16px, as mean per-pixel RGB distance
+# between the idle and composing renders: this pair scores 49 against 32 for a
+# green wash, because cyan is far brighter than a mid-green and the state
+# change here is carried by brightness over the whole face.  A blue CAP scored
+# worst of all (27) — it reads as already lit, and leaves the lit state
+# nowhere to go.
+GLOW_A, GLOW_B = "#3fe0ff", "#1550c8"      # the "key is lit" wash
 
 
 def _cap_d():

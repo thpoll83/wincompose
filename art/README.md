@@ -33,9 +33,15 @@ constraint on any future edit:
     pixels for the legend.
 
   * **Idle and composing differ over a large area, not in hue.**  Composing
-    lights the whole face green; the legend stays near-white in both states.
-    Upstream swapped a small dark diamond for a green one, which is a weak
-    signal at 16px and no signal at all to a red-green colour-blind reader.
+    lights the whole face cyan-to-blue; the legend stays near-white in both
+    states.  Upstream swapped a small dark diamond for a green one, which is a
+    weak signal at 16px and no signal at all to a red-green colour-blind
+    reader.  The wash is not the green an "active" state usually gets because
+    the pairs were measured, as mean per-pixel RGB distance between the idle
+    and composing renders at 16px: cyan-to-blue scores 49 against 32 for a
+    green wash, cyan being far brighter than a mid-green.  Colouring the CAP
+    blue instead scores worst of all (27) — it reads as already lit, and
+    leaves the lit state nowhere to go.
 
   * **The cap stays dark while composing**, so the fork is recognisable in every
     state rather than only at rest.
