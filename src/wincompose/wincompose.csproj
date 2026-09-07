@@ -107,6 +107,10 @@
     <Resource Include="res\icon_sequences.png" />
     <Resource Include="res\icon_settings.png" />
     <Resource Include="res\key_compose.png" />
+    <Resource Include="res\menu\debug.png" />
+    <Resource Include="res\menu\exit.png" />
+    <Resource Include="res\menu\options.png" />
+    <Resource Include="res\menu\sequences.png" />
     <Resource Include="res\key_empty.png" />
     <Resource Include="res\key_compose_big.png" />
     <Resource Include="ui\key_compose.png" />
