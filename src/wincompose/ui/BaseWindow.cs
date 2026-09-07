@@ -33,6 +33,15 @@ namespace WinCompose
     {
         public BaseWindow()
         {
+            // Ask for our own style by name. An implicit style matches the EXACT
+            // type, and nothing here IS a BaseWindow - they are SettingsWindow,
+            // SequenceWindow, AboutBox and KeySelector - so the Style keyed
+            // {x:Type BaseWindow} in StyleOverrides would never have been applied
+            // to any of them. This resolves it through the ordinary lookup chain
+            // instead, which ends at Application.Resources, and every subclass
+            // gets it.
+            SetResourceReference(StyleProperty, typeof(BaseWindow));
+
             Closing += (o, e) => { Hide(); e.Cancel = true; };
 
             // Every window here is a cached singleton, so this subscription
