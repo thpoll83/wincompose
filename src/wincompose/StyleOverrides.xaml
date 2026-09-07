@@ -160,6 +160,112 @@
         </Setter>
     </Style>
 
+    <!-- WPF-UI lays a menu row out for an application menu bar: 6px above and
+         below the content, inside a border with a 1px margin, which around a
+         16px icon is a 32px row. The tray menu is five of those, read at a
+         glance beside the taskbar. This is the theme's own SubmenuItem
+         template with those two margins at 4px and 0 - a 24px row, the height
+         a Windows menu has always had - plus the header presenter centred,
+         which the taller row did not need. Everything else is verbatim,
+         triggers included: a template's triggers do not come along with
+         BasedOn, so dropping them loses the hover highlight and the
+         icon/gesture/checkmark handling. -->
+    <ControlTemplate x:Key="CompactSubmenuItemTemplate" TargetType="{x:Type MenuItem}">
+        <Border x:Name="Border" Margin="4,0,4,0" Background="Transparent" CornerRadius="4">
+            <Grid Margin="8,4,8,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut" />
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    x:Name="CheckBoxIconBorder"
+                    Grid.Column="0"
+                    Width="20"
+                    Height="20"
+                    Margin="0,0,6,0"
+                    VerticalAlignment="Center"
+                    Background="{DynamicResource CheckBoxBackground}"
+                    BorderBrush="{DynamicResource CheckBoxBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Visibility="Collapsed">
+                    <TextBlock
+                        x:Name="CheckBoxIcon"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontFamily="{DynamicResource FluentSystemIcons}"
+                        FontSize="16"
+                        Text=""
+                        TextAlignment="Center" />
+                </Border>
+
+                <ContentPresenter
+                    x:Name="Icon"
+                    Grid.Column="1"
+                    Margin="0,0,6,0"
+                    VerticalAlignment="Center"
+                    KeyboardNavigation.IsTabStop="False"
+                    Content="{TemplateBinding Icon}" />
+
+                <ContentPresenter
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    ContentSource="Header"
+                    RecognizesAccessKey="True"
+                    TextElement.Foreground="{TemplateBinding Foreground}" />
+
+                <TextBlock
+                    x:Name="InputGestureText"
+                    Grid.Column="3"
+                    Margin="25,0,0,0"
+                    VerticalAlignment="Bottom"
+                    FontSize="11"
+                    Foreground="{DynamicResource TextFillColorDisabledBrush}"
+                    Text="{TemplateBinding InputGestureText}" />
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuBarItemBackgroundSelected}" />
+            </Trigger>
+            <Trigger Property="Icon" Value="{x:Null}">
+                <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="IsCheckable" Value="True">
+                <Setter TargetName="CheckBoxIconBorder" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="CheckBoxIcon" Property="Text" Value="&#xF294;" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{DynamicResource TextFillColorDisabled}" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="InputGestureText" Value="">
+                <Setter TargetName="InputGestureText" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- The theme picks a template per Role from a trigger, and a trigger beats
+         a plain setter, so this has to be a trigger of its own. It reaches the
+         tray menu because a ContextMenu resolves its implicit styles up the
+         logical tree into Application.Resources, which is where the 32px row
+         came from in the first place. -->
+    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Style.Triggers>
+            <Trigger Property="Role" Value="SubmenuItem">
+                <Setter Property="Template" Value="{StaticResource CompactSubmenuItemTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- WPF-UI draws the keyboard focus ring as a rectangle with no margin, so
          it sits flush against the control it marks. Same ring and brush, pushed
          outwards. Overriding the theme's key works because the control styles
