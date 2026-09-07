@@ -34,8 +34,8 @@
              machines, live heap settled at 54.1 MB and did not move again, of
              which 7.9 MB is the compose data and ~5 MB is WPF.
 
-             The windows that show user content keep using Emoji.Wpf -- there
-             rendering arbitrary emoji is the whole point, and the cost is only
+             The windows that show user content keep using Emoji.Wpf, where
+             rendering arbitrary emoji is the whole point and the cost is only
              paid if the user opens one.
 
              Rendered by src/render-menu-icons.py from NotoColorEmoji at 72px,
