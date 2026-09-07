@@ -349,7 +349,7 @@
     <value>Parannukset</value>
   </data>
   <data name="DelaySeconds" xml:space="preserve">
-    <value>[0} sekuntia</value>
+    <value>{0} sekuntia</value>
   </data>
   <data name="About" xml:space="preserve">
     <value>Tietoja</value>

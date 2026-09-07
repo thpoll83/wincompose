@@ -11,6 +11,12 @@ layer can only ever replace an English string in a non-English UI — it never
 overrides a human translation.  Run it after `update-data.sh` step 2 (which it
 calls itself), or standalone; it is idempotent.
 
+`CORRECTIONS` is the one exception, and is deliberately narrow: a human string
+that `string.Format` provably cannot render.  Those are regenerated from the
+`.po` on every run, so fixing the `.resx` by hand does not survive; and the fix
+belongs upstream on Weblate, so each entry carries the defect and is reported as
+stale — not silently kept — once upstream reads correctly.
+
     python3 apply-machine-translations.py            # fill the gaps
     python3 apply-machine-translations.py --check    # report, write nothing
 """
@@ -36,6 +42,24 @@ PO2RES = {
     "sc": "it-CH",
     "eo": "de-CH",
     "be@latin": "be-BY",
+}
+
+
+# Human translations that string.Format cannot render, and the corrected text.
+# The machine layer above never overrides a human string; this does, so the bar
+# is higher: an entry must name a defect the build can SEE -- today, a missing or
+# mistyped placeholder -- never a wording preference.  Keyed by (resx locale,
+# target kind, string id).  Report these upstream; apply_corrections() prints an
+# entry as STALE once upstream renders correctly, which is the cue to delete it.
+CORRECTIONS = {
+    # "10 секунд" writes the number into the text, so the label always says ten
+    # regardless of the delay actually configured.
+    # The space is the non-breaking one the original used: Belarusian keeps a
+    # number and its unit together.
+    ("be", "Text", "DelaySeconds"): "{0}\u00a0секунд",
+    # "[0}" is a typo for "{0}".  It is not a format item at all, so Format
+    # returns the string verbatim and the user reads a literal "[0}".
+    ("fi", "Text", "DelaySeconds"): "{0} sekuntia",
 }
 
 
@@ -134,6 +158,53 @@ def append_entries(path, entries):
         f.write(raw)
 
 
+def replace_value(path, ident, value):
+    """Rewrite one <data>'s <value> in place, keeping CRLF and the BOM."""
+    with open(path, encoding="utf-8-sig", newline="") as f:
+        raw = f.read()
+    pat = re.compile(r'(<data name="' + re.escape(ident) + r'"[^>]*>.*?<value>)(.*?)(</value>)',
+                     re.S)
+    # A replacement FUNCTION, not a string: a template would read a backslash in
+    # the translated text as a group reference.
+    raw, n = pat.subn(lambda m: m.group(1) + escape_xml(value) + m.group(3), raw, count=1)
+    if n != 1:
+        sys.exit(f"apply-machine-translations: no <value> for {ident} in {path}")
+    with open(path, "w", encoding="utf-8-sig", newline="") as f:
+        f.write(raw)
+
+
+def apply_corrections(english, check):
+    """Replace the human translations listed in CORRECTIONS. See that table."""
+    holes = re.compile(r"\{\d+\}")
+    templates = {kind: template for kind, _, template in TARGETS}
+    corrected = stale = 0
+    for (loc, kind, ident), value in sorted(CORRECTIONS.items()):
+        path = templates[kind].format(loc=loc)
+        existing = read_resx(path)
+        if existing is None or ident not in existing:
+            sys.exit(f"apply-machine-translations: correction {loc}/{ident} matches "
+                     f"nothing in {path}; fix the key or drop the entry")
+        current = existing[ident]
+        if current == value:
+            continue                                  # already applied
+        want = sorted(set(holes.findall(english[kind].get(ident, ""))))
+        if want and sorted(set(holes.findall(current))) == want:
+            print(f"  correction {loc}/{ident} is STALE: upstream now reads "
+                  f"{current!r} — delete the entry")
+            stale += 1
+            continue
+        if not check:
+            replace_value(path, ident, value)
+        corrected += 1
+        print(f"  {'would correct' if check else 'corrected'} {loc}/{ident}: "
+              f"{current!r} -> {value!r}")
+    if corrected or stale:
+        print(f"apply-machine-translations: {corrected} correction(s) "
+              f"{'to apply' if check else 'applied'}"
+              + (f", {stale} stale" if stale else ""))
+    return corrected, stale
+
+
 def check_placeholders(english):
     """A {0} that survives into the English but not the translation is a defect.
 
@@ -168,6 +239,7 @@ def main():
         if english[kind] is None:
             sys.exit(f"apply-machine-translations: missing English master {master}")
 
+    apply_corrections(english, check)
     check_placeholders(english)
 
     machine_dir = "po-machine"

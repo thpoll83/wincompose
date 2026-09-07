@@ -349,7 +349,7 @@
     <value>Паляпшэнні</value>
   </data>
   <data name="DelaySeconds" xml:space="preserve">
-    <value>10 секунд</value>
+    <value>{0} секунд</value>
   </data>
   <data name="About" xml:space="preserve">
     <value>Пра праграму</value>
