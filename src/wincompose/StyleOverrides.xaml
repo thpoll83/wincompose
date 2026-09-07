@@ -1,8 +1,27 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
-                    xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf">
+                    xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+                    xmlns:wc="clr-namespace:WinCompose">
     
+    <!-- Every window's style, based on the theme's plain-Window one - which
+         keeps WindowStyle=SingleBorderWindow, i.e. the caption Windows draws.
+         Its size setters are neutralised because they are meant for an app's
+         main window (1100x600, and a 460px minimum that is wider than the key
+         selector's 288px maximum); each window states its own.
+
+         An implicit style matches the EXACT type, and nothing IS a BaseWindow
+         (they are SettingsWindow, SequenceWindow, AboutBox and KeySelector),
+         so this key is reached by BaseWindow's own SetResourceReference rather
+         than implicitly. Same trap as the Emoji.Wpf TextBlock below, one
+         control up. -->
+    <Style TargetType="{x:Type wc:BaseWindow}" BasedOn="{StaticResource {x:Type Window}}">
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+    </Style>
+
     <!-- WPF-UI's Fluent typography sets the default TextBlock to 14px, so every
          label reads noticeably larger than a native Windows dialog. Most text in
          these windows is a TextBlock (check box contents included), so bringing
@@ -19,11 +38,62 @@
         <Setter Property="FontSize" Value="12" />
     </Style>
 
+    <!-- The tab strip. WPF-UI's TabControl template hardcodes
+         Background="Transparent" on the header TabPanel, so the tabs sat on
+         the window's own colour and the only thing telling the selected one
+         apart was a 1px frame. This is that template, verbatim, with the panel
+         given the theme's recessed surface: #EEEEEE in light, #1C1C1C in dark,
+         against a selected tab of #F9F9F9 / #282828. One key, both themes, and
+         an unselected tab is transparent so it reads as part of the strip. -->
+    <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource {x:Type TabControl}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <Grid KeyboardNavigation.TabNavigation="Local">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TabPanel
+                            x:Name="HeaderPanel"
+                            Grid.Row="0"
+                            Margin="0"
+                            Panel.ZIndex="1"
+                            Background="{DynamicResource SolidBackgroundFillColorSecondaryBrush}"
+                            IsItemsHost="True"
+                            KeyboardNavigation.TabIndex="1" />
+                        <Border
+                            x:Name="Border"
+                            Grid.Row="1"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="0,1,0,0"
+                            CornerRadius="0,4,4,4"
+                            KeyboardNavigation.DirectionalNavigation="Contained"
+                            KeyboardNavigation.TabIndex="2"
+                            KeyboardNavigation.TabNavigation="Local">
+                            <ContentPresenter
+                                x:Name="PART_SelectedContentHost"
+                                Margin="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                ContentSource="SelectedContent"
+                                TextElement.Foreground="{TemplateBinding Foreground}" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- WPF-UI hardcodes MinWidth 180 on the border *inside* the TabItem
          template, so a style setter cannot reach it and three tabs demand
          540px, wrapping onto a second row and leaving each tab mostly empty.
-         This is the theme's own template, verbatim, with that one value bound
-         to the control's MinWidth so the setter below governs it. -->
+         This is the theme's own template with that one value bound to the
+         control's MinWidth so the setter below governs it, and with the
+         selected tab's 1px frame dropped: the strip behind the tabs carries
+         the contrast now (see the TabControl style above), so the frame was
+         drawing a box around something that already stood out. -->
     <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
         <Setter Property="MinWidth" Value="0" />
         <Setter Property="Template">
@@ -37,8 +107,7 @@
                             Margin="0"
                             Padding="12,6"
                             Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="1,1,1,0"
+                            BorderThickness="0"
                             CornerRadius="8,8,0,0">
                             <ContentPresenter
                                 x:Name="ContentSite"
@@ -58,7 +127,6 @@
                                  it covers that line and the two read as one shape. -->
                             <Setter TargetName="Border" Property="Margin" Value="0,0,0,-1" />
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundSelected}" />
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource TabViewSelectedItemBorderBrush}" />
                             <Setter Property="Foreground" Value="{DynamicResource TabViewItemForegroundSelected}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -158,6 +226,112 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <!-- WPF-UI lays a menu row out for an application menu bar: 6px above and
+         below the content, inside a border with a 1px margin, which around a
+         16px icon is a 32px row. The tray menu is five of those, read at a
+         glance beside the taskbar. This is the theme's own SubmenuItem
+         template with those two margins at 4px and 0 - a 24px row, the height
+         a Windows menu has always had - plus the header presenter centred,
+         which the taller row did not need. Everything else is verbatim,
+         triggers included: a template's triggers do not come along with
+         BasedOn, so dropping them loses the hover highlight and the
+         icon/gesture/checkmark handling. -->
+    <ControlTemplate x:Key="CompactSubmenuItemTemplate" TargetType="{x:Type MenuItem}">
+        <Border x:Name="Border" Margin="4,0,4,0" Background="Transparent" CornerRadius="4">
+            <Grid Margin="8,4,8,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut" />
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    x:Name="CheckBoxIconBorder"
+                    Grid.Column="0"
+                    Width="20"
+                    Height="20"
+                    Margin="0,0,6,0"
+                    VerticalAlignment="Center"
+                    Background="{DynamicResource CheckBoxBackground}"
+                    BorderBrush="{DynamicResource CheckBoxBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Visibility="Collapsed">
+                    <TextBlock
+                        x:Name="CheckBoxIcon"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontFamily="{DynamicResource FluentSystemIcons}"
+                        FontSize="16"
+                        Text=""
+                        TextAlignment="Center" />
+                </Border>
+
+                <ContentPresenter
+                    x:Name="Icon"
+                    Grid.Column="1"
+                    Margin="0,0,6,0"
+                    VerticalAlignment="Center"
+                    KeyboardNavigation.IsTabStop="False"
+                    Content="{TemplateBinding Icon}" />
+
+                <ContentPresenter
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    ContentSource="Header"
+                    RecognizesAccessKey="True"
+                    TextElement.Foreground="{TemplateBinding Foreground}" />
+
+                <TextBlock
+                    x:Name="InputGestureText"
+                    Grid.Column="3"
+                    Margin="25,0,0,0"
+                    VerticalAlignment="Bottom"
+                    FontSize="11"
+                    Foreground="{DynamicResource TextFillColorDisabledBrush}"
+                    Text="{TemplateBinding InputGestureText}" />
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuBarItemBackgroundSelected}" />
+            </Trigger>
+            <Trigger Property="Icon" Value="{x:Null}">
+                <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="IsCheckable" Value="True">
+                <Setter TargetName="CheckBoxIconBorder" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="CheckBoxIcon" Property="Text" Value="&#xF294;" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{DynamicResource TextFillColorDisabled}" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="InputGestureText" Value="">
+                <Setter TargetName="InputGestureText" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- The theme picks a template per Role from a trigger, and a trigger beats
+         a plain setter, so this has to be a trigger of its own. It reaches the
+         tray menu because a ContextMenu resolves its implicit styles up the
+         logical tree into Application.Resources, which is where the 32px row
+         came from in the first place. -->
+    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Style.Triggers>
+            <Trigger Property="Role" Value="SubmenuItem">
+                <Setter Property="Template" Value="{StaticResource CompactSubmenuItemTemplate}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!-- WPF-UI draws the keyboard focus ring as a rectangle with no margin, so

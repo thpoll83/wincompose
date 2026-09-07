@@ -22,10 +22,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Icon="/WinCompose;component/res/key_compose.png"
-        Height="500" Width="500"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    WindowCornerPreference="Round"
-        ExtendsContentIntoTitleBar="True">
+        Height="500" Width="500">
 
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close"
@@ -38,11 +35,6 @@
     
 
     <StackPanel Orientation="Vertical">
-        <ui:TitleBar Title="{x:Static i18n:Text.AboutBoxTitle}" Grid.Row="0" Grid.ColumnSpan="3" FontSize="14" ShowMaximize="False" ShowMinimize="False" Height="38" Margin="0 4">
-            <ui:TitleBar.Icon>
-                <ui:ImageIcon Source="/WinCompose;component/res/key_compose.png" />
-            </ui:TitleBar.Icon>
-        </ui:TitleBar>
         <TabControl Margin="10">
 
             <TabItem Header="{x:Static i18n:Text.About}">

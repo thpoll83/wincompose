@@ -17,13 +17,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wc="clr-namespace:WinCompose"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
         xmlns:i18n="clr-namespace:WinCompose.i18n;assembly=language"
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         Width="1024" Height="600"
-        WindowCornerPreference="Round"
-        ExtendsContentIntoTitleBar="True"
         Title="{x:Static i18n:Text.WindowTitle}"
         Icon="/WinCompose;component/res/icon_sequences.png">
 
@@ -68,7 +65,7 @@
                         </Button>
                         <TextBlock x:Name="Watermark" Text="{x:Static i18n:Text.Search}" VerticalAlignment="Center"
                                Margin="8,0" Visibility="Collapsed" IsHitTestVisible="False"
-                               FontStyle="Italic" Foreground="DarkGray"/>
+                               FontStyle="Italic" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </DockPanel>
                 </Grid>
                 <DataTemplate.Triggers>
@@ -97,30 +94,42 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border x:Name="KeyBorder" Width="28" Height="28" Margin="1" CornerRadius="4">
+                                <!-- The same keycap the app icon is, scaled down: every
+                                     colour and proportion here comes from art/icons.py,
+                                     which is the drawing the .ico and the tray icon are
+                                     rasterised from, so the two cannot drift. Upstream's
+                                     cream cap lived here until the icon was redrawn as a
+                                     PolyKybd display key and this was left behind.
+
+                                     At 256px the cap has a 40px corner and a 4px edge at
+                                     55% opacity, and the face is inset 18px with a 30px
+                                     corner and a lit inner edge; 28/256 puts those at 4,
+                                     1, 2 and 3. The label takes the DARK ink, per the
+                                     contrast table in icons.py: the face runs to a light
+                                     cyan at the bottom right, where the light ink falls
+                                     to 1.55:1 and thin strokes wash out. -->
+                                <Border x:Name="KeyBorder" Width="28" Height="28" Margin="1"
+                                        CornerRadius="4" BorderThickness="1" BorderBrush="#8C05070C">
                                     <Border.Background>
-                                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                                            <GradientStop Color="#d2ad8e" Offset="0.0" />
-                                            <GradientStop Color="#f6ebdb" Offset="1.0" />
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0.65,1">
+                                            <GradientStop Color="#55607a" Offset="0.0" />
+                                            <GradientStop Color="#232b3a" Offset="1.0" />
                                         </LinearGradientBrush>
                                     </Border.Background>
-                                    <Border CornerRadius="2" BorderThickness="1" Margin="3">
+                                    <Border CornerRadius="3" BorderThickness="1" Margin="2">
                                         <Border.BorderBrush>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                <GradientStop Color="#eed7bb" Offset="0.0" />
-                                                <GradientStop Color="#f9f2e7" Offset="1.0" />
-                                            </LinearGradientBrush>
+                                            <SolidColorBrush Color="#3fe0ff" Opacity="0.5" />
                                         </Border.BorderBrush>
                                         <Border.Background>
-                                            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                                                <GradientStop Color="#eed8bb" Offset="0.0" />
-                                                <GradientStop Color="#faf3e8" Offset="1.0" />
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#1550c8" Offset="0.0" />
+                                                <GradientStop Color="#3fe0ff" Offset="1.0" />
                                             </LinearGradientBrush>
                                         </Border.Background>
                                         <Viewbox Grid.ColumnSpan="4">
                                             <!-- We use MinWidth in case the label is a combining character,
                                            - otherwise nothing will be rendered. -->
-                                            <TextBlock Text="{Binding KeyLabel}" Foreground="#310" FontWeight="Bold"
+                                            <TextBlock Text="{Binding KeyLabel}" Foreground="#0a1830" FontWeight="Bold"
                                                    FontFamily="Consolas, Segoe UI Symbol, Arial"
                                                    HorizontalAlignment="Center"/>
                                         </Viewbox>
@@ -170,16 +179,10 @@
             <ColumnDefinition Width="728*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <ui:TitleBar Title="{x:Static i18n:Text.WindowTitle}" Grid.Row="0" Grid.ColumnSpan="5" FontSize="14" ShowMaximize="False" ShowMinimize="False" Height="38" Margin="0,0,0,4">
-            <ui:TitleBar.Icon>
-                <ui:ImageIcon Source="/WinCompose;component/res/icon_sequences.png" />
-            </ui:TitleBar.Icon>
-        </ui:TitleBar>
-        <DockPanel Grid.Column="0" Grid.Row="1" LastChildFill="True" Grid.ColumnSpan="3">
+        <DockPanel Grid.Column="0" Grid.Row="0" LastChildFill="True" Grid.ColumnSpan="3">
             <DockPanel Margin="10 4" DockPanel.Dock="Top" VerticalAlignment="Top">
                 <ContentPresenter x:Name="SearchWidget" Content="{Binding}"
                                   ContentTemplate="{StaticResource SearchTextTemplate}" Margin="10 4" DockPanel.Dock="Top" VerticalAlignment="Top" />
@@ -194,7 +197,8 @@
                             Click="ReloadUserDefinedSequences_Click" />
                 </StackPanel>
             </GroupBox>
-            <wc:TreeView Margin="10 4 0 4" ItemsSource="{Binding Categories}" BorderThickness="1" BorderBrush="LightGray"
+            <wc:TreeView Margin="10 4 0 4" ItemsSource="{Binding Categories}" BorderThickness="1"
+                         BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <wc:TreeView.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}" >
@@ -226,12 +230,12 @@
         <GridSplitter Grid.Column="3" ResizeBehavior="PreviousAndNext" Background="Transparent"
                       HorizontalAlignment="Stretch"/>
 
-        <DockPanel Grid.Column="4" Grid.Row="1">
+        <DockPanel Grid.Column="4" Grid.Row="0">
             <TextBlock DockPanel.Dock="Top" Text="{x:Static i18n:Text.Sequences}" Margin="8 2 8 2"/>
             <ListBox Margin="8 4 10 1" ItemsSource="{Binding Sequences}" Name="ListBox" AlternationCount="2" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" Style="{DynamicResource DefaultListBoxStyle}"
                      VirtualizingStackPanel.VirtualizationMode="Recycling" BorderThickness="1"
-                     emoji:Behaviors.SmoothScrolling="True"  BorderBrush="LightGray">
+                     emoji:Behaviors.SmoothScrolling="True"  BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -258,11 +262,12 @@
                         <DockPanel Margin="0,0">
                             <!-- The small character box and its large tooltip -->
                             <Border CornerRadius="4"
-                                    Background="White" Margin="2,6,4,4" SnapsToDevicePixels="True">
+                                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                    Margin="2,6,4,4" SnapsToDevicePixels="True">
                                 <Viewbox Height="34" DockPanel.Dock="Left" StretchDirection="UpOnly"
                                          ToolTipService.InitialShowDelay="0" ToolTipService.BetweenShowDelay="0">
                                     <emoji:TextBlock Text="{Binding Result}" Background="Transparent"
-                                                     Height="32" Margin="4,0,4,0" FontSize="24" Foreground="Black"
+                                                     Height="32" Margin="4,0,4,0" FontSize="24" Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                      FontFamily="{x:Static wc:Constants.PreferredFontFamily}"/>
                                 </Viewbox>
                                 <Border.ToolTip>
@@ -291,7 +296,7 @@
 
             </ListBox>
         </DockPanel>
-        <Frame x:Name="MainFrame" IsHitTestVisible="False" Grid.Column="4" Margin="238,194,191,300" Grid.Row="1">
+        <Frame x:Name="MainFrame" IsHitTestVisible="False" Grid.Column="4" Margin="238,194,191,300" Grid.Row="0">
             <Frame.Template>
                 <ControlTemplate TargetType="Frame">
                     <Border BorderThickness="{TemplateBinding Border.BorderThickness}"

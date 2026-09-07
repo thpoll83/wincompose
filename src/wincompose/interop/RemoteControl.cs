@@ -12,6 +12,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Interop;
@@ -62,12 +63,47 @@ namespace WinCompose
                 OpenEvent?.Invoke((MenuCommand)wParam);
                 handled = true;
             }
+            else if (msg == (int)WM.SETTINGCHANGE)
+            {
+                // Windows broadcasts this to every top-level window with
+                // “ImmersiveColorSet” in lParam when the user switches between
+                // the light and dark app theme. This window is the one that is
+                // up for the life of the process and already has a hook, so it
+                // is where we hear about it. Deliberately not marked handled:
+                // the message is a broadcast and none of it is ours.
+                if (IsImmersiveColorSet(lParam))
+                    SystemThemeEvent?.Invoke();
+            }
 
             return IntPtr.Zero;
         }
 
+        /// <summary>
+        /// lParam is a string pointer for some WM_SETTINGCHANGE values and
+        /// something else entirely for others, so read it defensively: this
+        /// drives nothing but the app's colours, and must never be able to take
+        /// the process down.
+        /// </summary>
+        private static bool IsImmersiveColorSet(IntPtr lParam)
+        {
+            if (lParam == IntPtr.Zero)
+                return false;
+
+            try
+            {
+                return Marshal.PtrToStringAuto(lParam) == "ImmersiveColorSet";
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public event Action ExitEvent;
         public event Action<MenuCommand> OpenEvent;
+
+        /// <summary>Raised when Windows changes its light/dark app theme.</summary>
+        public event Action SystemThemeEvent;
     }
 }
 

@@ -20,7 +20,7 @@ namespace WinCompose
     /// <summary>
     /// Interaction logic for DebugWindow.xaml
     /// </summary>
-    public partial class DebugWindow : Window
+    public partial class DebugWindow : BaseWindow
     {
         public DebugWindow()
         {

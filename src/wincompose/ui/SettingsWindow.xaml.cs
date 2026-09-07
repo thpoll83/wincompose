@@ -14,7 +14,6 @@
 using System.Windows;
 using System.ComponentModel;
 using System.Windows.Input;
-using Wpf.Ui.Appearance;
 
 namespace WinCompose
 {
@@ -27,17 +26,11 @@ namespace WinCompose
         {
             DataContext = new SettingsWindowViewModel();
             InitializeComponent();
-            Settings.ThemeMode.ValueChanged += UpdateBackground;
         }
 
         private void OnCloseCommandExecuted(object Sender, ExecutedRoutedEventArgs e)
         {
             Hide();
-        }
-
-        private void UpdateBackground()
-        {
-            WindowBackgroundManager.UpdateBackground(this, ApplicationThemeManager.GetAppTheme(), Wpf.Ui.Controls.WindowBackdropType.None);
         }
     }
 }

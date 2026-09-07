@@ -16,7 +16,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:wc="clr-namespace:WinCompose"
         xmlns:i18n="clr-namespace:WinCompose.i18n;assembly=language"
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
@@ -25,8 +24,7 @@
         Width="460" Height="560" MinWidth="390" MinHeight="420" MaxWidth="900"
         Title="{x:Static i18n:Text.Options}"
         Icon="/WinCompose;component/res/icon_settings.png" ResizeMode="CanResize"
-        WindowStartupLocation="CenterScreen" SizeToContent="Manual" WindowCornerPreference="Round"
-        ExtendsContentIntoTitleBar="True">
+        WindowStartupLocation="CenterScreen" SizeToContent="Manual">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -78,16 +76,11 @@
          ScrollViewers inside it had nothing to scroll against. -->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ui:TitleBar Grid.Row="0" Title="{x:Static i18n:Text.Options}" CanMaximize="False" ShowMaximize="False" ShowMinimize="False" FontSize="14" Height="38">
-            <ui:TitleBar.Icon>
-                <ui:ImageIcon Source="/WinCompose;component/res/icon_settings.png"/>
-            </ui:TitleBar.Icon></ui:TitleBar>
-        <TabControl Grid.Row="1" Margin="6" >
+        <TabControl Grid.Row="0" Margin="6" >
 
             <!-- The Settings group -->
             <TabItem Header="{x:Static i18n:Text.General}">
@@ -464,9 +457,9 @@
         </TabControl>
 
         <!-- The Close button and the restart warning message -->
-        <TextBlock Grid.Row="2" Foreground="Red" Text="{x:Static i18n:Text.NeedRestart}" HorizontalAlignment="Left"
+        <TextBlock Grid.Row="1" Foreground="Red" Text="{x:Static i18n:Text.NeedRestart}" HorizontalAlignment="Left"
                  Margin="0, 0, 0, 4" Visibility="{Binding WarnMessageVisibility}" TextWrapping="Wrap"/>
-        <Button Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="80"
+        <Button Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="80"
               Margin="10,0,10,10" Content="{Binding CloseButtonText}" Command="{Binding CloseButtonCommand}"
               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
 

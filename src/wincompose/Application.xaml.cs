@@ -25,6 +25,11 @@ namespace WinCompose
             try
             {
                 InitializeComponent();
+
+                // Re-resolve on a Windows theme change, which matters while
+                // theme_mode is System (its default). An explicit Light or Dark
+                // just gets re-applied, which is a no-op.
+                RC.SystemThemeEvent += Settings.SetTheme;
                 Settings.SetTheme();
             }
             catch (Exception ex)

@@ -34,7 +34,10 @@ namespace WinCompose
             m_close_command = new DelegateCommand(OnCloseCommandExecuted);
             m_edit_command = new DelegateCommand(OnEditCommandExecuted);
             m_selected_language = Settings.Language.Value;
-            m_theme_mode = Settings.ThemeMode.Value;
+            // An empty value means System, and the combo box would otherwise
+            // show nothing selected on every config that never chose a theme.
+            m_theme_mode = Settings.ThemeMode.Value == ""
+                         ? Settings.SYSTEM_THEME : Settings.ThemeMode.Value;
             m_close_button_text = Text.Close;
             m_warn_message_visibility = Visibility.Collapsed;
         }

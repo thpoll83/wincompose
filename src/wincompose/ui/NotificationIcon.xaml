@@ -39,12 +39,12 @@
              paid if the user opens one.
 
              Rendered by src/render-menu-icons.py from NotoColorEmoji at 72px,
-             four times the height the menu draws, so they stay crisp at high
-             DPI. Re-run it rather than editing the PNGs by hand. -->
-        <Image Height="18" x:Key="SequencesEmoji" Source="../res/menu/sequences.png"/>
-        <Image Height="18" x:Key="OptionsEmoji"   Source="../res/menu/options.png"/>
-        <Image Height="18" x:Key="DebugEmoji"     Source="../res/menu/debug.png"/>
-        <Image Height="18" x:Key="ExitEmoji"      Source="../res/menu/exit.png"/>
+             several times the 16px the menu draws them at, so they stay crisp
+             at high DPI. Re-run it rather than editing the PNGs by hand. -->
+        <Image Height="16" x:Key="SequencesEmoji" Source="../res/menu/sequences.png"/>
+        <Image Height="16" x:Key="OptionsEmoji"   Source="../res/menu/options.png"/>
+        <Image Height="16" x:Key="DebugEmoji"     Source="../res/menu/debug.png"/>
+        <Image Height="16" x:Key="ExitEmoji"      Source="../res/menu/exit.png"/>
     </tb:TaskbarIcon.Resources>
 
     <tb:TaskbarIcon.ContextMenu>
@@ -59,7 +59,7 @@
                 </ResourceDictionary>
             </ContextMenu.Resources>
 
-            <MenuItem Height="32" IsEnabled="False" Padding="0,0,0,2">
+            <MenuItem IsEnabled="False">
                 <MenuItem.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                         <GradientStop Color="LightCyan" Offset="0"/>
