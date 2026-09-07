@@ -19,7 +19,6 @@
                 xmlns:tb="http://www.hardcodet.net/taskbar"
                 xmlns:wc="clr-namespace:WinCompose"
                 xmlns:i18n="clr-namespace:WinCompose.i18n;assembly=language"
-                xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
                 DataContext="{Binding RelativeSource={RelativeSource Self}}"
                 x:Name="wcToolTip"
                 IconSource="/ui/key_compose.png"
@@ -28,13 +27,24 @@
     <tb:TaskbarIcon.Resources>
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
         <BitmapImage x:Key="ComposeKeyImage" UriSource="../res/key_compose.png"/>
-        <Image Height="18" x:Key="SequencesEmoji" emoji:Image.Source="💬"/>
-        <Image Height="18" x:Key="OptionsEmoji"   emoji:Image.Source="🛠"/>
-        <Image Height="18" x:Key="AboutEmoji"     emoji:Image.Source="ℹ"/>
-        <Image Height="18" x:Key="DonateEmoji"    emoji:Image.Source="💸"/>
-        <Image Height="18" x:Key="DebugEmoji"     emoji:Image.Source="🔎"/>
-        <Image Height="18" x:Key="WebsiteEmoji"   emoji:Image.Source="🌐"/>
-        <Image Height="18" x:Key="ExitEmoji"      emoji:Image.Source="🚪"/>
+        <!-- Pre-rendered rather than drawn by Emoji.Wpf. These four icons were
+             the only emoji on the startup path, and drawing them cost ~41 MB of
+             managed heap for the entire session: the library parses the emoji
+             font to render them and never releases it. Measured on three
+             machines, live heap settled at 54.1 MB and did not move again, of
+             which 7.9 MB is the compose data and ~5 MB is WPF.
+
+             The windows that show user content keep using Emoji.Wpf -- there
+             rendering arbitrary emoji is the whole point, and the cost is only
+             paid if the user opens one.
+
+             Rendered by src/render-menu-icons.py from NotoColorEmoji at 72px,
+             four times the height the menu draws, so they stay crisp at high
+             DPI. Re-run it rather than editing the PNGs by hand. -->
+        <Image Height="18" x:Key="SequencesEmoji" Source="../res/menu/sequences.png"/>
+        <Image Height="18" x:Key="OptionsEmoji"   Source="../res/menu/options.png"/>
+        <Image Height="18" x:Key="DebugEmoji"     Source="../res/menu/debug.png"/>
+        <Image Height="18" x:Key="ExitEmoji"      Source="../res/menu/exit.png"/>
     </tb:TaskbarIcon.Resources>
 
     <tb:TaskbarIcon.ContextMenu>
