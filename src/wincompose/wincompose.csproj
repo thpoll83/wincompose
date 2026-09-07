@@ -112,7 +112,6 @@
     <Resource Include="res\menu\options.png" />
     <Resource Include="res\menu\sequences.png" />
     <Resource Include="res\key_empty.png" />
-    <Resource Include="res\key_compose_big.png" />
     <Resource Include="ui\key_compose.png" />
   </ItemGroup>
   <ItemGroup>

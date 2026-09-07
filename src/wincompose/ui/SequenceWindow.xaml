@@ -97,30 +97,42 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border x:Name="KeyBorder" Width="28" Height="28" Margin="1" CornerRadius="4">
+                                <!-- The same keycap the app icon is, scaled down: every
+                                     colour and proportion here comes from art/icons.py,
+                                     which is the drawing the .ico and the tray icon are
+                                     rasterised from, so the two cannot drift. Upstream's
+                                     cream cap lived here until the icon was redrawn as a
+                                     PolyKybd display key and this was left behind.
+
+                                     At 256px the cap has a 40px corner and a 4px edge at
+                                     55% opacity, and the face is inset 18px with a 30px
+                                     corner and a lit inner edge; 28/256 puts those at 4,
+                                     1, 2 and 3. The label takes the DARK ink, per the
+                                     contrast table in icons.py: the face runs to a light
+                                     cyan at the bottom right, where the light ink falls
+                                     to 1.55:1 and thin strokes wash out. -->
+                                <Border x:Name="KeyBorder" Width="28" Height="28" Margin="1"
+                                        CornerRadius="4" BorderThickness="1" BorderBrush="#8C05070C">
                                     <Border.Background>
-                                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                                            <GradientStop Color="#d2ad8e" Offset="0.0" />
-                                            <GradientStop Color="#f6ebdb" Offset="1.0" />
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0.65,1">
+                                            <GradientStop Color="#55607a" Offset="0.0" />
+                                            <GradientStop Color="#232b3a" Offset="1.0" />
                                         </LinearGradientBrush>
                                     </Border.Background>
-                                    <Border CornerRadius="2" BorderThickness="1" Margin="3">
+                                    <Border CornerRadius="3" BorderThickness="1" Margin="2">
                                         <Border.BorderBrush>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                <GradientStop Color="#eed7bb" Offset="0.0" />
-                                                <GradientStop Color="#f9f2e7" Offset="1.0" />
-                                            </LinearGradientBrush>
+                                            <SolidColorBrush Color="#3fe0ff" Opacity="0.5" />
                                         </Border.BorderBrush>
                                         <Border.Background>
-                                            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                                                <GradientStop Color="#eed8bb" Offset="0.0" />
-                                                <GradientStop Color="#faf3e8" Offset="1.0" />
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#1550c8" Offset="0.0" />
+                                                <GradientStop Color="#3fe0ff" Offset="1.0" />
                                             </LinearGradientBrush>
                                         </Border.Background>
                                         <Viewbox Grid.ColumnSpan="4">
                                             <!-- We use MinWidth in case the label is a combining character,
                                            - otherwise nothing will be rendered. -->
-                                            <TextBlock Text="{Binding KeyLabel}" Foreground="#310" FontWeight="Bold"
+                                            <TextBlock Text="{Binding KeyLabel}" Foreground="#0a1830" FontWeight="Bold"
                                                    FontFamily="Consolas, Segoe UI Symbol, Arial"
                                                    HorizontalAlignment="Center"/>
                                         </Viewbox>
