@@ -11,50 +11,61 @@
 //
 
 using System;
+using System.Windows;
 using Wpf.Ui.Appearance;
 
 namespace WinCompose
 {
-    public class BaseWindow : Wpf.Ui.Controls.FluentWindow
+    /// <summary>
+    /// A plain WPF window, so WINDOWS draws the caption: it is then the colour
+    /// the user picked for every other title bar on the machine, it dims when
+    /// the window goes inactive, and it follows dark mode and high contrast
+    /// with nothing to match by hand.
+    ///
+    /// This used to derive from Wpf.Ui.Controls.FluentWindow, which takes the
+    /// caption over (WindowChrome with CaptionHeight 0, then
+    /// RemoveWindowTitlebarContents) and leaves the app to draw its own
+    /// ui:TitleBar — those are gone with it. Note FluentWindow does that from
+    /// OnSourceInitialized whatever ExtendsContentIntoTitleBar says, so
+    /// clearing the property would not have been enough.
+    /// </summary>
+    public class BaseWindow : Window
     {
-        static BaseWindow()
-        {
-        }
-
         public BaseWindow()
         {
             Closing += (o, e) => { Hide(); e.Cancel = true; };
 
             // Every window here is a cached singleton, so this subscription
             // lives as long as the process and needs no matching removal.
-            Settings.ThemeMode.ValueChanged += UpdateBackground;
+            Settings.ThemeMode.ValueChanged += ApplyThemeToFrame;
         }
 
         /// <summary>
-        /// Hand the window frame to the theme. Two DWM attributes are involved
-        /// and neither is set for us: DWMWA_USE_IMMERSIVE_DARK_MODE, and
-        /// DWMWA_CAPTION_COLOR, which WPF-UI sets to “none” so our own
-        /// <c>ui:TitleBar</c> shows instead of the caption DWM would paint.
-        /// FluentWindow only does this while applying a backdrop, and ours is
-        /// <c>None</c>, so a window opened in the dark theme came up with a
-        /// white caption strip above a #202020 body until the user toggled the
-        /// theme — which is what ran this, through ValueChanged.
+        /// The one DWM attribute still ours to set: DWMWA_USE_IMMERSIVE_DARK_MODE,
+        /// which darkens the caption Windows draws. Deliberately NOT
+        /// WindowBackgroundManager.UpdateBackground, whose last act is to set
+        /// DWMWA_CAPTION_COLOR to “none” — right when the app draws its own
+        /// title bar, and precisely what would stop Windows painting this one.
         /// </summary>
-        private void UpdateBackground()
-            => WindowBackgroundManager.UpdateBackground(this,
-                   ApplicationThemeManager.GetAppTheme(),
-                   Wpf.Ui.Controls.WindowBackdropType.None);
+        private void ApplyThemeToFrame()
+        {
+            if (ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark)
+                WindowBackgroundManager.ApplyDarkThemeToWindow(this);
+            else
+                WindowBackgroundManager.RemoveDarkThemeFromWindow(this);
+        }
 
         /// <summary>
-        /// The earliest point at which the window has an HWND, which
-        /// DWMWA_CAPTION_COLOR needs: unlike the dark-mode and backdrop calls
-        /// beside it, that one does not defer itself to Loaded — it returns
-        /// false and leaves the caption alone.
+        /// The earliest point at which the window has an HWND, which the DWM
+        /// call needs. It was never made at startup before: the two windows
+        /// that themed their frame at all did it from ThemeMode.ValueChanged,
+        /// so a window opened in the dark theme kept a light frame until the
+        /// user toggled the setting.
         /// </summary>
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-            UpdateBackground();
+            ApplyThemeToFrame();
         }
     }
 }

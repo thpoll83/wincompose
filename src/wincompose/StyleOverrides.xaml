@@ -1,8 +1,27 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
-                    xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf">
+                    xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+                    xmlns:wc="clr-namespace:WinCompose">
     
+    <!-- A WPF implicit style matches the EXACT type, so BaseWindow got none
+         of WPF-UI's window styling and every window ran on the WPF default
+         SystemColors.WindowBrush - white, in both themes. That white is what
+         showed through the transparent ui:TitleBar and read as a white title
+         bar. Same trap as the Emoji.Wpf TextBlock below, one control up.
+
+         BasedOn is the theme's plain-Window style, which keeps
+         WindowStyle=SingleBorderWindow, i.e. the caption Windows draws. Its
+         size setters are neutralised because they are meant for an app's main
+         window (1100x600, and a 460px minimum that is wider than the key
+         selector's 288px maximum); each window states its own. -->
+    <Style TargetType="{x:Type wc:BaseWindow}" BasedOn="{StaticResource {x:Type Window}}">
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+    </Style>
+
     <!-- WPF-UI's Fluent typography sets the default TextBlock to 14px, so every
          label reads noticeably larger than a native Windows dialog. Most text in
          these windows is a TextBlock (check box contents included), so bringing

@@ -17,13 +17,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wc="clr-namespace:WinCompose"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
         xmlns:i18n="clr-namespace:WinCompose.i18n;assembly=language"
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         Width="1024" Height="600"
-        WindowCornerPreference="Round"
-        ExtendsContentIntoTitleBar="True"
         Title="{x:Static i18n:Text.WindowTitle}"
         Icon="/WinCompose;component/res/icon_sequences.png">
 
@@ -182,16 +179,10 @@
             <ColumnDefinition Width="728*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <ui:TitleBar Title="{x:Static i18n:Text.WindowTitle}" Grid.Row="0" Grid.ColumnSpan="5" FontSize="14" ShowMaximize="False" ShowMinimize="False" Height="38" Margin="0,0,0,4">
-            <ui:TitleBar.Icon>
-                <ui:ImageIcon Source="/WinCompose;component/res/icon_sequences.png" />
-            </ui:TitleBar.Icon>
-        </ui:TitleBar>
-        <DockPanel Grid.Column="0" Grid.Row="1" LastChildFill="True" Grid.ColumnSpan="3">
+        <DockPanel Grid.Column="0" Grid.Row="0" LastChildFill="True" Grid.ColumnSpan="3">
             <DockPanel Margin="10 4" DockPanel.Dock="Top" VerticalAlignment="Top">
                 <ContentPresenter x:Name="SearchWidget" Content="{Binding}"
                                   ContentTemplate="{StaticResource SearchTextTemplate}" Margin="10 4" DockPanel.Dock="Top" VerticalAlignment="Top" />
@@ -238,7 +229,7 @@
         <GridSplitter Grid.Column="3" ResizeBehavior="PreviousAndNext" Background="Transparent"
                       HorizontalAlignment="Stretch"/>
 
-        <DockPanel Grid.Column="4" Grid.Row="1">
+        <DockPanel Grid.Column="4" Grid.Row="0">
             <TextBlock DockPanel.Dock="Top" Text="{x:Static i18n:Text.Sequences}" Margin="8 2 8 2"/>
             <ListBox Margin="8 4 10 1" ItemsSource="{Binding Sequences}" Name="ListBox" AlternationCount="2" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" Style="{DynamicResource DefaultListBoxStyle}"
@@ -303,7 +294,7 @@
 
             </ListBox>
         </DockPanel>
-        <Frame x:Name="MainFrame" IsHitTestVisible="False" Grid.Column="4" Margin="238,194,191,300" Grid.Row="1">
+        <Frame x:Name="MainFrame" IsHitTestVisible="False" Grid.Column="4" Margin="238,194,191,300" Grid.Row="0">
             <Frame.Template>
                 <ControlTemplate TargetType="Frame">
                     <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
