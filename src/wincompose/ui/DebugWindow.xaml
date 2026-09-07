@@ -13,7 +13,7 @@
 
 <!-- Intentionally no i18n -->
 
-<Window x:Class="WinCompose.DebugWindow"
+<wc:BaseWindow x:Class="WinCompose.DebugWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
@@ -24,7 +24,6 @@
         ResizeMode="CanResize"
         MouseLeftButtonDown="OnLeftButtonDown"
         Deactivated="OnDeactivated"
-        Closing="OnClosing"
         Icon="/WinCompose;component/res/key_compose.png"
         ShowInTaskbar="False"
         Topmost="True"
@@ -34,7 +33,6 @@
         <![CDATA[
             private void OnLeftButtonDown(object sender, MouseButtonEventArgs e) { if (e.ChangedButton == MouseButton.Left) DragMove(); }
             private void OnDeactivated(object sender, EventArgs e) { (sender as Window).Topmost = true; }
-            private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e) { Hide(); e.Cancel = true; }
         ]]>
     </x:Code>
 
@@ -69,4 +67,4 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
     </DockPanel>
-</Window>
+</wc:BaseWindow>
