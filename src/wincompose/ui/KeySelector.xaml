@@ -22,7 +22,7 @@
         WindowStartupLocation="CenterScreen"
         Topmost="True" ResizeMode="NoResize" SizeToContent="Height"
         Icon="/WinCompose;component/res/key_compose.png" WindowStyle="None" AllowsTransparency="False" MaxWidth="288" MaxHeight="81">
-    <Border BorderBrush="Black" BorderThickness="2"
+    <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="2"
             VerticalAlignment="Center" HorizontalAlignment="Center">
         <StackPanel>
             <TextBlock Margin="16" Text="{x:Static i18n:Text.CaptureComposeKey}"/>

@@ -36,6 +36,7 @@ internal enum WH : int
 
 internal enum WM : int
 {
+    SETTINGCHANGE = 0x1A,
     INPUTLANGCHANGEREQUEST = 0x50,
     KEYDOWN    = 0x100,
     KEYUP      = 0x101,

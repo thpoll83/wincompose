@@ -133,7 +133,7 @@ namespace WinCompose
         public static Dictionary<string , string> ValidLanguages => m_valid_languages;
 
         public static List<string> Themes => m_themes;
-        private static readonly List<string> m_themes = new List<string> {"Light", "Dark"};
+        private static readonly List<string> m_themes = new List<string> {SYSTEM_THEME, "Light", "Dark"};
 
         public static IList<Key> ValidLedKeys { get; } = new List<Key>
         {
@@ -304,22 +304,31 @@ namespace WinCompose
             m_sequences = tree;
         }
 
+        /// <summary>
+        /// The theme_mode value meaning “whatever Windows is set to”. It is
+        /// also what an EMPTY value means, which is what every config written
+        /// before this entry existed carries: following Windows is a better
+        /// reading of “never chose” than the Light this used to fall through
+        /// to, and it is what the app did NOT do while a user ran Windows in
+        /// dark mode and saw a white WinCompose.
+        /// </summary>
+        public const string SYSTEM_THEME = "System";
+
         public static void SetTheme()
         {
-            Debug.WriteLine("Loading Theme:" + ThemeMode.Value.ToString());
-            if (ThemeMode.Value == "Light")
+            switch (ThemeMode.Value)
             {
-                
-                ApplicationThemeManager.Apply(ApplicationTheme.Light);
-                
+                case "Light": ApplicationThemeManager.Apply(ApplicationTheme.Light); break;
+                case "Dark": ApplicationThemeManager.Apply(ApplicationTheme.Dark); break;
+                default: ApplicationThemeManager.ApplySystemTheme(); break;
+            }
 
-                //Debug.WriteLine(Wpf.Ui.UiApplication.Current.Resources.MergedDictionaries);
-            }
-            else if (ThemeMode.Value == "Dark")
-            {
-                ApplicationThemeManager.Apply(ApplicationTheme.Dark);
-                //Debug.WriteLine(Wpf.Ui.UiApplication.Current.Resources.MergedDictionaries);
-            }
+            // Worth a real log line rather than the Debug.WriteLine this had:
+            // “it is still bright everywhere” is answered by the setting and
+            // the theme it resolved to, and nothing else was recorded anywhere.
+            Logger.Info($"Theme: {(ThemeMode.Value == "" ? SYSTEM_THEME : ThemeMode.Value)} "
+                      + $"resolved to {ApplicationThemeManager.GetAppTheme()}");
+
             Application.Current.Resources.MergedDictionaries[0].Source = Wpf.Ui.UiApplication.Current.Resources.MergedDictionaries[0].Source;
         }
 

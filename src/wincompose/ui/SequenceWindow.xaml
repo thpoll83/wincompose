@@ -65,7 +65,7 @@
                         </Button>
                         <TextBlock x:Name="Watermark" Text="{x:Static i18n:Text.Search}" VerticalAlignment="Center"
                                Margin="8,0" Visibility="Collapsed" IsHitTestVisible="False"
-                               FontStyle="Italic" Foreground="DarkGray"/>
+                               FontStyle="Italic" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </DockPanel>
                 </Grid>
                 <DataTemplate.Triggers>
@@ -197,7 +197,8 @@
                             Click="ReloadUserDefinedSequences_Click" />
                 </StackPanel>
             </GroupBox>
-            <wc:TreeView Margin="10 4 0 4" ItemsSource="{Binding Categories}" BorderThickness="1" BorderBrush="LightGray"
+            <wc:TreeView Margin="10 4 0 4" ItemsSource="{Binding Categories}" BorderThickness="1"
+                         BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <wc:TreeView.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}" >
@@ -234,7 +235,7 @@
             <ListBox Margin="8 4 10 1" ItemsSource="{Binding Sequences}" Name="ListBox" AlternationCount="2" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" Style="{DynamicResource DefaultListBoxStyle}"
                      VirtualizingStackPanel.VirtualizationMode="Recycling" BorderThickness="1"
-                     emoji:Behaviors.SmoothScrolling="True"  BorderBrush="LightGray">
+                     emoji:Behaviors.SmoothScrolling="True"  BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -261,11 +262,12 @@
                         <DockPanel Margin="0,0">
                             <!-- The small character box and its large tooltip -->
                             <Border CornerRadius="4"
-                                    Background="White" Margin="2,6,4,4" SnapsToDevicePixels="True">
+                                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                    Margin="2,6,4,4" SnapsToDevicePixels="True">
                                 <Viewbox Height="34" DockPanel.Dock="Left" StretchDirection="UpOnly"
                                          ToolTipService.InitialShowDelay="0" ToolTipService.BetweenShowDelay="0">
                                     <emoji:TextBlock Text="{Binding Result}" Background="Transparent"
-                                                     Height="32" Margin="4,0,4,0" FontSize="24" Foreground="Black"
+                                                     Height="32" Margin="4,0,4,0" FontSize="24" Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                      FontFamily="{x:Static wc:Constants.PreferredFontFamily}"/>
                                 </Viewbox>
                                 <Border.ToolTip>
