@@ -12,6 +12,7 @@
 
 using System;
 using System.Windows;
+using System.Windows.Media;
 using Wpf.Ui.Appearance;
 
 namespace WinCompose
@@ -44,10 +45,18 @@ namespace WinCompose
 
             Closing += (o, e) => { Hide(); e.Cancel = true; };
 
-            // Every window here is a cached singleton, so this subscription
+            // The APPLIED theme, not the setting. ThemeMode.ValueChanged fires
+            // only when the user picks a different entry, so a Windows theme
+            // switch — which resolves through the same Apply() without touching
+            // theme_mode — left an open window's content dark and its caption
+            // light. WPF-UI raises this from inside Apply(), so both routes hit
+            // it. Every window here is a cached singleton, so the subscription
             // lives as long as the process and needs no matching removal.
-            Settings.ThemeMode.ValueChanged += ApplyThemeToFrame;
+            ApplicationThemeManager.Changed += OnApplicationThemeChanged;
         }
+
+        private void OnApplicationThemeChanged(ApplicationTheme theme, Color accent)
+            => ApplyThemeToFrame();
 
         /// <summary>
         /// The one DWM attribute still ours to set: DWMWA_USE_IMMERSIVE_DARK_MODE,
@@ -66,10 +75,12 @@ namespace WinCompose
 
         /// <summary>
         /// The earliest point at which the window has an HWND, which the DWM
-        /// call needs. It was never made at startup before: the two windows
-        /// that themed their frame at all did it from ThemeMode.ValueChanged,
-        /// so a window opened in the dark theme kept a light frame until the
-        /// user toggled the setting.
+        /// call needs, and the only route for a window opened AFTER the theme
+        /// was applied — the event above fires at the moment of applying. It
+        /// was never made at startup before: the two windows that themed their
+        /// frame at all did it from ThemeMode.ValueChanged, so a window opened
+        /// in the dark theme kept a light frame until the user toggled the
+        /// setting.
         /// </summary>
         protected override void OnSourceInitialized(EventArgs e)
         {
