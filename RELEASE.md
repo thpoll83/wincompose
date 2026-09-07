@@ -44,9 +44,20 @@ Auth comes from `GH_TOKEN` / `GITHUB_TOKEN`, else `gh auth token`.
 --------------------
 
 `status.txt` in the repo root is what `src/wincompose/Updater.cs` reads, over
-`https://raw.githubusercontent.com/thpoll83/wincompose/main/status.txt`. Set
-`Latest` to the released version once the release exists — while it names a
-version that has no release, the tray offers a download that is not there.
+`https://raw.githubusercontent.com/thpoll83/wincompose/main/status.txt` — from the
+default branch, not from the releases. Set `Latest` to the released version **once
+the release exists**, as its own change: the tray offers a download the moment
+`Latest` exceeds the running version, so a bump that lands first announces a
+release that is not there.
+
+That failure is quieter than it sounds, which is why the ordering matters. The
+`Installer:` and `Portable:` URLs resolve `releases/latest`, so nobody gets a 404
+— they are handed the version they already have, and read it as the updater being
+broken. Cost a 20-minute window on 0.9.18.
+
+Forgetting it entirely fails in the opposite direction and is quieter still: no
+existing install ever learns the release happened, and nothing about the release
+itself looks wrong.
 
 If the release build fails
 --------------------------
