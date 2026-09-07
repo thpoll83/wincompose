@@ -38,11 +38,62 @@
         <Setter Property="FontSize" Value="12" />
     </Style>
 
+    <!-- The tab strip. WPF-UI's TabControl template hardcodes
+         Background="Transparent" on the header TabPanel, so the tabs sat on
+         the window's own colour and the only thing telling the selected one
+         apart was a 1px frame. This is that template, verbatim, with the panel
+         given the theme's recessed surface: #EEEEEE in light, #1C1C1C in dark,
+         against a selected tab of #F9F9F9 / #282828. One key, both themes, and
+         an unselected tab is transparent so it reads as part of the strip. -->
+    <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource {x:Type TabControl}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <Grid KeyboardNavigation.TabNavigation="Local">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TabPanel
+                            x:Name="HeaderPanel"
+                            Grid.Row="0"
+                            Margin="0"
+                            Panel.ZIndex="1"
+                            Background="{DynamicResource SolidBackgroundFillColorSecondaryBrush}"
+                            IsItemsHost="True"
+                            KeyboardNavigation.TabIndex="1" />
+                        <Border
+                            x:Name="Border"
+                            Grid.Row="1"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="0,1,0,0"
+                            CornerRadius="0,4,4,4"
+                            KeyboardNavigation.DirectionalNavigation="Contained"
+                            KeyboardNavigation.TabIndex="2"
+                            KeyboardNavigation.TabNavigation="Local">
+                            <ContentPresenter
+                                x:Name="PART_SelectedContentHost"
+                                Margin="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                ContentSource="SelectedContent"
+                                TextElement.Foreground="{TemplateBinding Foreground}" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- WPF-UI hardcodes MinWidth 180 on the border *inside* the TabItem
          template, so a style setter cannot reach it and three tabs demand
          540px, wrapping onto a second row and leaving each tab mostly empty.
-         This is the theme's own template, verbatim, with that one value bound
-         to the control's MinWidth so the setter below governs it. -->
+         This is the theme's own template with that one value bound to the
+         control's MinWidth so the setter below governs it, and with the
+         selected tab's 1px frame dropped: the strip behind the tabs carries
+         the contrast now (see the TabControl style above), so the frame was
+         drawing a box around something that already stood out. -->
     <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
         <Setter Property="MinWidth" Value="0" />
         <Setter Property="Template">
@@ -56,8 +107,7 @@
                             Margin="0"
                             Padding="12,6"
                             Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="1,1,1,0"
+                            BorderThickness="0"
                             CornerRadius="8,8,0,0">
                             <ContentPresenter
                                 x:Name="ContentSite"
@@ -77,7 +127,6 @@
                                  it covers that line and the two read as one shape. -->
                             <Setter TargetName="Border" Property="Margin" Value="0,0,0,-1" />
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundSelected}" />
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource TabViewSelectedItemBorderBrush}" />
                             <Setter Property="Foreground" Value="{DynamicResource TabViewItemForegroundSelected}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
