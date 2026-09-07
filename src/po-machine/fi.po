@@ -26,3 +26,8 @@ msgstr "Siirry alkuperäiseen projektiin"
 #: Text ID:DonationNote
 msgid "Donations go to Sam Hocevar, the original author."
 msgstr "Lahjoitukset menevät alkuperäiselle tekijälle Sam Hocevarille."
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Avaa lokitiedoston sijainti"

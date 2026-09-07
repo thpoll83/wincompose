@@ -513,4 +513,8 @@
   <data name="DonationNote" xml:space="preserve">
     <value>Donationer går till Sam Hocevar, den ursprungliga upphovsmannen.</value>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Öppna loggfilens plats</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

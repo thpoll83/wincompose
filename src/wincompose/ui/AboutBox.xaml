@@ -49,6 +49,7 @@
                 <DockPanel Margin="8">
                     <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="Wincompose" FontSize="20" />
                     <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="20"  Text="{Binding Version}"/>
+                    <Button DockPanel.Dock="Bottom" Margin="4" Content="{x:Static i18n:Text.OpenLogFolder}" Command="{Binding OpenLogFolderCommand}" Width="200" HorizontalAlignment="Center"/>
                     <Button DockPanel.Dock="Bottom" Margin="4" Content="{x:Static i18n:Text.ReportBug}" Command="{Binding OpenReportBugCommand}" Width="200" HorizontalAlignment="Center"/>
                     <Button DockPanel.Dock="Bottom" Margin="4" Content="{x:Static i18n:Text.VisitWebsite}" Command="{Binding OpenWebsiteCommand}" Width="200" HorizontalAlignment="Center"/>
                 </DockPanel>

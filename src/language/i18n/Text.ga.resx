@@ -517,4 +517,8 @@
     <value>Téann síntiúis chuig Sam Hocevar, an t-údar bunaidh.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Oscail suíomh an chomhaid logála</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

@@ -25,6 +25,7 @@ namespace WinCompose
         private readonly DelegateCommand m_reportbug_command;
         private readonly DelegateCommand m_openupstream_command;
         private readonly DelegateCommand m_opendonate_command;
+        private readonly DelegateCommand m_openlogfolder_command;
 
         public AboutBoxViewModel()
         {
@@ -32,6 +33,7 @@ namespace WinCompose
             m_reportbug_command = new DelegateCommand(OnReportBugCommandExecuted);
             m_openupstream_command = new DelegateCommand(OnOpenUpstreamCommandExecuted);
             m_opendonate_command = new DelegateCommand(OnOpenDonateCommandExecuted);
+            m_openlogfolder_command = new DelegateCommand(OnOpenLogFolderCommandExecuted);
         }
 
 
@@ -39,6 +41,7 @@ namespace WinCompose
         public ICommand OpenReportBugCommand => m_reportbug_command;
         public ICommand OpenUpstreamCommand => m_openupstream_command;
         public ICommand OpenDonateCommand => m_opendonate_command;
+        public ICommand OpenLogFolderCommand => m_openlogfolder_command;
 
         public Stream AuthorsDocument
             => Application.GetResourceStream(new Uri("pack://application:,,,/res/contributors.html")).Stream;
@@ -101,5 +104,38 @@ namespace WinCompose
         // Donations go to the original author, whose work this all is.
         private static void OnOpenDonateCommandExecuted(object parameter)
             => System.Diagnostics.Process.Start("http://wincompose.info/donate/");
+
+        /// <summary>
+        /// Opens the folder holding the log, with the file selected when it is
+        /// already there -- on a first run it may not be.
+        ///
+        /// Unlike the buttons above this one, it can genuinely fail: the
+        /// folder may not exist, and Explorer may be unavailable or replaced.
+        /// A diagnostic aid that throws while the user is trying to report a
+        /// problem would be a poor joke, so it logs and gives up.
+        /// </summary>
+        private static void OnOpenLogFolderCommandExecuted(object parameter)
+        {
+            try
+            {
+                var file = Logging.FilePath;
+                if (File.Exists(file))
+                {
+                    // No space after the comma: Explorer treats "/select, x"
+                    // as two arguments and silently opens Documents instead.
+                    System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{file}\"");
+                }
+                else
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", $"\"{Path.GetDirectoryName(file)}\"");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Could not open the log folder");
+            }
+        }
+
+        private static NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
     }
 }

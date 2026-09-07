@@ -524,4 +524,8 @@
     <value>W niektórych aplikacjach komponowanie nie zadziała, jeśli program WinCompose nie działa z podwyższonymi uprawnieniami. Ta opcja zmniejsza ryzyko wystąpienia takiej sytuacji.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Otwórz lokalizację pliku dziennika</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

@@ -227,3 +227,8 @@ msgstr "Naviedać aryhinalny prajekt"
 #: Text ID:DonationNote
 msgid "Donations go to Sam Hocevar, the original author."
 msgstr "Achviaravańni iduć Sam Hocevar, aŭtaru aryhinała."
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Adkryć tečku z žurnałam"

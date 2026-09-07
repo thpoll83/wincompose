@@ -517,4 +517,8 @@
     <value>Οι δωρεές πηγαίνουν στον Sam Hocevar, τον αρχικό δημιουργό.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Άνοιγμα φακέλου αρχείου καταγραφής</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

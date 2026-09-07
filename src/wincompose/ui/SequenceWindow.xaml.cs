@@ -61,11 +61,16 @@ namespace WinCompose
                     if (!string.IsNullOrEmpty(m_saved_search))
                         m_view_model.SearchText = m_saved_search;
                 }
+                MemoryReport.Report("sequence window shown", collect: true);
             }
             else
             {
                 m_saved_search = m_view_model?.SearchText ?? "";
                 DataContext = null;
+                // Collecting here is the whole point: the view models are
+                // unreachable now but still on the heap, so an uncollected
+                // reading would report the release as having freed nothing.
+                MemoryReport.Report("sequence window hidden", collect: true);
             }
         }
 

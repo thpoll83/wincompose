@@ -517,4 +517,8 @@
     <value>Sas donatziones andant a Sam Hocevar, s’autore originale.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Aberi sa positzione de su file de registru</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

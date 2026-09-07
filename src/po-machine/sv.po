@@ -1,0 +1,13 @@
+# Machine-translated fallback strings for Swedish (sv).
+#
+# NOT part of the Weblate corpus.  These fill entries that po/sv.po does not
+# translate, which would otherwise render in English; a human translation always
+# wins over anything here.  See apply-machine-translations.py.
+#
+# Corrections belong upstream on Weblate — https://hosted.weblate.org/engage/wincompose/
+# — after which the entry can simply be deleted from this file.
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Öppna loggfilens plats"

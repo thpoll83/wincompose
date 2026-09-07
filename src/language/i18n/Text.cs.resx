@@ -514,4 +514,8 @@
     <value>Umožnit zadání kódu Unicode pro všechny znaky, dokonce i ty, které nemají definovanou sekvenci. Například znak U+1A3F by bylo možné napsat následující sekvencí: Compose U 1 A 3 F Enter</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Otevřít složku s protokolem</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

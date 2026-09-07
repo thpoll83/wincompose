@@ -517,4 +517,8 @@
     <value>Lahjoitukset menevät alkuperäiselle tekijälle Sam Hocevarille.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Avaa lokitiedoston sijainti</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

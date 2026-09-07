@@ -526,4 +526,8 @@
     <value>Aukos skiriamos originalo autoriui Sam Hocevar.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Atverti žurnalo failo vietą</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

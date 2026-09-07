@@ -517,4 +517,8 @@
     <value>Az adományok Sam Hocevarhoz, az eredeti szerzőhöz kerülnek.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>A naplófájl helyének megnyitása</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

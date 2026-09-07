@@ -898,6 +898,15 @@ namespace WinCompose.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open Log File Location.
+        /// </summary>
+        public static string OpenLogFolder {
+            get {
+                return ResourceManager.GetString("OpenLogFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report a Bug.
         /// </summary>
         public static string ReportBug {

@@ -50,3 +50,8 @@ msgstr "Esegui con privilegi elevati (consigliato)"
 #: Text ID:RunElevatedToolTip
 msgid "Composition will not work in some applications if WinCompose does not run with elevated privileges. This options reduces the chances that this will happen."
 msgstr "In alcune applicazioni la composizione non funziona se WinCompose non viene eseguito con privilegi elevati. Questa opzione riduce le probabilità che accada."
+
+#. A button on the About tab that opens the folder holding wincompose.log
+#: Text ID:OpenLogFolder
+msgid "Open Log File Location"
+msgstr "Apri la posizione del file di log"

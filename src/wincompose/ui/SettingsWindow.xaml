@@ -442,6 +442,9 @@
                         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,2,0,0"
                                    Text="{x:Static i18n:Text.DonationNote}"/>
 
+                        <Button Margin="4,16,4,4" Width="260" HorizontalAlignment="Center"
+                                Content="{x:Static i18n:Text.OpenLogFolder}" Command="{Binding OpenLogFolderCommand}"/>
+
                         <TextBlock Margin="0,16,0,4" FontWeight="SemiBold"
                                    Text="{x:Static i18n:Text.Authors}"/>
                         <TextBlock Text="{Binding AuthorsText}" TextWrapping="Wrap"

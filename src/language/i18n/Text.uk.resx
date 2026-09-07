@@ -517,4 +517,8 @@
     <value>Пожертви надходять до Sam Hocevar, оригінального автора.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Відкрити теку з журналом</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

@@ -557,4 +557,8 @@
     <value>Dary putujú Samovi Hocevarovi, pôvodnému autorovi.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Otvoriť umiestnenie súboru denníka</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>

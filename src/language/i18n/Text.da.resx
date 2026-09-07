@@ -590,4 +590,8 @@
     <value>Komposition virker ikke i visse programmer, hvis WinCompose ikke kører med forhøjede rettigheder. Denne indstilling mindsker risikoen for, at det sker.</value>
     <comment>machine-translated fallback</comment>
   </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Åbn logfilens placering</value>
+    <comment>machine-translated fallback</comment>
+  </data>
 </root>
