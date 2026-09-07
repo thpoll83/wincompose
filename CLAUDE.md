@@ -171,6 +171,23 @@ attribute that is ours. Whichever you call, call it from `OnSourceInitialized`:
 the caption-colour call needs an HWND and, unlike its neighbours, does not defer
 itself to `Loaded` — it returns false and leaves the caption alone.
 
+⚠️ **Changing a window's base class is a SWEEP, not an edit — there are five
+windows and the C# names only three of them.** `SettingsWindow` and
+`SequenceWindow` declare no base in their `.xaml.cs` (it comes from the XAML
+root), so a grep of the C# finds `AboutBox`, `DebugWindow` and `KeySelector` and
+misses the two biggest. That is how `DebugWindow` was left on plain `Window` when
+the other four moved to `BaseWindow` (#19): WPF-UI's implicit `{x:Type Window}`
+style still themed its body, so it was a dark window with a light caption, and
+neither the build nor the tests can see that. Grep both:
+
+```bash
+grep -rn "class .*: *\(Window\|BaseWindow\)\b" --include=*.cs src/
+grep -rn "^<[A-Za-z:]*\(BaseWindow\|Window\)\b" --include=*.xaml src/
+```
+
+⚠️ `RemoteControl` is the one deliberate exception: a message-only window hosting
+the HWND hook, never shown, so it stays a plain `Window` and needs no theming.
+
 **A hardcoded value inside a WPF-UI template can only be overridden by copying
 that template.** `StyleOverrides.xaml` carries four such copies — `TabItem`
 (MinWidth 180), `CheckBox` (a 22px glyph), `TabControl` (`Background="Transparent"`
@@ -198,6 +215,17 @@ before theorising.
   ⚠️ lParam is a string pointer for only *some* values of that message, so it is
   read defensively — this drives the colours and must never be able to take the
   process down.
+- ⚠️ **`theme_mode` does NOT move when Windows flips its theme, so nothing may
+  key off the SETTING to react to a theme change.** `SystemThemeEvent` →
+  `SetTheme()` → `ApplySystemTheme()` re-resolves and re-applies while
+  `theme_mode` stays `System`, so `ThemeMode.ValueChanged` never fires. The auto
+  mode shipped with `BaseWindow.ApplyThemeToFrame` bound to exactly that: an open
+  window's content re-themed and its native caption did not, which is the dark
+  content over a light title bar that whole change existed to remove. Subscribe
+  to **`ApplicationThemeManager.Changed`** instead — WPF-UI raises it from inside
+  `Apply()`, so the preference route and the Windows route both reach it, and it
+  reports the theme that was applied rather than the one that was asked for.
+  (Caught by CodeRabbit on #19, fixed in `33c8312`.)
 - ⚠️ **Colours hardcoded in XAML are invisible to a scan of the images.** Two
   rounds went into "where is the old beige icon?" when the answer was that the
   sequence list draws its keycaps as XAML gradients, and six more literals
@@ -262,3 +290,20 @@ offers a download the moment `Latest` exceeds the running version:
   the notes and hand over `python scripts/publish_release.py`.
 - **No .NET toolchain in the container.** CI is the only compiler, so a push that
   cannot build costs a full round — read the diff adversarially first.
+  - ⚠️ **With nothing to compile and nothing to render, a claim about WPF-UI is
+    worth only as much as the source you read it from.** Both wrong diagnoses in
+    the window-styling work (#19) came from reasoning about the library instead:
+    `1a91b3c` blamed the DWM caption colour and changed nothing, and `f8216e1`'s
+    message asserted that `FluentWindow` left `BaseWindow` unstyled, which is
+    false — `FluentWindow` overrides `DefaultStyleKeyProperty`. Every correct
+    answer that session came from fetching the file and reading it.
+  - **Raw file reads work, the API does not.** Measured 2026-09-07:
+    ```bash
+    curl -sS "https://raw.githubusercontent.com/lepoco/wpfui/3.0.5/src/Wpf.Ui/Appearance/WindowBackgroundManager.cs"
+    ```
+    returns 200 for any path, while `api.github.com/repos/lepoco/wpfui/…` returns
+    **403** — *"GitHub access to this repository is not enabled for this session"*,
+    which also names `add_repo` as the way in. So there is no tree listing, and a
+    path is guesswork until it 200s: `FluentWindow.cs` is under
+    `src/Wpf.Ui/Controls/FluentWindow/`, and the obvious
+    `src/Wpf.Ui/Controls/Window/` 404s.
