@@ -17,6 +17,18 @@ python art/build_icons.py --check    # list what has drifted, write nothing
 and gear legends, extracted from upstream's artwork so the two window icons keep
 their original lettering on the new cap.
 
+`build_preview.py` composes `art/preview/` — the tray icon's four states as
+files, which they otherwise are not: `NotificationIcon.GetIcon` stacks the cap
+and the decals at runtime, so there is nothing to point at when someone asks
+what a state looks like.  They are composed from the shipped `res/*.png`, not
+re-rendered from `icons.py`, so they always show what the app draws.  No text is
+burned in; label them where they are used.
+
+```sh
+python art/build_preview.py          # regenerate the previews
+python art/build_preview.py --check  # list what has drifted, write nothing
+```
+
 What the design is doing
 ------------------------
 
