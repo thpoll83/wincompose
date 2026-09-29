@@ -238,6 +238,35 @@ before theorising.
   composited at runtime from `key_empty.png` plus a decal. `ie4uinit.exe -show`,
   or a reboot, is the fix.
 
+## The tray icon animates while composing
+
+Idle is the cap with the **dark** diamond; composing lights one quarter of that
+diamond and walks it clockwise at 140 ms a frame (`SpinFrames` / `SpinFrameMs`
+in `NotificationIcon.xaml.cs`). The full account — why a diamond cannot be seen
+to rotate, and the measured still-pair table this replaced — is in
+`art/README.md`. Three things that are easy to get wrong:
+
+- ⚠️ **`TaskbarIcon.Icon` is ONE `Shell_NotifyIcon` NIM_MODIFY, not a delete
+  and re-add.** wpf-notifyicon's setter writes `iconData.IconHandle` then calls
+  `Util.WriteIconData(ref iconData, NotifyCommand.Modify, …)`
+  (`src/NotifyIconWpf/TaskbarIcon.Declarations.cs`). So animating through it
+  costs nothing, and the icon neither flickers nor moves. **Our own comment
+  said the opposite**, which is exactly the kind of note that
+  talks the next person out of a change that was always cheap — the *Visibility*
+  setter is the one that really does delete and re-add, and that comment is
+  correct where it sits, three lines below.
+- ⚠️ **Cache every frame.** `Icon.FromHandle(bitmap.GetHicon())` never destroys
+  the handle, so building a frame per tick leaks an HICON every 140 ms. The
+  cache is indexed by the state bits plus the frame (`index >> 2`).
+- ⚠️ **Drive the frame off a `Stopwatch`, not a tick count.**
+  `CompositionTarget.Rendering` is the WPF render loop, not a metronome;
+  counting ticks makes the animation run at whatever rate WPF happens to be
+  drawing at, where reading a clock drops a frame instead.
+
+`Animate` is off when Windows animations are off (`SystemParameters.
+ClientAreaAnimation`) or the icon is hidden; the composing icon is then the
+static frame 0, which is still a lit quarter and so still differs from idle.
+
 ## Translations
 
 `src/update-data.sh` rebuilds `language/*/X.<locale>.resx` from the Weblate-fed
