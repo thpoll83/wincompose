@@ -101,11 +101,16 @@ def _face_d(rim=RIM):
             f"V {x+r} A {r},{r} 0 0 1 {x+r},{x} Z")
 
 
+# Upstream's legend was 85x110 inside a 188-wide face; the thinner rim gives a
+# 220-wide face, and the legend grows with it.  Named rather than inlined
+# because decal_spin() has to land its quarters exactly inside this shape.
+DIAMOND_CX, DIAMOND_CY = 128, 126
+DIAMOND_HW, DIAMOND_HH = 55, 70
+
+
 def _diamond_d(scale=1.0):
-    """Upstream's legend was 85x110 inside a 188-wide face; the thinner rim
-    gives a 220-wide face, and the legend grows with it."""
-    cx, cy = 128, 126
-    hw, hh = 55 * scale, 70 * scale
+    cx, cy = DIAMOND_CX, DIAMOND_CY
+    hw, hh = DIAMOND_HW * scale, DIAMOND_HH * scale
     return f"M {cx},{cy-hh} L {cx+hw},{cy} L {cx},{cy+hh} L {cx-hw},{cy} Z"
 
 
@@ -136,6 +141,30 @@ def decal_idle():
 def decal_active():
     """Composing: the same legend, knocked dark out of the same face."""
     return f'{_HEAD}<path d="{_diamond_d()}" fill="{LEGEND_DARK}"/></svg>'
+
+
+# Clockwise from the top-right, the four triangles the diamond's own axes cut
+# it into.  Each shares two edges with its neighbours and its outer edge with
+# the diamond, so a lit quarter lands exactly inside the dark diamond beneath
+# it and the silhouette never changes.
+SPIN_QUARTERS = 4
+
+
+def decal_spin(quarter):
+    """One quarter of the resting diamond, lit, for the composing animation.
+
+    A diamond has 4-fold symmetry, so it cannot be SEEN to rotate: turning it
+    90 degrees is the identity.  Moving a lit quarter around it is the only way
+    to get motion out of this shape, which is why these exist rather than a
+    rotated decal_idle.
+    """
+    cx, cy = DIAMOND_CX, DIAMOND_CY
+    hw, hh = DIAMOND_HW, DIAMOND_HH
+    corners = [(cx, cy - hh), (cx + hw, cy), (cx, cy + hh), (cx - hw, cy)]
+    a = corners[quarter % SPIN_QUARTERS]
+    b = corners[(quarter + 1) % SPIN_QUARTERS]
+    d = f"M {cx},{cy} L {a[0]},{a[1]} L {b[0]},{b[1]} Z"
+    return f'{_HEAD}<path d="{d}" fill="{LEGEND_LIGHT}"/></svg>'
 
 
 def render(svg, size=S):
