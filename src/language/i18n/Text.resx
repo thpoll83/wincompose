@@ -649,4 +649,19 @@
     <value>Donations go to Sam Hocevar, the original author.</value>
     <comment>Note under the donation button on the About tab</comment>
   </data>
+  <data name="CheckUpdatesNow" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="CheckingUpdates" xml:space="preserve">
+    <value>Checking…</value>
+  </data>
+  <data name="UpToDate" xml:space="preserve">
+    <value>WinCompose is up to date</value>
+  </data>
+  <data name="OriginalProject" xml:space="preserve">
+    <value>Original Project</value>
+  </data>
+  <data name="VisitForkWebsite" xml:space="preserve">
+    <value>WinCompose on www.polykybd.org</value>
+  </data>
 </root>

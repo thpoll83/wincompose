@@ -31,7 +31,8 @@ static class Updater
 
     public static void Fini()
     {
-        m_thread.Interrupt();
+        m_exiting = true;
+        m_wake.Set();
         m_thread.Join();
     }
 
@@ -41,27 +42,76 @@ static class Updater
     /// </summary>
     public static event Action Changed;
 
+    /// <summary>
+    /// Raised after every query, whether or not it found a newer version.
+    /// <see cref="Changed"/> fires only when there IS one, so on its own it
+    /// cannot tell "you are up to date" apart from "still checking" -- which
+    /// is the whole of what a manual check has to report.
+    /// </summary>
+    public static event Action Checked;
+
+    /// <summary>
+    /// Query the status file now instead of waiting out the sleep. Returns
+    /// immediately; the answer arrives on <see cref="Checked"/>.
+    ///
+    /// This is the only way to force a check. The loop below reads
+    /// Settings.CheckUpdates at the top of each pass, so even switching the
+    /// automatic check back on does nothing until the current sleep expires,
+    /// which is up to 90 minutes away.
+    /// </summary>
+    public static void CheckNow()
+    {
+        m_forced = true;
+        m_wake.Set();
+    }
+
     private static void Run()
     {
         for (;;)
         {
+            // Read and clear together: a manual check must query even when the
+            // automatic one is switched off. The click IS the consent, and a
+            // button that reports "up to date" without having asked anything
+            // would be worse than no button.
+            bool forced = m_forced;
+            m_forced = false;
+
             try
             {
-                if (Settings.CheckUpdates.Value)
+                bool queried = false;
+                if (forced || Settings.CheckUpdates.Value)
+                {
                     UpdateStatus();
+                    queried = true;
+                }
 
                 if (HasNewerVersion)
                 {
                     Changed?.Invoke();
                 }
 
-                // Sleep between 30 and 90 minutes before querying again
-                Thread.Sleep(new Random().Next(30, 90) * 60 * 1000);
+                // Only when something was actually asked. Otherwise the timer
+                // would keep announcing a verdict drawn from data nobody
+                // refreshed, on a tab the user may be reading.
+                if (queried)
+                    Checked?.Invoke();
             }
-            catch (ThreadInterruptedException)
+            catch (Exception ex)
             {
-                return;
+                // A throwing subscriber must not take the updater down for the
+                // rest of the session: nothing restarts this thread, and a dead
+                // one never checks again and says nothing about it. UpdateStatus
+                // swallows its own network failures, so this is about the events.
+                Logger.Warn(ex, "Update check failed");
             }
+
+            // Wait 30 to 90 minutes, or until CheckNow or Fini signals us. The
+            // spread is what keeps every install from querying at once; waiting
+            // on an event rather than sleeping is what lets a manual check cut
+            // it short.
+            m_wake.WaitOne(TimeSpan.FromMinutes(m_random.Next(30, 90)));
+            if (m_exiting)
+                return;
         }
     }
 
@@ -185,6 +235,14 @@ static class Updater
 
     private static Dictionary<string, string> m_data = new Dictionary<string, string>();
     private static Thread m_thread;
+
+    // Set by CheckNow (query now) and by Fini (stop); m_exiting says which.
+    private static readonly AutoResetEvent m_wake = new AutoResetEvent(false);
+    private static volatile bool m_exiting;
+    private static volatile bool m_forced;
+    private static readonly Random m_random = new Random();
+
+    private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 }
 
 }

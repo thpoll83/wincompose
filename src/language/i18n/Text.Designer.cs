@@ -1256,5 +1256,50 @@ namespace WinCompose.i18n {
             }
         }
         
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Updates.
+        /// </summary>
+        public static string CheckUpdatesNow {
+            get {
+                return ResourceManager.GetString("CheckUpdatesNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking….
+        /// </summary>
+        public static string CheckingUpdates {
+            get {
+                return ResourceManager.GetString("CheckingUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WinCompose is up to date.
+        /// </summary>
+        public static string UpToDate {
+            get {
+                return ResourceManager.GetString("UpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Original Project.
+        /// </summary>
+        public static string OriginalProject {
+            get {
+                return ResourceManager.GetString("OriginalProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WinCompose on www.polykybd.org.
+        /// </summary>
+        public static string VisitForkWebsite {
+            get {
+                return ResourceManager.GetString("VisitForkWebsite", resourceCulture);
+            }
+        }
     }
 }
