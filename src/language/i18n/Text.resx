@@ -651,17 +651,22 @@
   </data>
   <data name="CheckUpdatesNow" xml:space="preserve">
     <value>Check for Updates</value>
+    <comment>A button on the About tab that queries for a new version now</comment>
   </data>
   <data name="CheckingUpdates" xml:space="preserve">
     <value>Checking…</value>
+    <comment>Shown under the Check for Updates button while the query is running</comment>
   </data>
   <data name="UpToDate" xml:space="preserve">
     <value>WinCompose is up to date</value>
+    <comment>Shown under the Check for Updates button when no new version was found</comment>
   </data>
   <data name="OriginalProject" xml:space="preserve">
     <value>Original Project</value>
+    <comment>Heading above the links to the original upstream project</comment>
   </data>
   <data name="VisitForkWebsite" xml:space="preserve">
     <value>WinCompose on www.polykybd.org</value>
+    <comment>A button to open this fork's own web page</comment>
   </data>
 </root>

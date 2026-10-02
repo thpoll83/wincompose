@@ -61,7 +61,7 @@ static class Updater
     /// </summary>
     public static void CheckNow()
     {
-        m_forced = true;
+        Interlocked.Exchange(ref m_forced, 1);
         m_wake.Set();
     }
 
@@ -69,12 +69,15 @@ static class Updater
     {
         for (;;)
         {
-            // Read and clear together: a manual check must query even when the
-            // automatic one is switched off. The click IS the consent, and a
-            // button that reports "up to date" without having asked anything
-            // would be worse than no button.
-            bool forced = m_forced;
-            m_forced = false;
+            // Take the flag atomically: a separate read-then-clear loses a
+            // click that lands between the two, and with the automatic check
+            // switched off nothing else would ever query -- so the button
+            // would sit on "Checking..." for the rest of the session.
+            //
+            // A manual check must query even when the automatic one is off.
+            // The click IS the consent, and a button that reports "up to date"
+            // without having asked anything would be worse than no button.
+            bool forced = Interlocked.Exchange(ref m_forced, 0) != 0;
 
             try
             {
@@ -239,7 +242,9 @@ static class Updater
     // Set by CheckNow (query now) and by Fini (stop); m_exiting says which.
     private static readonly AutoResetEvent m_wake = new AutoResetEvent(false);
     private static volatile bool m_exiting;
-    private static volatile bool m_forced;
+    // Plain int, not volatile bool: Interlocked needs a ref to a non-volatile
+    // field (CS0420) and has no bool overload. 0 = no request, 1 = check now.
+    private static int m_forced;
     private static readonly Random m_random = new Random();
 
     private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
