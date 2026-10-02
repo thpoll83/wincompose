@@ -31,7 +31,8 @@ static class Updater
 
     public static void Fini()
     {
-        m_thread.Interrupt();
+        m_exiting = true;
+        m_wake.Set();
         m_thread.Join();
     }
 
@@ -41,27 +42,104 @@ static class Updater
     /// </summary>
     public static event Action Changed;
 
+    /// <summary>
+    /// Raised after every query, carrying whether the query itself got an
+    /// answer. <see cref="Changed"/> fires only when there IS a newer
+    /// version, so on its own it cannot tell "you are up to date" apart from
+    /// "still checking" -- which is the whole of what a manual check has to
+    /// report.
+    ///
+    /// The flag is there because <see cref="UpdateStatus"/> swallows its own
+    /// network failures: without it a click made offline reports "up to
+    /// date", read off a dictionary nothing managed to fill.
+    /// </summary>
+    public static event Action<bool> Checked;
+
+    /// <summary>
+    /// Query the status file now instead of waiting out the sleep. Returns
+    /// immediately; the answer arrives on <see cref="Checked"/>.
+    ///
+    /// This is the only way to force a check. The loop below reads
+    /// Settings.CheckUpdates at the top of each pass, so even switching the
+    /// automatic check back on does nothing until the current sleep expires,
+    /// which is up to 90 minutes away.
+    /// </summary>
+    public static void CheckNow()
+    {
+        Interlocked.Exchange(ref m_forced, 1);
+        m_wake.Set();
+    }
+
     private static void Run()
     {
         for (;;)
         {
+            // Take the flag atomically: a separate read-then-clear loses a
+            // click that lands between the two, and with the automatic check
+            // switched off nothing else would ever query -- so the button
+            // would sit on "Checking..." for the rest of the session.
+            //
+            // A manual check must query even when the automatic one is off.
+            // The click IS the consent, and a button that reports "up to date"
+            // without having asked anything would be worse than no button.
+            bool forced = Interlocked.Exchange(ref m_forced, 0) != 0;
+
             try
             {
-                if (Settings.CheckUpdates.Value)
-                    UpdateStatus();
+                bool queried = false, answered = false;
+                if (forced || Settings.CheckUpdates.Value)
+                {
+                    answered = UpdateStatus();
+                    queried = true;
+                }
 
                 if (HasNewerVersion)
                 {
-                    Changed?.Invoke();
+                    Raise(() => Changed?.Invoke(), nameof(Changed));
                 }
 
-                // Sleep between 30 and 90 minutes before querying again
-                Thread.Sleep(new Random().Next(30, 90) * 60 * 1000);
+                // Only when something was actually asked. Otherwise the timer
+                // would keep announcing a verdict drawn from data nobody
+                // refreshed, on a tab the user may be reading.
+                if (queried)
+                    Raise(() => Checked?.Invoke(answered), nameof(Checked));
             }
-            catch (ThreadInterruptedException)
+            catch (Exception ex)
             {
-                return;
+                // Belt and braces for everything that is not a subscriber --
+                // Raise already handles those, and UpdateStatus swallows its
+                // own network failures. Nothing restarts this thread, so a
+                // dead one never checks again and never says so.
+                Logger.Warn(ex, "Update check failed");
             }
+
+            // Wait 30 to 90 minutes, or until CheckNow or Fini signals us. The
+            // spread is what keeps every install from querying at once; waiting
+            // on an event rather than sleeping is what lets a manual check cut
+            // it short.
+            m_wake.WaitOne(TimeSpan.FromMinutes(m_random.Next(30, 90)));
+            if (m_exiting)
+                return;
+        }
+    }
+
+    /// <summary>
+    /// Fire one event, keeping a throwing subscriber to itself.
+    ///
+    /// Each list is raised separately because they are not interchangeable:
+    /// a Changed handler that throws used to skip the Checked below it, which
+    /// left a manual check sitting on "Checking..." for the rest of the
+    /// session -- the one state the button exists to leave.
+    /// </summary>
+    private static void Raise(Action raise, string name)
+    {
+        try
+        {
+            raise();
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, $"A {name} subscriber threw");
         }
     }
 
@@ -145,8 +223,13 @@ static class Updater
     /// http://wincompose.info/status.txt, which is upstream's server: it is
     /// plain HTTP, we do not control it, and it advertises upstream releases
     /// that do not correspond to this fork's builds.
+    ///
+    /// Returns whether the file was read. Failure stays silent in the log --
+    /// the automatic check runs every 30 to 90 minutes and an offline machine
+    /// would fill the file with it -- so the return value is the only way a
+    /// caller can tell "no newer version" from "never got an answer".
     /// </summary>
-    private static void UpdateStatus()
+    private static bool UpdateStatus()
     {
         try
         {
@@ -169,8 +252,13 @@ static class Updater
                     }
                 }
             }
+
+            return true;
         }
-        catch (Exception) {}
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     private static string GetUserAgent()
@@ -185,6 +273,16 @@ static class Updater
 
     private static Dictionary<string, string> m_data = new Dictionary<string, string>();
     private static Thread m_thread;
+
+    // Set by CheckNow (query now) and by Fini (stop); m_exiting says which.
+    private static readonly AutoResetEvent m_wake = new AutoResetEvent(false);
+    private static volatile bool m_exiting;
+    // Plain int, not volatile bool: Interlocked needs a ref to a non-volatile
+    // field (CS0420) and has no bool overload. 0 = no request, 1 = check now.
+    private static int m_forced;
+    private static readonly Random m_random = new Random();
+
+    private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 }
 
 }

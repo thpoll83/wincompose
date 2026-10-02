@@ -26,6 +26,7 @@ namespace WinCompose
         private readonly DelegateCommand m_openupstream_command;
         private readonly DelegateCommand m_opendonate_command;
         private readonly DelegateCommand m_openlogfolder_command;
+        private readonly DelegateCommand m_checkupdates_command;
 
         public AboutBoxViewModel()
         {
@@ -34,6 +35,13 @@ namespace WinCompose
             m_openupstream_command = new DelegateCommand(OnOpenUpstreamCommandExecuted);
             m_opendonate_command = new DelegateCommand(OnOpenDonateCommandExecuted);
             m_openlogfolder_command = new DelegateCommand(OnOpenLogFolderCommandExecuted);
+            m_checkupdates_command = new DelegateCommand(OnCheckUpdatesCommandExecuted);
+
+            // Never unsubscribed, deliberately: the settings window is a cached
+            // singleton (NotificationIcon holds it and BaseWindow hides rather
+            // than closes), so these view models live as long as the process and
+            // there is nothing to leak into.
+            Updater.Checked += OnUpdaterChecked;
         }
 
 
@@ -42,6 +50,51 @@ namespace WinCompose
         public ICommand OpenUpstreamCommand => m_openupstream_command;
         public ICommand OpenDonateCommand => m_opendonate_command;
         public ICommand OpenLogFolderCommand => m_openlogfolder_command;
+        public ICommand CheckUpdatesCommand => m_checkupdates_command;
+
+        /// <summary>
+        /// What the last check found, shown under the button. Empty until one
+        /// is asked for: the automatic check runs on its own timer, and saying
+        /// so unprompted would be noise on a tab nobody opened to read it.
+        /// </summary>
+        public string UpdateStatusText
+        {
+            get => m_update_status;
+            private set => SetValue(ref m_update_status, value, nameof(UpdateStatusText));
+        }
+
+        private string m_update_status = "";
+
+        private void OnCheckUpdatesCommandExecuted(object parameter)
+        {
+            // Says something immediately: the query is a network round trip, and
+            // a button that looks inert is one people press again.
+            UpdateStatusText = i18n.Text.CheckingUpdates;
+            Updater.CheckNow();
+        }
+
+        /// <summary>
+        /// Raised on the updater's own thread, so the write to a bound property
+        /// goes through the dispatcher.
+        ///
+        /// <paramref name="answered"/> is false when the query never reached
+        /// the server. Reporting "up to date" there would be a claim we cannot
+        /// make -- offline, the version we would be comparing against is
+        /// either absent or whatever the last successful check left behind.
+        /// </summary>
+        private void OnUpdaterChecked(bool answered)
+        {
+            var text = !answered ? i18n.Text.CheckFailed
+                     : Updater.HasNewerVersion
+                     ? string.Format(i18n.Text.Download, Updater.Get("Latest") ?? "")
+                     : i18n.Text.UpToDate;
+
+            var app = Application.Current;
+            if (app == null)
+                UpdateStatusText = text;
+            else
+                app.Dispatcher.BeginInvoke((Action)(() => UpdateStatusText = text));
+        }
 
         public Stream AuthorsDocument
             => Application.GetResourceStream(new Uri("pack://application:,,,/res/contributors.html")).Stream;
