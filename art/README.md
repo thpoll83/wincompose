@@ -2,7 +2,7 @@ Icon artwork
 ============
 
 `icons.py` draws the WinCompose keycap as SVG; `build_icons.py` rasterises it
-into the thirteen files the app and the installer actually load.  Nothing here
+into the seventeen files the app and the installer actually load.  Nothing here
 ships — it is the source the committed PNGs and ICOs are generated from, which
 until now existed only as `web/icon.xcf` (a GIMP file of the old cream cap, now
 superseded).
@@ -17,15 +17,27 @@ python art/build_icons.py --check    # list what has drifted, write nothing
 and gear legends, extracted from upstream's artwork so the two window icons keep
 their original lettering on the new cap.
 
+`build_preview.py` composes `art/preview/` — the tray icon's four states as
+files, which they otherwise are not: `NotificationIcon.GetIcon` stacks the cap
+and the decals at runtime, so there is nothing to point at when someone asks
+what a state looks like.  They are composed from the shipped `res/*.png`, not
+re-rendered from `icons.py`, so they always show what the app draws.  No text is
+burned in; label them where they are used.
+
+```sh
+python art/build_preview.py          # regenerate the previews
+python art/build_preview.py --check  # list what has drifted, write nothing
+```
+
 What the design is doing
 ------------------------
 
 The key is lit blue where upstream's is a cream keycap.  That is the fork mark:
 PolyKybd's keycaps are per-key OLED displays, and unlike a corner badge a
 whole-cap change is still legible at the 16×16 the notification area actually
-uses.  The key is lit in **both** states — only the legend changes, white at
-rest and knocked out dark while composing, the way a real keycap's legend would
-invert.
+uses.  The key is lit in **both** states and the legend is the dark diamond in
+both; what changes is that composing lights one quarter of that diamond and
+walks the lit quarter clockwise, so the state is carried by MOTION.
 
 Three things were measured at 16px rather than judged at 256px, and each is a
 constraint on any future edit:
@@ -34,27 +46,58 @@ constraint on any future edit:
     fraction of the icon at every size, and at 16px upstream's left about five
     pixels for the legend.
 
-  * **The state pair was chosen from four candidates**, scored as mean
-    per-pixel RGB distance between the idle and composing renders at 16px:
+  * **The state pair was first chosen from four STILL candidates**, scored as
+    mean per-pixel RGB distance between the idle and composing renders at 16px:
 
     | states | score |
     |---|---|
     | dark key ⇄ lit key (either direction) | 150 |
     | lit key, legend lights only | 173 |
-    | **lit key, legend inverts** | **48** |
+    | lit key, legend inverts | 48 |
     | bare lit key ⇄ diamond appears | 28 |
 
-    Inverting the legend is not the strongest signal, and was picked anyway:
-    it keeps one identity in the tray at all times, and the difference is
+    Inverting the legend shipped in 0.9.18 and was the weakest of the four; it
+    was picked because it keeps one identity in the tray and the difference is
     black-versus-white rather than a hue swap, so it survives greyscale and
-    colour-blindness.  Upstream's states differed only in the hue of a
-    five-pixel diamond, which does neither.  If the state ever needs to shout
-    louder, the 150 and 173 rows are where to go.
+    colour-blindness.  **It was reported as unreadable from the field**
+    (issue #21): the resting legend was the light one, so composing made the
+    icon go DARK, which reads as "off" — and on a keyboard whose Caps Lock LED
+    lights while composing, the two indicators pointed opposite ways.
+
+    So the states are no longer a still pair.  Idle is the dark diamond, and
+    composing lights one of its quarters and moves that quarter clockwise at
+    `SpinFrameMs` (280 ms) a frame.  Three things this buys that no row of the
+    table above can:
+
+      - **Motion is not a score.**  Every frame differs from idle by a lit
+        quarter, and the icon also *changes*, which nothing static does.
+      - **The polarity is the expected one.**  More light means more activity,
+        so it agrees with the Caps Lock LED instead of contradicting it.
+      - **It still survives greyscale and colour-blindness**, because it is
+        again light against dark and not a hue.
+
+    ⚠️ **A diamond cannot be seen to rotate** — it has 4-fold symmetry, so
+    turning it 90° is the identity.  Lighting a quarter is the only way to get
+    motion out of this shape; `icons.decal_spin()` cuts the quarters along the
+    diamond's own axes so a lit one lands exactly inside the dark diamond and
+    the silhouette never moves.
+
+    ⚠️ **Animating costs one `NIM_MODIFY` a frame and nothing else.**
+    wpf-notifyicon's `TaskbarIcon.Icon` setter writes `iconData.IconHandle` and
+    calls `Util.WriteIconData(ref iconData, NotifyCommand.Modify, …)` — it does
+    NOT delete and re-add the icon, so the icon neither flickers nor moves in
+    the notification area.  `NotificationIcon.xaml.cs` used to claim otherwise
+    in a comment, which is the sort of thing that talks the next person out of
+    a change that was always cheap.
+
+    ⚠️ **The frames must stay cached.**  `Icon.FromHandle(bitmap.GetHicon())`
+    never destroys the handle, so building a frame per tick would leak an HICON
+    every 280 ms.  The cache is indexed by state bits plus frame.
 
   * **Which ink a legend takes is measured, not chosen.**  The face runs dark
     blue at the top-left to light cyan at the bottom-right, so the two inks are
     not interchangeable across it — the contrast table is in `icons.py`.  The
-    resting diamond is light (it sits centred, and is a solid shape rather than
+    lit quarter is light (it sits centred, and is a solid shape rather than
     text); the Aβ¿Δ and gear window legends are dark, because their thin
     strokes reach the light corner where a light ink measures 1.55:1 and the
     gear's lower teeth disappeared.
@@ -72,6 +115,13 @@ constraint on any future edit:
 
 The update marker (`decal_update.png`) and the unreferenced `decal_disabled.png`
 are upstream's and are deliberately not generated here.
+
+`decal_idle.png` — the whole light diamond — is still generated, shipped and
+registered, and is now referenced by no code: the tray rests on the dark legend
+and lights quarters over it.  It is kept because it is the shape the quarters
+are cut from and the obvious asset to reach for if the polarity is ever
+revisited; `decal_disabled.png` has sat unreferenced for the same kind of
+reason.  Don't go hunting for its consumer.
 
 Two mechanical traps
 --------------------

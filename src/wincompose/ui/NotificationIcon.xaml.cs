@@ -168,19 +168,70 @@ namespace WinCompose
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Frames of the composing animation, and how long each is shown.
+        /// A diamond has 4-fold symmetry, so it cannot be SEEN to rotate:
+        /// turning it 90 degrees is the identity. One lit quarter walking
+        /// clockwise around the dark legend is what reads as motion instead.
+        /// </summary>
+        private const int SpinFrames = 4;
+        private const int SpinFrameMs = 280;
+
+        /// <summary>
+        /// Whether the composing state animates at all. Off when the user has
+        /// turned Windows animations off, and off when the icon is hidden --
+        /// there is nothing to animate then, and the frames would still cost a
+        /// Shell_NotifyIcon call each.
+        /// </summary>
+        private static bool Animate
+            => !Settings.DisableIcon.Value && SystemParameters.ClientAreaAnimation;
+
+        private static readonly Stopwatch m_spin_clock = new Stopwatch();
+
+        /// <summary>
+        /// Run the animation clock while a sequence is in progress. Restarting
+        /// it means every compose begins on the same quarter; a free-running
+        /// clock would start each one at an arbitrary phase, and a sequence is
+        /// usually over in well under one turn.
+        /// </summary>
+        private static void UpdateSpinClock()
+        {
+            bool spin = Composer.IsComposing && Animate;
+            if (spin == m_spin_clock.IsRunning)
+                return;
+            if (spin)
+                m_spin_clock.Restart();
+            else
+                m_spin_clock.Reset();
+        }
+
+        /// <summary>
+        /// Which quarter is lit. Read from a clock rather than counted per
+        /// tick: CompositionTarget.Rendering is the render loop, not a
+        /// metronome, so counting ticks would make the animation run at
+        /// whatever rate WPF happens to be drawing at. Reading the clock makes
+        /// an irregular tick drop a frame instead of changing the speed.
+        /// </summary>
+        private static int CurrentSpinFrame
+            => m_spin_clock.IsRunning
+                 ? (int)(m_spin_clock.ElapsedMilliseconds / SpinFrameMs) % SpinFrames
+                 : 0;
+
         private static int CurrentIconIndex
             => (Composer.IsComposing?    0x1 : 0x0) |
-               (Updater.HasNewerVersion? 0x2 : 0x0);
+               (Updater.HasNewerVersion? 0x2 : 0x0) |
+               (CurrentSpinFrame << 2);
 
         public static System.Drawing.Icon GetIcon(int index)
         {
             if (m_icon_cache == null)
-                m_icon_cache = new System.Drawing.Icon[8];
+                m_icon_cache = new System.Drawing.Icon[4 * SpinFrames];
 
             if (m_icon_cache[index] == null)
             {
                 bool is_composing = (index & 0x1) != 0;
                 bool has_update = (index & 0x2) != 0;
+                int frame = index >> 2;
 
                 // XXX: if you create new bitmap images here instead of using bitmaps from
                 // resources, make sure the DPI settings match. Our PNGs are 72 DPI whereas
@@ -189,9 +240,11 @@ namespace WinCompose
                 using (Bitmap bitmap = Properties.Resources.KeyEmpty)
                 using (Graphics canvas = Graphics.FromImage(bitmap))
                 {
-                    // LED status: on or off
-                    canvas.DrawImage(is_composing ? Properties.Resources.DecalActive
-                                                  : Properties.Resources.DecalIdle, 0, 0);
+                    // The legend is the dark diamond in both states; composing
+                    // lights one quarter of it and walks that quarter clockwise.
+                    canvas.DrawImage(Properties.Resources.DecalActive, 0, 0);
+                    if (is_composing)
+                        canvas.DrawImage(SpinDecal(frame), 0, 0);
 
                     // Tiny yellow exclamation mark to advertise updates
                     if (has_update)
@@ -205,6 +258,22 @@ namespace WinCompose
             return m_icon_cache[index];
         }
 
+        /// <summary>
+        /// The lit quarter for a frame. A switch rather than a name looked up
+        /// in the ResourceManager, so that renaming one of these is a build
+        /// error instead of a blank quarter at run time.
+        /// </summary>
+        private static Bitmap SpinDecal(int frame)
+        {
+            switch (frame)
+            {
+                case 1:  return Properties.Resources.DecalSpin1;
+                case 2:  return Properties.Resources.DecalSpin2;
+                case 3:  return Properties.Resources.DecalSpin3;
+                default: return Properties.Resources.DecalSpin0;
+            }
+        }
+
         private static System.Drawing.Icon[] m_icon_cache;
 
         private int m_icon_index = -1;
@@ -215,6 +284,23 @@ namespace WinCompose
 
         private void UpdateNotificationIcon(object o, EventArgs e)
         {
+            // The animation has to advance whether or not anything marked the
+            // icon dirty, so this part runs on every tick. It is a clock read
+            // and an int compare; the dirty-gated work below is unaffected.
+            UpdateSpinClock();
+            var index = CurrentIconIndex;
+            if (index != m_icon_index)
+            {
+                m_icon_index = index;
+                // Assigning Icon is one Shell_NotifyIcon NIM_MODIFY (see
+                // TaskbarIcon.Icon in wpf-notifyicon) -- NOT a delete and
+                // re-add, so it neither moves the icon nor makes it flicker,
+                // and animating through it is what that call is for. Still
+                // only assign on a real change: this event is the WPF render
+                // loop, which runs far faster than the animation.
+                Icon = GetIcon(index);
+            }
+
             if (m_dirty.Get())
             {
                 // Only assign on an actual change: this runs on every dirty
@@ -225,14 +311,6 @@ namespace WinCompose
                 if (Visibility != wanted)
                     Visibility = wanted;
 
-                // Assigning Icon replaces the tray icon, so only do it when the
-                // composing/update state actually changed.
-                var index = CurrentIconIndex;
-                if (index != m_icon_index)
-                {
-                    m_icon_index = index;
-                    Icon = GetIcon(index);
-                }
                 CurrentToolTip = GetCurrentToolTip();
             }
         }

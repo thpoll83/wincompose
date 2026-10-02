@@ -103,6 +103,10 @@
     <Resource Include="res\decal_active.png" />
     <Resource Include="res\decal_disabled.png" />
     <Resource Include="res\decal_idle.png" />
+    <Resource Include="res\decal_spin0.png" />
+    <Resource Include="res\decal_spin1.png" />
+    <Resource Include="res\decal_spin2.png" />
+    <Resource Include="res\decal_spin3.png" />
     <Resource Include="res\decal_update.png" />
     <Resource Include="res\icon_sequences.png" />
     <Resource Include="res\icon_settings.png" />

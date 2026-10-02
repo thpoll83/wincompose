@@ -130,6 +130,18 @@
   <data name="DecalIdle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>../res/decal_idle.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DecalSpin0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../res/decal_spin0.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DecalSpin1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../res/decal_spin1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DecalSpin2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../res/decal_spin2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DecalSpin3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../res/decal_spin3.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="DecalUpdate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>../res/decal_update.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

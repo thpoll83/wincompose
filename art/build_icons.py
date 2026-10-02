@@ -153,10 +153,15 @@ def outputs():
     cap = icons.render(icons.cap())
     idle = icons.render(icons.decal_idle())
     active = icons.render(icons.decal_active())
-    normal = keycap_with(idle)
+
+    # The app's own icon is the tray's RESTING state, which is the dark legend
+    # since the animation landed: the exe, the installer and the window title
+    # bars would otherwise show a cap the tray never sits at.  Whichever decal
+    # this is, it has to be the one the tray shows at rest.
+    normal = keycap_with(active)
 
     def normal_at(size):
-        return keycap_with(icons.render(icons.decal_idle(), size), size)
+        return keycap_with(icons.render(icons.decal_active(), size), size)
 
     def glyph_at(name):
         return lambda size: keycap_with(glyph(name), size)
@@ -166,6 +171,12 @@ def outputs():
         RES / "key_empty.png": png_bytes(cap, (72, 72)),
         RES / "decal_idle.png": png_bytes(idle, (72, 72)),
         RES / "decal_active.png": png_bytes(active, (72, 72)),
+
+        # the composing animation: one lit quarter of the diamond, moving
+        # clockwise over the dark legend.  Same 72 DPI for the same reason.
+        **{RES / f"decal_spin{i}.png": png_bytes(icons.render(icons.decal_spin(i)),
+                                                 (72, 72))
+           for i in range(icons.SPIN_QUARTERS)},
 
         # exe + installer icon (InsertIcons picks these up alphabetically)
         RES / "icon_normal.ico": ico_bytes(normal_at),
