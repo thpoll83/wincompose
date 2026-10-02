@@ -35,7 +35,7 @@ BIG = 96        # the state pictures
 SMALL = 16      # what the notification area actually asks for
 ZOOM = 5        # nearest-neighbour, so the 16px pixel grid stays visible
 GAP = 16
-FRAME_MS = 140  # keep in step with NotificationIcon's SpinFrameMs
+FRAME_MS = 280  # keep in step with NotificationIcon's SpinFrameMs
 
 SPIN = 4        # keep in step with icons.SPIN_QUARTERS
 

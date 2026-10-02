@@ -66,7 +66,7 @@ constraint on any future edit:
 
     So the states are no longer a still pair.  Idle is the dark diamond, and
     composing lights one of its quarters and moves that quarter clockwise at
-    `SpinFrameMs` (140 ms) a frame.  Three things this buys that no row of the
+    `SpinFrameMs` (280 ms) a frame.  Three things this buys that no row of the
     table above can:
 
       - **Motion is not a score.**  Every frame differs from idle by a lit
@@ -92,7 +92,7 @@ constraint on any future edit:
 
     ⚠️ **The frames must stay cached.**  `Icon.FromHandle(bitmap.GetHicon())`
     never destroys the handle, so building a frame per tick would leak an HICON
-    every 140 ms.  The cache is indexed by state bits plus frame.
+    every 280 ms.  The cache is indexed by state bits plus frame.
 
   * **Which ink a legend takes is measured, not chosen.**  The face runs dark
     blue at the top-left to light cyan at the bottom-right, so the two inks are

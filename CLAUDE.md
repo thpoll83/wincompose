@@ -241,7 +241,7 @@ before theorising.
 ## The tray icon animates while composing
 
 Idle is the cap with the **dark** diamond; composing lights one quarter of that
-diamond and walks it clockwise at 140 ms a frame (`SpinFrames` / `SpinFrameMs`
+diamond and walks it clockwise at 280 ms a frame (`SpinFrames` / `SpinFrameMs`
 in `NotificationIcon.xaml.cs`). The full account — why a diamond cannot be seen
 to rotate, and the measured still-pair table this replaced — is in
 `art/README.md`. Three things that are easy to get wrong:
@@ -256,7 +256,7 @@ to rotate, and the measured still-pair table this replaced — is in
   setter is the one that really does delete and re-add, and that comment is
   correct where it sits, three lines below.
 - ⚠️ **Cache every frame.** `Icon.FromHandle(bitmap.GetHicon())` never destroys
-  the handle, so building a frame per tick leaks an HICON every 140 ms. The
+  the handle, so building a frame per tick leaks an HICON every 280 ms. The
   cache is indexed by the state bits plus the frame (`index >> 2`).
 - ⚠️ **Drive the frame off a `Stopwatch`, not a tick count.**
   `CompositionTarget.Rendering` is the WPF render loop, not a metronome;

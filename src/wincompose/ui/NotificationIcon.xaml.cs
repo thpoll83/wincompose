@@ -175,7 +175,7 @@ namespace WinCompose
         /// clockwise around the dark legend is what reads as motion instead.
         /// </summary>
         private const int SpinFrames = 4;
-        private const int SpinFrameMs = 140;
+        private const int SpinFrameMs = 280;
 
         /// <summary>
         /// Whether the composing state animates at all. Off when the user has
