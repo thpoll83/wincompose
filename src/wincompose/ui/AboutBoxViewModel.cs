@@ -76,10 +76,16 @@ namespace WinCompose
         /// <summary>
         /// Raised on the updater's own thread, so the write to a bound property
         /// goes through the dispatcher.
+        ///
+        /// <paramref name="answered"/> is false when the query never reached
+        /// the server. Reporting "up to date" there would be a claim we cannot
+        /// make -- offline, the version we would be comparing against is
+        /// either absent or whatever the last successful check left behind.
         /// </summary>
-        private void OnUpdaterChecked()
+        private void OnUpdaterChecked(bool answered)
         {
-            var text = Updater.HasNewerVersion
+            var text = !answered ? i18n.Text.CheckFailed
+                     : Updater.HasNewerVersion
                      ? string.Format(i18n.Text.Download, Updater.Get("Latest") ?? "")
                      : i18n.Text.UpToDate;
 

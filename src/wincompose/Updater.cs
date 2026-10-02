@@ -43,12 +43,17 @@ static class Updater
     public static event Action Changed;
 
     /// <summary>
-    /// Raised after every query, whether or not it found a newer version.
-    /// <see cref="Changed"/> fires only when there IS one, so on its own it
-    /// cannot tell "you are up to date" apart from "still checking" -- which
-    /// is the whole of what a manual check has to report.
+    /// Raised after every query, carrying whether the query itself got an
+    /// answer. <see cref="Changed"/> fires only when there IS a newer
+    /// version, so on its own it cannot tell "you are up to date" apart from
+    /// "still checking" -- which is the whole of what a manual check has to
+    /// report.
+    ///
+    /// The flag is there because <see cref="UpdateStatus"/> swallows its own
+    /// network failures: without it a click made offline reports "up to
+    /// date", read off a dictionary nothing managed to fill.
     /// </summary>
-    public static event Action Checked;
+    public static event Action<bool> Checked;
 
     /// <summary>
     /// Query the status file now instead of waiting out the sleep. Returns
@@ -81,30 +86,30 @@ static class Updater
 
             try
             {
-                bool queried = false;
+                bool queried = false, answered = false;
                 if (forced || Settings.CheckUpdates.Value)
                 {
-                    UpdateStatus();
+                    answered = UpdateStatus();
                     queried = true;
                 }
 
                 if (HasNewerVersion)
                 {
-                    Changed?.Invoke();
+                    Raise(() => Changed?.Invoke(), nameof(Changed));
                 }
 
                 // Only when something was actually asked. Otherwise the timer
                 // would keep announcing a verdict drawn from data nobody
                 // refreshed, on a tab the user may be reading.
                 if (queried)
-                    Checked?.Invoke();
+                    Raise(() => Checked?.Invoke(answered), nameof(Checked));
             }
             catch (Exception ex)
             {
-                // A throwing subscriber must not take the updater down for the
-                // rest of the session: nothing restarts this thread, and a dead
-                // one never checks again and says nothing about it. UpdateStatus
-                // swallows its own network failures, so this is about the events.
+                // Belt and braces for everything that is not a subscriber --
+                // Raise already handles those, and UpdateStatus swallows its
+                // own network failures. Nothing restarts this thread, so a
+                // dead one never checks again and never says so.
                 Logger.Warn(ex, "Update check failed");
             }
 
@@ -115,6 +120,26 @@ static class Updater
             m_wake.WaitOne(TimeSpan.FromMinutes(m_random.Next(30, 90)));
             if (m_exiting)
                 return;
+        }
+    }
+
+    /// <summary>
+    /// Fire one event, keeping a throwing subscriber to itself.
+    ///
+    /// Each list is raised separately because they are not interchangeable:
+    /// a Changed handler that throws used to skip the Checked below it, which
+    /// left a manual check sitting on "Checking..." for the rest of the
+    /// session -- the one state the button exists to leave.
+    /// </summary>
+    private static void Raise(Action raise, string name)
+    {
+        try
+        {
+            raise();
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, $"A {name} subscriber threw");
         }
     }
 
@@ -198,8 +223,13 @@ static class Updater
     /// http://wincompose.info/status.txt, which is upstream's server: it is
     /// plain HTTP, we do not control it, and it advertises upstream releases
     /// that do not correspond to this fork's builds.
+    ///
+    /// Returns whether the file was read. Failure stays silent in the log --
+    /// the automatic check runs every 30 to 90 minutes and an offline machine
+    /// would fill the file with it -- so the return value is the only way a
+    /// caller can tell "no newer version" from "never got an answer".
     /// </summary>
-    private static void UpdateStatus()
+    private static bool UpdateStatus()
     {
         try
         {
@@ -222,8 +252,13 @@ static class Updater
                     }
                 }
             }
+
+            return true;
         }
-        catch (Exception) {}
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     private static string GetUserAgent()

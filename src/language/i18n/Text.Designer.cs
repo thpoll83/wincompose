@@ -1301,5 +1301,14 @@ namespace WinCompose.i18n {
                 return ResourceManager.GetString("VisitForkWebsite", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Could not check for updates.
+        /// </summary>
+        public static string CheckFailed {
+            get {
+                return ResourceManager.GetString("CheckFailed", resourceCulture);
+            }
+        }
     }
 }

@@ -669,4 +669,8 @@
     <value>WinCompose on www.polykybd.org</value>
     <comment>A button to open this fork's own web page</comment>
   </data>
+  <data name="CheckFailed" xml:space="preserve">
+    <value>Could not check for updates</value>
+    <comment>Shown under the Check for Updates button when the query could not reach the server</comment>
+  </data>
 </root>
