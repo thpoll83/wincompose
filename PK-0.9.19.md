@@ -1,7 +1,8 @@
 # WinCompose 0.9.19 — Dark theme 🌓
 
 WinCompose follows your Windows theme now, title bars included, and the tray
-icon shows that it is composing by moving rather than by going dark.
+icon shows that it is composing by moving rather than by going dark. The About
+tab also gained a button to check for updates.
 
 ## Changed
 
@@ -26,6 +27,16 @@ icon shows that it is composing by moving rather than by going dark.
   image files, so they had kept the old cream cap straight through the icon
   redraw. Every colour now comes from the same drawing the icon itself is
   rasterised from, so the two cannot drift apart again.
+- **You can ask for an update check.** The About tab has a button for it. Until
+  now the only trigger was restarting WinCompose: the check runs at startup and
+  then sleeps a random 30 to 90 minutes, and even switching the automatic check
+  back on did nothing until that sleep expired. It reports underneath what it
+  found — including when it could not reach the server, rather than telling you
+  that you are up to date off a check that never happened.
+- **The About tab's links say where they go.** "Visit Website" is now "WinCompose
+  on www.polykybd.org", and donations and the original project sit under their
+  own "Original Project" heading. The issue tracker and the money go to different
+  places and the buttons were not saying so.
 - **Settings tabs and the tray menu, tidied.** The selected tab sits on a recessed
   strip instead of being marked by a 1px frame that was the only thing
   distinguishing it from the window behind it, and the tray menu rows are tighter
@@ -40,3 +51,9 @@ source comment had claimed otherwise. `art/build_preview.py` renders the tray
 states, animation included, as files: the tray icon exists nowhere as one
 otherwise, so there was nothing to point at when someone asked what a state looks
 like.
+
+The update checker was tightened while the button was being added to it, since a
+button is what makes its failures visible: the manual-check flag is consumed
+atomically, a throwing event subscriber can no longer silence the one that
+reports completion, and a query that never reached the server no longer answers
+"up to date".
