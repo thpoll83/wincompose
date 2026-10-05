@@ -26,9 +26,16 @@ changes its own notes describe, and could not be announced at all — an install
 reporting 0.9.18 would have been offered an endless update to itself.
 
 Two things now refuse rather than let that through, so this is a check you no
-longer have to remember: `scripts/publish_release.py` dies when `main` is behind
-the tag it is about to publish (`--allow-behind` overrides), and `release.yml`
-fails before attaching anything if the built exe's version is not the tag's.
+longer have to remember. `scripts/publish_release.py` dies when `main`'s version
+is not the one the tag claims — in either direction, and only when publishing
+would CREATE the release, since re-applying notes to one that already exists
+re-runs no build. `release.yml` fails before attaching anything if the built
+exe's version is not the tag's.
+
+⚠️ `--allow-version-mismatch` overrides the first of those and leaves you a
+published release with **no assets**, because the second still refuses them. It
+is for getting the notes up; attach the assets afterwards with a
+`workflow_dispatch` once the bump has merged.
 
 Run `src/update-data.sh` if the translations need refreshing.
 

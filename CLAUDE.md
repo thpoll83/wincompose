@@ -327,10 +327,15 @@ bump `cf7e91e` was committed 09:45 but sat on the PR #23 branch and merged at
 
 ⚠️ **`publish_release.py`'s version note USED to be informational, and it fired
 on exactly this and was read as benign.** It is asymmetric now, which is the
-point: the tree being *ahead* of the prepared tag is normal (post-prep merges move
-it), the tree being *behind* means the version does not exist yet — that now dies
-with `--allow-behind` as the override. `release.yml` also asserts the built exe's
-version equals the tag before attaching anything. Belt and braces, because the
+point: *behind* means the version does not exist yet, *ahead* means the tag claims
+a version whose code is not what the tree has. Both now die when publishing would
+CREATE the release — the build labels its assets from the tree either way, so
+`release.yml` refuses them and you are left with a published release carrying no
+downloads at all. Re-applying notes to an existing release re-runs no build, so
+there a difference stays a note; the script tells the two apart by whether the tag
+exists yet. `--allow-version-mismatch` overrides, with that no-assets outcome.
+`release.yml` also asserts the built exe's version equals the tag before
+attaching anything. Belt and braces, because the
 script is only one of three ways a release starts (a hand-pushed tag and a
 `workflow_dispatch` recovery do not go through it).
 

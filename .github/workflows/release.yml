@@ -310,10 +310,7 @@ jobs:
   status:
     name: Point status.txt at the released version
     needs: release
-    if: >-
-      (github.event_name == 'release' || github.ref_type == 'tag' || inputs.tag != '')
-      && github.event.release.prerelease != true
-      && github.event.release.draft != true
+    if: github.event_name == 'release' || github.ref_type == 'tag' || inputs.tag != ''
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -330,10 +327,32 @@ jobs:
       - name: Bump Latest
         shell: bash
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag || github.ref_name }}
           VERSION: ${{ needs.release.outputs.version }}
         run: |
           set -euo pipefail
           [ -n "$VERSION" ] || { echo "::error::no version from the release job"; exit 1; }
+
+          # ⚠️ Ask GitHub for the release's state rather than reading
+          # github.event.release: on a tag push or a workflow_dispatch recovery
+          # that payload does not exist, so a prerelease/draft test against it
+          # passes silently. It matters because `releases/latest` EXCLUDES a
+          # prerelease, so announcing one sets Latest to a version whose
+          # Installer:/Portable: links still resolve to the previous stable
+          # release -- every install offered an update and handed the files it
+          # already has, which is the 0.9.18 failure over again. A tag with no
+          # release at all lands here too, and is equally nothing to announce.
+          # (Found by Greptile on #25.)
+          if ! state=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${TAG}" \
+                         --jq '[.draft, .prerelease] | @tsv' 2>/dev/null); then
+            echo "::notice::no release for ${TAG} — status.txt left alone."
+            exit 0
+          fi
+          if [ "$(cut -f1 <<<"$state")" = true ] || [ "$(cut -f2 <<<"$state")" = true ]; then
+            echo "::notice::${TAG} is a draft or prerelease — status.txt left alone."
+            exit 0
+          fi
 
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
