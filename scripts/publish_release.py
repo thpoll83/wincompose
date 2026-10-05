@@ -111,7 +111,15 @@ def get_token():
     for var in ("GH_TOKEN", "GITHUB_TOKEN"):
         if os.environ.get(var):
             return os.environ[var]
-    r = run(["gh", "auth", "token"])
+    try:
+        r = run(["gh", "auth", "token"])
+    except OSError:
+        # gh is not installed. "no token" is the honest answer, and the caller
+        # that needs one already dies with a message naming the three ways to
+        # supply it. Raising here instead took --dry-run down with a traceback
+        # -- the one command that must work with no credentials at all, since
+        # it exists to tell you what WOULD happen. (Found by Greptile on #25.)
+        return None
     if r.returncode == 0 and r.stdout.strip():
         return r.stdout.strip()
     return None
