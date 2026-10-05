@@ -335,43 +335,49 @@ jobs:
           set -euo pipefail
           [ -n "$VERSION" ] || { echo "::error::no version from the release job"; exit 1; }
 
-          current=$(sed -nE 's/^Latest:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' status.txt)
-          [ -n "$current" ] || { echo "::error::no 'Latest:' line in status.txt"; exit 1; }
-          echo "status.txt Latest: $current   released: $VERSION"
-
-          if [ "$current" = "$VERSION" ]; then
-            echo "Already there — nothing to do. (The push and release events both"
-            echo "fire this workflow, so the second run lands here.)"
-            exit 0
-          fi
-          # Never roll BACKWARDS: re-dispatching an old tag to re-attach its
-          # assets must not un-announce a newer release.
-          if [ "$(printf '%s\n%s\n' "$current" "$VERSION" | sort -V | tail -1)" != "$VERSION" ]; then
-            echo "::notice::status.txt is at $current, ahead of $VERSION — left alone."
-            exit 0
-          fi
-
-          sed -i -E "s/^Latest:[[:space:]]+.*/Latest:  ${VERSION}/" status.txt
-          grep -n '^Latest:' status.txt
-
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add status.txt
-          # [skip ci] keeps this out of build.yml, which builds every push to main.
-          git commit -m "Point status.txt at ${VERSION} [skip ci]"
 
-          # The push and release events give this tag two concurrent runs, and a
-          # merge can land between the checkout and the push, so one rebase
-          # retry rather than failing a release over a race.
+          # ⚠️ Re-read main on every attempt and REGENERATE the edit. Rebasing a
+          # commit written against an older status.txt replays a patch whose
+          # context is the `Latest:` line another run has already changed: it
+          # conflicts, and the newer release is then left unannounced — the
+          # failure this job exists to prevent. Two runs is the normal case (the
+          # push and the release event both fire this workflow), and two
+          # releases published back to back give two different versions. The
+          # commit is a one-line state assertion, not a patch worth preserving.
+          # (Found by Revix on #25.)
           for attempt in 1 2 3; do
-            if git push origin HEAD:main; then
+            git fetch -q origin main
+            git reset -q --hard origin/main
+
+            current=$(sed -nE 's/^Latest:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' status.txt)
+            [ -n "$current" ] || { echo "::error::no 'Latest:' line in status.txt"; exit 1; }
+            echo "attempt $attempt: status.txt says $current, the release shipped $VERSION"
+
+            if [ "$current" = "$VERSION" ]; then
+              echo "Already there — nothing to do."
+              exit 0
+            fi
+            # Never roll BACKWARDS: re-dispatching an old tag to re-attach its
+            # assets must not un-announce a newer release.
+            if [ "$(printf '%s\n%s\n' "$current" "$VERSION" | sort -V | tail -1)" != "$VERSION" ]; then
+              echo "::notice::status.txt is at $current, ahead of $VERSION — left alone."
+              exit 0
+            fi
+
+            sed -i -E "s/^Latest:[[:space:]]+.*/Latest:  ${VERSION}/" status.txt
+            grep -n '^Latest:' status.txt
+            git add status.txt
+            # [skip ci] keeps this out of build.yml, which builds every push to main.
+            git commit -q -m "Point status.txt at ${VERSION} [skip ci]"
+
+            if git push -q origin HEAD:main; then
               echo "Pushed on attempt $attempt."
               exit 0
             fi
-            echo "Push rejected (attempt $attempt) — rebasing onto main and retrying."
-            git fetch origin main
-            git rebase origin/main || { echo "::error::rebase failed"; exit 1; }
+            echo "Push rejected — main moved under us. Re-reading it and retrying."
           done
-          echo "::error::could not push the status.txt bump. The release itself is"
-          echo "fine — set 'Latest:  ${VERSION}' in status.txt on main by hand."
+          echo "::error::could not push the status.txt bump after 3 attempts. The release"
+          echo "itself is fine — set 'Latest:  ${VERSION}' in status.txt on main by hand."
           exit 1
