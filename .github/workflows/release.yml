@@ -35,6 +35,10 @@ jobs:
     name: Build and release WinCompose
     runs-on: windows-latest
 
+    # Read by the `status` job below; set from the built exe's version resource.
+    outputs:
+      version: ${{ steps.assets.outputs.version }}
+
     # Mapped to env because a step's `if` cannot read the secrets context. While
     # these are unset the signing step is skipped and builds stay green unsigned
     # (same dormant wiring as build.yml).
@@ -183,6 +187,39 @@ jobs:
           Get-Content 'release/SHA256SUMS.txt'
           "version=$ver" >> $env:GITHUB_OUTPUT
 
+      # ⚠️ The shipped version is HARDCODED in src/wincompose/wincompose.csproj,
+      # and the tag is chosen independently — scripts/publish_release.py takes it
+      # from the release-notes branch. So publishing before the bump has merged
+      # ships assets labelled with the PREVIOUS version, and everything
+      # downstream reads that same number off the built binary: the About tab
+      # (Settings.Version), iscc's installer filename, the zip name, and the
+      # version Updater.cs compares against status.txt.
+      #
+      # 0.9.19 did exactly that (issue #21): the bump sat unmerged on a branch
+      # for 50 minutes and the release went out in that window, so PK-0.9.19
+      # carries WinCompose-Setup-0.9.18.exe, the About tab reads 0.9.18, and
+      # status.txt could not be bumped at all — an install reporting 0.9.18
+      # would have been offered an endless update to itself.
+      #
+      # Fail here, before anything is attached. Recovery is in RELEASE.md: bump
+      # the default branch, then workflow_dispatch with this tag.
+      - name: Assert the built version matches the tag
+        if: github.event_name == 'release' || github.ref_type == 'tag' || inputs.tag != ''
+        shell: bash
+        env:
+          TAG: ${{ github.event.release.tag_name || inputs.tag || github.ref_name }}
+          VERSION: ${{ steps.assets.outputs.version }}
+        run: |
+          want="${TAG#PK-}"
+          if [ "$want" != "$VERSION" ]; then
+            echo "::error::Tag $TAG wants $want, but this build produced $VERSION."
+            echo "<AssemblyVersion>/<FileVersion> in src/wincompose/wincompose.csproj decide"
+            echo "the shipped version. Bump them on the default branch, then re-run this"
+            echo "workflow by hand (workflow_dispatch, tag: $TAG) to attach the assets."
+            exit 1
+          fi
+          echo "Built version $VERSION matches tag $TAG."
+
       # Always upload, so a workflow_dispatch smoke test yields inspectable
       # assets without touching any release.
       - name: Upload build artifacts
@@ -256,3 +293,85 @@ jobs:
             gh release create "$TAG" "${NOTES_ARGS[@]}" "${ASSETS[@]}" \
             || gh release upload "$TAG" "${ASSETS[@]}" --clobber
           fi
+
+  # ④ of RELEASE.md, automated. Updater.cs reads status.txt from the DEFAULT
+  # branch and offers a download the moment `Latest` exceeds the running
+  # version, so the bump has to land AFTER the release exists — which is why it
+  # was a manual step, and why it kept going wrong in both directions. Early,
+  # every install is pointed at a release that is not there; the URLs resolve
+  # releases/latest, so nobody gets a 404 and everybody is handed the version
+  # they already have (0.9.18, a 20-minute window). Late, no install ever learns
+  # the release happened and nothing about the release looks wrong (0.9.19, two
+  # weeks, reported from outside as "no notification" — issue #21).
+  #
+  # This runs after the assets are attached and takes the version from the
+  # binary that was just shipped, so it cannot name a release that does not
+  # exist, and it cannot name a version other than the one in the download.
+  status:
+    name: Point status.txt at the released version
+    needs: release
+    if: >-
+      (github.event_name == 'release' || github.ref_type == 'tag' || inputs.tag != '')
+      && github.event.release.prerelease != true
+      && github.event.release.draft != true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      # The release job checked out the TAG (and its submodules); status.txt is
+      # edited on the default branch, so this takes its own shallow checkout
+      # rather than moving that working tree out from under the build.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Bump Latest
+        shell: bash
+        env:
+          VERSION: ${{ needs.release.outputs.version }}
+        run: |
+          set -euo pipefail
+          [ -n "$VERSION" ] || { echo "::error::no version from the release job"; exit 1; }
+
+          current=$(sed -nE 's/^Latest:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' status.txt)
+          [ -n "$current" ] || { echo "::error::no 'Latest:' line in status.txt"; exit 1; }
+          echo "status.txt Latest: $current   released: $VERSION"
+
+          if [ "$current" = "$VERSION" ]; then
+            echo "Already there — nothing to do. (The push and release events both"
+            echo "fire this workflow, so the second run lands here.)"
+            exit 0
+          fi
+          # Never roll BACKWARDS: re-dispatching an old tag to re-attach its
+          # assets must not un-announce a newer release.
+          if [ "$(printf '%s\n%s\n' "$current" "$VERSION" | sort -V | tail -1)" != "$VERSION" ]; then
+            echo "::notice::status.txt is at $current, ahead of $VERSION — left alone."
+            exit 0
+          fi
+
+          sed -i -E "s/^Latest:[[:space:]]+.*/Latest:  ${VERSION}/" status.txt
+          grep -n '^Latest:' status.txt
+
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add status.txt
+          # [skip ci] keeps this out of build.yml, which builds every push to main.
+          git commit -m "Point status.txt at ${VERSION} [skip ci]"
+
+          # The push and release events give this tag two concurrent runs, and a
+          # merge can land between the checkout and the push, so one rebase
+          # retry rather than failing a release over a race.
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected (attempt $attempt) — rebasing onto main and retrying."
+            git fetch origin main
+            git rebase origin/main || { echo "::error::rebase failed"; exit 1; }
+          done
+          echo "::error::could not push the status.txt bump. The release itself is"
+          echo "fine — set 'Latest:  ${VERSION}' in status.txt on main by hand."
+          exit 1

@@ -94,6 +94,11 @@ def parse_version(kind, text):
     return f"{maj.group(1)}.{mnr.group(1)}.{pat.group(1)}"
 
 
+def version_tuple(v):
+    """'0.9.20' -> (0, 9, 20), so 0.10.0 sorts after 0.9.20."""
+    return tuple(int(x) for x in v.split("."))
+
+
 def owner_repo(root):
     r = run(["git", "remote", "get-url", "origin"])
     m = re.search(r"[:/]([^/]+)/([^/]+?)(?:\.git)?/?$", r.stdout.strip())
@@ -151,6 +156,10 @@ def main():
     ap = argparse.ArgumentParser(description="Publish the prepared PolyKybd release.")
     ap.add_argument("--dry-run", action="store_true", help="show what would happen, change nothing")
     ap.add_argument("--tag", help="publish a specific prepared tag instead of the newest one")
+    ap.add_argument("--allow-behind", action="store_true",
+                    help="publish even though the default branch has not been bumped to this "
+                         "version yet (the assets will carry the OLDER version -- see the "
+                         "comment on that check)")
     args = ap.parse_args()
 
     # Print UTF-8 (emoji in the notes) even on a cp1252 Windows console.
@@ -189,16 +198,42 @@ def main():
             print(f"note: newest prepared tag is {tag}. Others on the branch: {others}")
             print(f"      (use --tag to publish a specific one.)")
 
-    # Informational: warn if the tree has already bumped past this tag.
+    # ⚠️ Asymmetric on purpose, and the asymmetry is the whole point. The tree
+    # being AHEAD of the prepared tag is normal: every merge after the notes were
+    # prepared moves it. The tree being BEHIND means the version this tag claims
+    # has not been built yet, and the build takes its version from the tree, not
+    # from the tag -- so the release would attach assets labelled with the
+    # PREVIOUS version. That happened to wincompose PK-0.9.19 (issue #21), which
+    # was published 50 minutes before its bump merged: its assets are named
+    # 0.9.18, its About tab says 0.9.18, and status.txt could not be pointed at
+    # it at all, because an install reporting 0.9.18 would then be offered an
+    # endless update to itself.
     vtext = show(f"origin/{default_branch}:{vpath}")
     if vtext:
         try:
-            tree_tag = tag_prefix + parse_version(kind, vtext)
-            if tree_tag != tag:
-                print(f"note: default branch is at {tree_tag}; publishing prepared {tag} "
-                      f"(the difference is post-prep merges, typically release tooling).")
+            tree_ver = parse_version(kind, vtext)
         except SystemExit:
-            pass
+            tree_ver = None
+        tag_ver = tag[len(tag_prefix):]
+        try:
+            # --tag is free-form, so a non X.Y.Z tag is not comparable; skip
+            # rather than raise, and let release.yml's own gate be the backstop.
+            behind = tree_ver and version_tuple(tree_ver) < version_tuple(tag_ver)
+        except ValueError:
+            behind = None
+        if behind is not None:
+            if behind:
+                msg = (f"{default_branch} is still at {tree_ver}, behind the prepared {tag}.\n"
+                       f"  The build reads its version from {vpath}, not from the tag, so\n"
+                       f"  publishing now would attach assets labelled {tree_ver}.\n"
+                       f"  Bump {vpath} on {default_branch} first, then publish.")
+                if not args.allow_behind:
+                    die(msg + "\n  (--allow-behind overrides this.)")
+                print("warning: " + msg)
+                print("         --allow-behind given; publishing anyway.")
+            elif tree_ver != tag_ver:
+                print(f"note: {default_branch} is at {tag_prefix}{tree_ver}; publishing prepared {tag} "
+                      f"(the difference is post-prep merges, typically release tooling).")
     lines = notes.splitlines()
     title = re.sub(r"^#\s*", "", lines[0]).strip()
     body = "\n".join(lines[1:]).strip("\n")

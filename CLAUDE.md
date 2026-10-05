@@ -299,16 +299,62 @@ Two layers sit under that, both in `src/apply-machine-translations.py` (step 4 o
 `GitVersion.yml` `tag-prefix`, so **never** tag `vX.Y.Z`), and a release is created
 by **publishing**, not by pushing a tag.
 
-⚠️ **`status.txt` is bumped AFTER publishing, and the value is wrong in both
-directions.** `Updater.cs` reads it from `main` — not from the releases — and
-offers a download the moment `Latest` exceeds the running version:
+⚠️ **The shipped version is HARDCODED in `src/wincompose/wincompose.csproj`, and
+the tag is chosen independently — so publishing before the bump has merged ships
+a release labelled with the PREVIOUS version, in four places at once.**
+`<AssemblyVersion>`/`<FileVersion>` is the only source: `iscc` reads it off the
+built exe for the installer filename, `release.yml` reads the same resource to
+name the zip, `Settings.Version` is `Assembly.GetExecutingAssembly()` so the About
+tab shows it, and `Updater.cs` compares *that* against `status.txt`. The tag comes
+from the `release-notes` branch instead (`scripts/publish_release.py`), and is
+created at `main`'s tip.
+
+**Worked example, PK-0.9.19 (2026-10-02, issue #21).** Published 09:47 UTC; the
+bump `cf7e91e` was committed 09:45 but sat on the PR #23 branch and merged at
+10:35. So the tag landed on `3916815`, whose tree still said `0.9.18.0`:
+
+- the assets are `WinCompose-Setup-0.9.18.exe` and
+  `WinCompose-NoInstall-0.9.18.zip` — real 0.9.19 builds (installer 4,952,184 B
+  against 0.9.18's 4,949,128), just mislabelled, which is why the reporter saw the
+  new rotating tray icon in a file called 0.9.18;
+- the About tab reads 0.9.18;
+- `status.txt` could not be bumped **at all**: an install reporting 0.9.18 would
+  be offered an endless update to itself, and `releases/latest` would hand back
+  the same two files;
+- and three commits its own notes describe (the Check-for-Updates button and the
+  About-tab link regrouping) are not in the assets either, because they merged in
+  the same window.
+
+⚠️ **`publish_release.py`'s version note USED to be informational, and it fired
+on exactly this and was read as benign.** It is asymmetric now, which is the
+point: the tree being *ahead* of the prepared tag is normal (post-prep merges move
+it), the tree being *behind* means the version does not exist yet — that now dies
+with `--allow-behind` as the override. `release.yml` also asserts the built exe's
+version equals the tag before attaching anything. Belt and braces, because the
+script is only one of three ways a release starts (a hand-pushed tag and a
+`workflow_dispatch` recovery do not go through it).
+
+⚠️ **Not fixed structurally, deliberately.** The right fix is to derive the exe's
+version from the tag via GitVersion, which is already in the build for
+`language.csproj` — then a mislabelled release is unrepresentable. It was not done
+because there is no .NET toolchain in the container, so CI is the only compiler
+(a wrong guess costs a full round), and because GitVersion's output on an
+untagged commit would change what every development build's About tab reads. The
+two gates are the cheap half; the derivation is still the real answer.
+
+**`status.txt` is written by CI since 0.9.20** — the `status` job in `release.yml`,
+after the assets are attached, from the version resource of the binary it just
+shipped, never moving `Latest` backwards. It cannot name a release that does not
+exist, nor a version other than the one in the download. It was manual before
+that and went wrong in both directions, both quietly:
 
 - **Bumped early**, every install is told about a release that does not exist.
   It does not 404: `Installer:`/`Portable:` resolve `releases/latest`, so the user
   is quietly handed the version they already have. Cost a 20-minute window on
   0.9.18 (2026-09-07) because the release skill said to bump it as prep.
 - **Left stale**, no existing install ever learns the release happened, the
-  release itself looks perfect, and testing it cannot reveal this.
+  release itself looks perfect, and testing it cannot reveal this — 0.9.19 sat
+  unannounced for two weeks and was reported from outside as "no notification".
 
 ## Environment
 

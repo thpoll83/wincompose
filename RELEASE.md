@@ -11,9 +11,24 @@ attach anything by hand.
 -----------------
 
 `<AssemblyVersion>` and `<FileVersion>` in `src/wincompose/wincompose.csproj`.
-`iscc` reads that version off the built exe, so the asset filenames follow it.
-It does **not** decide which tag gets published — see ③. `GitVersion.yml` sets
-`tag-prefix: PK-` so GitVersion recognises our tags instead of computing 0.1.0.
+That one number is the shipped version: `iscc` reads it off the built exe, so the
+asset filenames follow it, and so do the About tab (`Settings.Version`) and the
+version `Updater.cs` compares against `status.txt`. It does **not** decide which
+tag gets published — see ③. `GitVersion.yml` sets `tag-prefix: PK-` so GitVersion
+recognises our tags instead of computing 0.1.0.
+
+⚠️ **The bump has to be MERGED to `main` before you publish.** The release builds
+from the tag, and the tag is created at `main`'s tip, so a bump still sitting on a
+branch means the release ships assets carrying the *previous* version. 0.9.19 did
+this (issue #21): published 50 minutes before its bump merged, it carries
+`WinCompose-Setup-0.9.18.exe`, reads 0.9.18 in its About tab, is missing two
+changes its own notes describe, and could not be announced at all — an install
+reporting 0.9.18 would have been offered an endless update to itself.
+
+Two things now refuse rather than let that through, so this is a check you no
+longer have to remember: `scripts/publish_release.py` dies when `main` is behind
+the tag it is about to publish (`--allow-behind` overrides), and `release.yml`
+fails before attaching anything if the built exe's version is not the tag's.
 
 Run `src/update-data.sh` if the translations need refreshing.
 
@@ -40,24 +55,28 @@ gets published. Pass `--tag` whenever more than one is prepared, and read the
 
 Auth comes from `GH_TOKEN` / `GITHUB_TOKEN`, else `gh auth token`.
 
-④ Update the updater
---------------------
+④ The updater announces it — automatically
+-----------------------------------------
 
 `status.txt` in the repo root is what `src/wincompose/Updater.cs` reads, over
 `https://raw.githubusercontent.com/thpoll83/wincompose/main/status.txt` — from the
-default branch, not from the releases. Set `Latest` to the released version **once
-the release exists**, as its own change: the tray offers a download the moment
-`Latest` exceeds the running version, so a bump that lands first announces a
-release that is not there.
+default branch, not from the releases. The tray offers a download the moment
+`Latest` exceeds the running version.
 
-That failure is quieter than it sounds, which is why the ordering matters. The
-`Installer:` and `Portable:` URLs resolve `releases/latest`, so nobody gets a 404
-— they are handed the version they already have, and read it as the updater being
-broken. Cost a 20-minute window on 0.9.18.
+**The `status` job in `release.yml` sets it for you**, after the assets are
+attached and from the version resource of the binary it just shipped — so it can
+only ever name a release that exists, at the version that is actually in the
+download. It never moves `Latest` backwards, so re-dispatching an old tag to
+re-attach its assets cannot un-announce a newer release. Check the job went green;
+if it could not push, its error says so and names the one-line edit.
 
-Forgetting it entirely fails in the opposite direction and is quieter still: no
-existing install ever learns the release happened, and nothing about the release
-itself looks wrong.
+It was a manual step until 0.9.20, and it went wrong in both directions. Early,
+every install is pointed at a release that is not there — and the `Installer:` /
+`Portable:` URLs resolve `releases/latest`, so nobody gets a 404, they are handed
+the version they already have and read it as the updater being broken (0.9.18, a
+20-minute window). Forgotten, no existing install ever learns the release
+happened and nothing about the release itself looks wrong (0.9.19, two weeks,
+reported from outside as "no notification").
 
 If the release build fails
 --------------------------
