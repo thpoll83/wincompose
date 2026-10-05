@@ -344,11 +344,23 @@ jobs:
           # already has, which is the 0.9.18 failure over again. A tag with no
           # release at all lands here too, and is equally nothing to announce.
           # (Found by Greptile on #25.)
-          if ! state=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${TAG}" \
-                         --jq '[.draft, .prerelease] | @tsv' 2>/dev/null); then
-            echo "::notice::no release for ${TAG} — status.txt left alone."
-            exit 0
-          fi
+          # ⚠️ Separate an expected 404 from every other way the lookup can
+          # fail. Treating them alike means an auth, network or 5xx error reads
+          # as "no release", the update is skipped and the job still goes GREEN
+          # — an unannounced release with nothing anywhere saying so, which is
+          # the 0.9.19 failure with a tidier log. (Found by Revix on #25.)
+          http=$({ gh api -i "repos/${GITHUB_REPOSITORY}/releases/tags/${TAG}" 2>/dev/null \
+                   || true; } | sed -n '1{s@^HTTP/[0-9.]\{1,\} \([0-9]\{3\}\).*@\1@p;q}')
+          case "$http" in
+            200) ;;
+            404) echo "::notice::no release for ${TAG} — status.txt left alone."; exit 0 ;;
+            *)   echo "::error::could not read the release for ${TAG} (HTTP ${http:-none}). Not"
+                 echo "guessing: if ${TAG} is published, set 'Latest:  ${VERSION}' in status.txt"
+                 echo "on main by hand."
+                 exit 1 ;;
+          esac
+          state=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${TAG}" \
+                    --jq '[.draft, .prerelease] | @tsv')
           if [ "$(cut -f1 <<<"$state")" = true ] || [ "$(cut -f2 <<<"$state")" = true ]; then
             echo "::notice::${TAG} is a draft or prerelease — status.txt left alone."
             exit 0

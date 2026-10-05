@@ -137,6 +137,35 @@ def api(token, method, path, payload=None):
             return e.code, {"message": e.read().decode(errors="replace")}
 
 
+def release_exists(owner, repo, tag, token):
+    """True, False, or None when it cannot be determined.
+
+    A GET on a public repo's release needs no token, so this answers under
+    --dry-run too. None means "do not know" (network trouble, a rate limit, a
+    private repo with no token) and the caller must then assume the stricter
+    case -- a tag existing is NOT the same question, since a deleted release,
+    a hand-pushed tag, or a release build that died before `gh release create`
+    all leave a tag with no release behind it.
+    """
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "polykybd-publish-release",
+    }
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    req = urllib.request.Request(
+        f"https://api.github.com/repos/{owner}/{repo}/releases/tags/{tag}",
+        method="GET", headers=headers)
+    try:
+        with urllib.request.urlopen(req) as resp:
+            return resp.status == 200
+    except urllib.error.HTTPError as e:
+        return False if e.code == 404 else None
+    except Exception:
+        return None
+
+
 def prepared_tags(prefix):
     """All prepared <prefix><X.Y.Z>.md files on the release-notes branch,
     as (version_tuple, tag) sorted ascending."""
@@ -199,6 +228,9 @@ def main():
             print(f"note: newest prepared tag is {tag}. Others on the branch: {others}")
             print(f"      (use --tag to publish a specific one.)")
 
+    owner, repo = owner_repo(root)
+    token = get_token()
+
     # ⚠️ The build labels its assets from the TREE, never from the tag: the
     # version is read off the built exe (iscc's filename, the zip name, the
     # About tab, the number Updater.cs compares against status.txt). So for a
@@ -221,14 +253,19 @@ def main():
         except SystemExit:
             tree_ver = None
         tag_ver = tag[len(tag_prefix):]
-        creating = not run(["git", "ls-remote", "--tags", "origin",
-                            f"refs/tags/{tag}"]).stdout.strip()
+        exists = release_exists(owner, repo, tag, token)
+        # Unknown counts as creating: the stricter case, since guessing the
+        # other way is what publishes a release whose assets get refused.
+        creating = exists is not True
         if tree_ver and tree_ver != tag_ver:
             where = "behind" if version_tuple(tree_ver) < version_tuple(tag_ver) else "ahead of"
             msg = (f"{default_branch} is at {tree_ver}, {where} the prepared {tag}.\n"
                    f"  The build reads its version from {vpath}, not from the tag, so the\n"
                    f"  assets would be labelled {tree_ver} and release.yml will refuse them.\n"
                    f"  Set {vpath} to {tag_ver} on {default_branch} first, then publish.")
+            if exists is None:
+                msg += (f"\n  (could not reach the API to check whether {tag} already exists,\n"
+                        f"  so this assumes it does not -- the stricter reading.)")
             if creating and not args.allow_version_mismatch:
                 die(msg + "\n  (--allow-version-mismatch publishes the notes anyway, with no assets.)")
             if creating:
@@ -244,8 +281,6 @@ def main():
     if not title:
         die(f"{tag}.md has an empty title line (first line must be '# <title>').")
 
-    owner, repo = owner_repo(root)
-
     print(f"repo    : {owner}/{repo}  ({kind})")
     print(f"tag     : {tag}   target: {default_branch}")
     print(f"title   : {title}")
@@ -258,7 +293,6 @@ def main():
         print("dry-run: nothing published.")
         return
 
-    token = get_token()
     if not token:
         die("no GitHub token. Set GH_TOKEN / GITHUB_TOKEN, or install gh and run `gh auth login`.")
 
