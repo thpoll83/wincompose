@@ -94,6 +94,11 @@ def parse_version(kind, text):
     return f"{maj.group(1)}.{mnr.group(1)}.{pat.group(1)}"
 
 
+def version_tuple(v):
+    """'0.9.20' -> (0, 9, 20), so 0.10.0 sorts after 0.9.20."""
+    return tuple(int(x) for x in v.split("."))
+
+
 def owner_repo(root):
     r = run(["git", "remote", "get-url", "origin"])
     m = re.search(r"[:/]([^/]+)/([^/]+?)(?:\.git)?/?$", r.stdout.strip())
@@ -106,7 +111,15 @@ def get_token():
     for var in ("GH_TOKEN", "GITHUB_TOKEN"):
         if os.environ.get(var):
             return os.environ[var]
-    r = run(["gh", "auth", "token"])
+    try:
+        r = run(["gh", "auth", "token"])
+    except OSError:
+        # gh is not installed. "no token" is the honest answer, and the caller
+        # that needs one already dies with a message naming the three ways to
+        # supply it. Raising here instead took --dry-run down with a traceback
+        # -- the one command that must work with no credentials at all, since
+        # it exists to tell you what WOULD happen. (Found by Greptile on #25.)
+        return None
     if r.returncode == 0 and r.stdout.strip():
         return r.stdout.strip()
     return None
@@ -132,6 +145,35 @@ def api(token, method, path, payload=None):
             return e.code, {"message": e.read().decode(errors="replace")}
 
 
+def release_exists(owner, repo, tag, token):
+    """True, False, or None when it cannot be determined.
+
+    A GET on a public repo's release needs no token, so this answers under
+    --dry-run too. None means "do not know" (network trouble, a rate limit, a
+    private repo with no token) and the caller must then assume the stricter
+    case -- a tag existing is NOT the same question, since a deleted release,
+    a hand-pushed tag, or a release build that died before `gh release create`
+    all leave a tag with no release behind it.
+    """
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "polykybd-publish-release",
+    }
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    req = urllib.request.Request(
+        f"https://api.github.com/repos/{owner}/{repo}/releases/tags/{tag}",
+        method="GET", headers=headers)
+    try:
+        with urllib.request.urlopen(req) as resp:
+            return resp.status == 200
+    except urllib.error.HTTPError as e:
+        return False if e.code == 404 else None
+    except Exception:
+        return None
+
+
 def prepared_tags(prefix):
     """All prepared <prefix><X.Y.Z>.md files on the release-notes branch,
     as (version_tuple, tag) sorted ascending."""
@@ -151,6 +193,11 @@ def main():
     ap = argparse.ArgumentParser(description="Publish the prepared PolyKybd release.")
     ap.add_argument("--dry-run", action="store_true", help="show what would happen, change nothing")
     ap.add_argument("--tag", help="publish a specific prepared tag instead of the newest one")
+    ap.add_argument("--allow-version-mismatch", action="store_true",
+                    help="publish a NEW release even though the default branch's version is not "
+                         "this tag's. The build labels its assets from the tree, so the release "
+                         "workflow will refuse to attach them; use this only to get the notes up, "
+                         "and attach the assets later with a workflow_dispatch after bumping")
     args = ap.parse_args()
 
     # Print UTF-8 (emoji in the notes) even on a cp1252 Windows console.
@@ -189,23 +236,58 @@ def main():
             print(f"note: newest prepared tag is {tag}. Others on the branch: {others}")
             print(f"      (use --tag to publish a specific one.)")
 
-    # Informational: warn if the tree has already bumped past this tag.
+    owner, repo = owner_repo(root)
+    token = get_token()
+
+    # ⚠️ The build labels its assets from the TREE, never from the tag: the
+    # version is read off the built exe (iscc's filename, the zip name, the
+    # About tab, the number Updater.cs compares against status.txt). So for a
+    # release that does not exist yet, any disagreement between the default
+    # branch's version and the tag is a release whose downloads carry the wrong
+    # number -- PK-0.9.19 shipped WinCompose-Setup-0.9.18.exe that way (issue
+    # #21), published 50 minutes before its bump merged. release.yml now refuses
+    # to attach mislabelled assets, which turns the same mistake into a release
+    # with NO downloads; this is the check that stops it before anything is
+    # published at all.
+    #
+    # Enforced only when the tag does not exist yet, i.e. when publishing would
+    # CREATE the release and therefore trigger a build. Re-applying notes to an
+    # already-published release re-runs nothing, so the tree's version is then
+    # irrelevant and a difference is just the post-prep merges.
     vtext = show(f"origin/{default_branch}:{vpath}")
     if vtext:
         try:
-            tree_tag = tag_prefix + parse_version(kind, vtext)
-            if tree_tag != tag:
-                print(f"note: default branch is at {tree_tag}; publishing prepared {tag} "
-                      f"(the difference is post-prep merges, typically release tooling).")
+            tree_ver = parse_version(kind, vtext)
         except SystemExit:
-            pass
+            tree_ver = None
+        tag_ver = tag[len(tag_prefix):]
+        exists = release_exists(owner, repo, tag, token)
+        # Unknown counts as creating: the stricter case, since guessing the
+        # other way is what publishes a release whose assets get refused.
+        creating = exists is not True
+        if tree_ver and tree_ver != tag_ver:
+            where = "behind" if version_tuple(tree_ver) < version_tuple(tag_ver) else "ahead of"
+            msg = (f"{default_branch} is at {tree_ver}, {where} the prepared {tag}.\n"
+                   f"  The build reads its version from {vpath}, not from the tag, so the\n"
+                   f"  assets would be labelled {tree_ver} and release.yml will refuse them.\n"
+                   f"  Set {vpath} to {tag_ver} on {default_branch} first, then publish.")
+            if exists is None:
+                msg += (f"\n  (could not reach the API to check whether {tag} already exists,\n"
+                        f"  so this assumes it does not -- the stricter reading.)")
+            if creating and not args.allow_version_mismatch:
+                die(msg + "\n  (--allow-version-mismatch publishes the notes anyway, with no assets.)")
+            if creating:
+                print("warning: " + msg)
+                print("         --allow-version-mismatch given: expect a release with no assets,")
+                print("         and attach them with a workflow_dispatch once the bump has merged.")
+            else:
+                print(f"note: {default_branch} is at {tag_prefix}{tree_ver}; re-applying notes to the "
+                      f"existing {tag} (no build runs, so the difference does not matter).")
     lines = notes.splitlines()
     title = re.sub(r"^#\s*", "", lines[0]).strip()
     body = "\n".join(lines[1:]).strip("\n")
     if not title:
         die(f"{tag}.md has an empty title line (first line must be '# <title>').")
-
-    owner, repo = owner_repo(root)
 
     print(f"repo    : {owner}/{repo}  ({kind})")
     print(f"tag     : {tag}   target: {default_branch}")
@@ -219,7 +301,6 @@ def main():
         print("dry-run: nothing published.")
         return
 
-    token = get_token()
     if not token:
         die("no GitHub token. Set GH_TOKEN / GITHUB_TOKEN, or install gh and run `gh auth login`.")
 
