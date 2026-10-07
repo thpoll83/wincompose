@@ -77,6 +77,14 @@ download. It never moves `Latest` backwards, so re-dispatching an old tag to
 re-attach its assets cannot un-announce a newer release. Check the job went green;
 if it could not push, its error says so and names the one-line edit.
 
+⚠️ **Deleting a release does not un-set it.** The job asks whether the release
+exists *before* it bumps, and nothing looks again afterwards. So a release deleted
+after the job has run leaves `Latest` naming a version with no release — the
+early-bump failure below, arriving by another route. Revert `status.txt` in the
+same breath as the deletion, or re-create the release (see *If the release build
+fails*). 0.9.20 was deleted and re-created on 7 October, and for the window in
+between every install below 0.9.20 was offered the 0.9.19 download.
+
 It was a manual step until 0.9.20, and it went wrong in both directions. Early,
 every install is pointed at a release that is not there — and the `Installer:` /
 `Portable:` URLs resolve `releases/latest`, so nobody gets a 404, they are handed
@@ -93,6 +101,18 @@ included. Fix the default branch, then start the workflow by hand
 (`workflow_dispatch`) with `tag: PK-<version>` to attach the assets to the release
 that already exists. Leaving `tag` empty builds the assets as artifacts and
 releases nothing — that is the safe smoke test.
+
+Two things about that dispatch are easy to get wrong:
+
+- **It re-applies the notes from `release-notes`.** Whenever a `PK-<version>.md`
+  is on that branch, the dispatch runs `gh release edit --title --notes-file`, so
+  a title or body edited by hand on GitHub is thrown away. Fix the file on the
+  branch *first*, then dispatch. (With no notes file, the existing notes are kept
+  and only the assets are replaced.)
+- **It creates the release when there is none** (`gh release create`), so the same
+  dispatch recovers a release that was deleted, not only one whose build failed.
+  It builds from the ref you dispatch on, normally `main`, never from the tag's
+  own commit — which is what the version assertion compares the tag against.
 
 Building locally
 ----------------
