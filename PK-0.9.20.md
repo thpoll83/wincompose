@@ -1,16 +1,21 @@
-# WinCompose 0.9.20 — the 0.9.19 you were meant to get 🏷️
+# WinCompose 0.9.20 — the version on the tin 🏷️
 
-0.9.19's downloads were built before its version bump had merged, so they are
-named `WinCompose-Setup-0.9.18.exe`, report 0.9.18 in the About tab, and are
-missing three of the changes its own notes describe. Nothing announced that
-release either: the update check compares what a build calls itself, and that
-build calls itself 0.9.18. This is the same release built properly, with the two
-missing changes, and with the plumbing so it cannot happen again.
+**These downloads were re-uploaded on 7 October.** 0.9.20 was first published
+with its assets named `0.9.19`, for the same reason 0.9.19's were named
+`0.9.18`: the shipped version is baked into the build, the release is tagged
+independently, and both releases were published before their version bump had
+merged. The files here now are built from the bumped tree, so they are named
+`0.9.20`, report 0.9.20 in the About tab, and are what the update check
+compares against.
 
-**If you installed the 0.9.19 download**, you are running something that reports
-0.9.18 — so this update is offered to you normally, and everything below is new
-to you. Nothing is wrong with what you have otherwise; the diamond really does
-rotate.
+**If you downloaded anything before that**, you have a working build that
+reports the wrong version — `0.9.19` from the first 0.9.20 upload, or `0.9.18`
+from 0.9.19. Nothing is wrong with it beyond the number, and this update is
+offered to you normally. Re-download if you would rather the About tab agreed
+with the release it came from.
+
+Everything below shipped across 0.9.19 and 0.9.20. If you are coming from
+0.9.18, all of it is new to you.
 
 ## Changed
 
@@ -52,9 +57,12 @@ the release going out and its bump landing.
 ## Fixed
 
 - **A release can announce itself again.** The version a build reports is what
-  the update check compares against `status.txt`, so a build labelled with the
-  previous version cannot be announced at all without offering every install an
-  endless update to itself. 0.9.19 sat unannounced for two weeks for that reason.
+  the update check compares against the update file, so a build labelled with
+  the previous version cannot be announced at all — announcing it would offer
+  every install an endless update to itself. That is why 0.9.19 sat unannounced:
+  not an oversight, an impossibility. Both halves are fixed here, and the
+  announcement is written by CI from the binary it just shipped rather than by
+  hand.
 
 ## Internal
 
