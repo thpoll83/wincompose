@@ -18,19 +18,21 @@ tag gets published — see ③. `GitVersion.yml` sets `tag-prefix: PK-` so GitVe
 recognises our tags instead of computing 0.1.0.
 
 ⚠️ **The bump has to be MERGED to `main` before you publish.** The release builds
-from the tag, and the tag is created at `main`'s tip, so a bump still sitting on a
-branch means the release ships assets carrying the *previous* version. 0.9.19 did
-this (issue #21): published 50 minutes before its bump merged, it carries
+from the tag, and the tag can only be pinned to a commit that already declares the
+version, so a bump still sitting on a branch leaves nothing to pin to — publishing
+is refused (it used to ship assets carrying the *previous* version instead).
+0.9.19 did this (issue #21): published 50 minutes before its bump merged, it carries
 `WinCompose-Setup-0.9.18.exe`, reads 0.9.18 in its About tab, is missing two
 changes its own notes describe, and could not be announced at all — an install
 reporting 0.9.18 would have been offered an endless update to itself.
 
-Two things now refuse rather than let that through, so this is a check you no
-longer have to remember. `scripts/publish_release.py` dies when `main`'s version
-is not the one the tag claims — in either direction, and only when publishing
-would CREATE the release, since re-applying notes to one that already exists
-re-runs no build. `release.yml` fails before attaching anything if the built
-exe's version is not the tag's.
+Three things now stand between you and that, so it is a check you no longer have
+to remember. `scripts/publish_release.py` pins the tag to the commit that declares
+the version, so a csproj that has drifted forward since the notes were prepared is
+harmless. It dies when **no** commit declares it, and only when publishing would
+CREATE the release, since re-applying notes to one that already exists re-runs no
+build. And `release.yml` fails before attaching anything if the built exe's
+version is not the tag's.
 
 ⚠️ `--allow-version-mismatch` overrides the first of those and leaves you a
 published release with **no assets**, because the second still refuses them. It
@@ -53,12 +55,23 @@ that file; without it the release falls back to GitHub's auto-generated notes.
     python scripts/publish_release.py --dry-run   # show what it would do
     python scripts/publish_release.py --tag PK-0.9.16
 
-The tag comes from the `release-notes` branch, **not** from the csproj version:
-with no `--tag`, it publishes the newest prepared `PK-<X.Y.Z>.md` found there. The
-version on the default branch is read only to print a note when the two disagree,
-so a csproj bump that landed after the notes were prepared does not change what
-gets published. Pass `--tag` whenever more than one is prepared, and read the
-"newest prepared tag" line it prints before letting it publish.
+Which version to publish comes from the `release-notes` branch, **not** from the
+csproj: with no `--tag`, it publishes the newest prepared `PK-<X.Y.Z>.md` found
+there. Pass `--tag` whenever more than one is prepared, and read the "newest
+prepared tag" line it prints before letting it publish.
+
+**Where the tag lands is decided by the csproj, though.** The script tags the
+commit whose `wincompose.csproj` declares that version, not `main`'s tip — and
+since the release workflow checks out the tag, that is what makes the assets
+carry the right number. A later merge drifting the csproj forward is then
+harmless, and it says so.
+
+If **no** commit declares the version, the bump has not merged and there is
+nothing to pin to, so creating the release is refused. Merge the bump and
+re-run. `--allow-version-mismatch` overrides, and publishes notes with no
+assets — the release workflow refuses to attach assets whose version does not
+match the tag. In a shallow clone the search can miss the commit, so
+`git fetch origin --unshallow` comes before reaching for that flag.
 
 Auth comes from `GH_TOKEN` / `GITHUB_TOKEN`, else `gh auth token`.
 

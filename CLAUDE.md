@@ -305,9 +305,10 @@ a release labelled with the PREVIOUS version, in four places at once.**
 `<AssemblyVersion>`/`<FileVersion>` is the only source: `iscc` reads it off the
 built exe for the installer filename, `release.yml` reads the same resource to
 name the zip, `Settings.Version` is `Assembly.GetExecutingAssembly()` so the About
-tab shows it, and `Updater.cs` compares *that* against `status.txt`. The tag comes
-from the `release-notes` branch instead (`scripts/publish_release.py`), and is
-created at `main`'s tip.
+tab shows it, and `Updater.cs` compares *that* against `status.txt`. Which version
+to publish comes from the `release-notes` branch instead
+(`scripts/publish_release.py`), and the tag used to be created at `main`'s tip —
+which is the whole mechanism below.
 
 **Worked example, PK-0.9.19 (2026-10-02, issue #21).** Published 09:47 UTC; the
 bump `cf7e91e` was committed 09:45 but sat on the PR #23 branch and merged at
@@ -325,27 +326,51 @@ bump `cf7e91e` was committed 09:45 but sat on the PR #23 branch and merged at
   About-tab link regrouping) are not in the assets either, because they merged in
   the same window.
 
-⚠️ **`publish_release.py`'s version note USED to be informational, and it fired
-on exactly this and was read as benign.** It is asymmetric now, which is the
-point: *behind* means the version does not exist yet, *ahead* means the tag claims
-a version whose code is not what the tree has. Both now die when publishing would
-CREATE the release — the build labels its assets from the tree either way, so
-`release.yml` refuses them and you are left with a published release carrying no
-downloads at all. Re-applying notes to an existing release re-runs no build, so
-there a difference stays a note; the script tells the two apart by whether the tag
-exists yet. `--allow-version-mismatch` overrides, with that no-assets outcome.
-`release.yml` also asserts the built exe's version equals the tag before
-attaching anything. Belt and braces, because the
-script is only one of three ways a release starts (a hand-pushed tag and a
-`workflow_dispatch` recovery do not go through it).
+⚠️ **`publish_release.py` now tags the commit whose csproj DECLARES the version,
+not `main`'s tip** — and because `release.yml` checks out the tag, that is what
+makes the assets carry the right number. The sibling repos had this (it is
+`commit_for_version()`, with four hard-won traps in its docstring: oldest match
+not newest, no early exit, `--first-parent`, and a `:(top)` pathspec); this copy
+was taken from them in `e894a3a` before the pin existed, which is why #21
+happened here and not there. A later merge drifting the csproj forward is then
+harmless, and the script says so rather than warning.
 
-⚠️ **Not fixed structurally, deliberately.** The right fix is to derive the exe's
-version from the tag via GitVersion, which is already in the build for
-`language.csproj` — then a mislabelled release is unrepresentable. It was not done
-because there is no .NET toolchain in the container, so CI is the only compiler
-(a wrong guess costs a full round), and because GitVersion's output on an
-untagged commit would change what every development build's About tab reads. The
-two gates are the cheap half; the derivation is still the real answer.
+⚠️ **The pin cannot help when NO commit declares the version** — the bump has
+not merged, so there is nothing to pin to — and that is exactly #21. Creating
+the release is refused there. Only when creating: re-applying notes to an
+existing release runs no build, so the tree's version is then irrelevant, and
+`release_exists()` tells the two apart. ⚠️ **A tag existing is a different
+question** — a deleted release, a hand-pushed tag, or a build that died before
+`gh release create` each leave a tag with no release. Only a 404 counts as "no
+release"; anything else is treated as creating, the stricter reading, because an
+auth or network failure reading as success is how the check goes quiet.
+⚠️ **A shallow clone reaches the same refusal for a different reason** — the
+search could not see the commit — so unshallowing comes before
+`--allow-version-mismatch`, which publishes the release the gate exists to
+prevent. `release.yml` also asserts the built exe's version equals the tag
+before attaching anything, because the script is only one of three ways a
+release starts (a hand-pushed tag and a `workflow_dispatch` recovery do not go
+through it).
+
+⚠️ **Do NOT make the gate fire on the tree merely differing from the tag.** The
+firmware and host tree is normally *ahead* of a prepared tag — every merge
+auto-bumps — and the pin already makes that safe, so refusing there blocks
+almost every legitimate publish. The condition is "no commit declares it", not
+"the numbers differ".
+
+**The GitVersion derivation is still the deeper answer, and still not done.**
+Deriving the exe's version from the tag would make a mislabelled release
+unrepresentable rather than merely refused. It is not done because there is no
+.NET toolchain in the container, so CI is the only compiler (a wrong guess costs
+a full round), and because GitVersion's output on an untagged commit would change
+what every development build's About tab reads.
+
+⚠️ **`scripts/publish_release.py` is byte-identical across `qmk_firmware`,
+`PolyKybdHost` and `wincompose`, and nothing checks it.** It had already
+diverged in both directions at once: the siblings held the pin and the
+`make_latest` correctness, this copy held the create-time gate, and each was
+the newer one for a different thing. `md5sum */scripts/publish_release.py` is
+the check.
 
 **`status.txt` is written by CI since 0.9.20** — the `status` job in `release.yml`,
 after the assets are attached, from the version resource of the binary it just
