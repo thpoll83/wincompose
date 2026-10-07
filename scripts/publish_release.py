@@ -13,7 +13,14 @@ What it does (no bash-isms, no extra pip installs — Python 3.7+ stdlib only):
      whatever branch you have checked out.
   2. Reads the prepared release notes for that tag from the unprotected
      `release-notes` branch (`<TAG>.md`, first line `# <title>`, rest = body).
-  3. Creates + publishes the GitHub Release (or updates it if it already exists).
+  3. Creates + publishes the GitHub Release (or updates it if it already exists),
+     tagging the commit that DECLARES the prepared version rather than the
+     branch head — so a merge landing between preparing the notes and
+     publishing them cannot ship a binary whose version differs from its label.
+     When NO commit declares it — the bump has not merged yet — there is
+     nothing to pin to, and creating the release is refused rather than
+     shipping assets labelled with the old version (`--allow-version-mismatch`
+     overrides, for notes-only).
      Firmware and wincompose: publishing fires the `release: published`
      workflow, which builds and attaches the assets (.bin/.uf2 / the installer
      + portable zip + SHA256SUMS) — you do NOT attach anything by hand.
@@ -21,10 +28,10 @@ What it does (no bash-isms, no extra pip installs — Python 3.7+ stdlib only):
 Auth: uses `GH_TOKEN` / `GITHUB_TOKEN` if set, else `gh auth token`. No token and
 no `gh` -> it tells you how to fix it. `gh` is optional; a token alone is enough.
 
-Tags:
-  firmware    PolyKybd-fw-v<version>   (target branch: PolyKybd)
-  host        v<version>               (target branch: main)
-  wincompose  PK-<version>             (target branch: main)
+Tags (created at the commit declaring <version>, found on the branch named):
+  firmware    PolyKybd-fw-v<version>   (branch: PolyKybd)
+  host        v<version>               (branch: main)
+  wincompose  PK-<version>             (branch: main)
 """
 import argparse
 import json
@@ -40,8 +47,18 @@ def run(cmd):
     # Force UTF-8: git output (release notes) is UTF-8, but on Windows the
     # default is the locale codec (cp1252), which raises UnicodeDecodeError on
     # emoji/em-dashes and silently drops the output.
-    return subprocess.run(cmd, capture_output=True, text=True,
-                          encoding="utf-8", errors="replace")
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True,
+                              encoding="utf-8", errors="replace")
+    except OSError as e:
+        # The executable isn't installed / isn't runnable. Report it as an
+        # ordinary non-zero result so callers can fall back, instead of letting
+        # it escape as a traceback. get_token() probes `gh`, which plenty of
+        # machines don't have — on Windows that surfaced as a raw
+        # "[WinError 2] The system cannot find the file specified" traceback
+        # instead of the "no GitHub token…" message that was already written
+        # for exactly this case.
+        return subprocess.CompletedProcess(cmd, 127, stdout="", stderr=str(e))
 
 
 def die(msg):
@@ -95,7 +112,8 @@ def parse_version(kind, text):
 
 
 def version_tuple(v):
-    """'0.9.20' -> (0, 9, 20), so 0.10.0 sorts after 0.9.20."""
+    """'0.9.20' -> (0, 9, 20), so 0.10.0 sorts after 0.9.20 where a string
+    compare would not."""
     return tuple(int(x) for x in v.split("."))
 
 
@@ -111,15 +129,7 @@ def get_token():
     for var in ("GH_TOKEN", "GITHUB_TOKEN"):
         if os.environ.get(var):
             return os.environ[var]
-    try:
-        r = run(["gh", "auth", "token"])
-    except OSError:
-        # gh is not installed. "no token" is the honest answer, and the caller
-        # that needs one already dies with a message naming the three ways to
-        # supply it. Raising here instead took --dry-run down with a traceback
-        # -- the one command that must work with no credentials at all, since
-        # it exists to tell you what WOULD happen. (Found by Greptile on #25.)
-        return None
+    r = run(["gh", "auth", "token"])
     if r.returncode == 0 and r.stdout.strip():
         return r.stdout.strip()
     return None
@@ -150,10 +160,12 @@ def release_exists(owner, repo, tag, token):
 
     A GET on a public repo's release needs no token, so this answers under
     --dry-run too. None means "do not know" (network trouble, a rate limit, a
-    private repo with no token) and the caller must then assume the stricter
-    case -- a tag existing is NOT the same question, since a deleted release,
-    a hand-pushed tag, or a release build that died before `gh release create`
-    all leave a tag with no release behind it.
+    private repo with no token), and the caller must then assume the stricter
+    case.
+
+    ⚠️ Whether a TAG exists is a different question and not a usable
+    substitute: a deleted release, a hand-pushed tag, or a release build that
+    died before `gh release create` all leave a tag with no release behind it.
     """
     headers = {
         "Accept": "application/vnd.github+json",
@@ -169,9 +181,82 @@ def release_exists(owner, repo, tag, token):
         with urllib.request.urlopen(req) as resp:
             return resp.status == 200
     except urllib.error.HTTPError as e:
+        # ⚠️ Only a 404 is "no release". Folding 401/403/5xx in with it is what
+        # lets an auth or network failure read as success. (Found by Revix and
+        # Greptile on wincompose#25.)
         return False if e.code == 404 else None
     except Exception:
         return None
+
+
+def commit_for_version(kind, vpath, default_branch, version):
+    """OLDEST commit on the default branch whose <vpath> declares `version`.
+
+    The release must be tagged at a commit that actually reports the version the
+    notes describe, not at whatever the branch head happens to be. Tagging the
+    head means any merge between preparing the notes and publishing them ships a
+    binary whose version differs from its label -- and since `bump-version.yml`
+    has no paths filter, *every* merge bumps, docs-only ones included. Left
+    unfixed that is not merely cosmetic: on 2026-08-29 nine merges landed inside
+    that window, one of them the FW-9 engine-pack signing fix, which would have
+    shipped under notes that never mentioned it.
+
+    Resolved by reading the version file at each commit rather than by matching a
+    `chore: bump ... version to X` message: it checks the property we actually
+    care about, and it works for wincompose, which has no bump commits at all.
+
+    ⚠️ OLDEST, not newest, and the difference is not academic. A version stays
+    declared from its bump commit until the next bump, so several commits report
+    it -- and the later ones are the NEXT release's work, sitting in the window
+    before its own bump lands. Taking the newest match resolved v0.15.14 to a
+    commit from PR #231, which actually shipped in 0.15.15; the oldest match is
+    the bump commit, which is what every historical release was in fact tagged
+    at.
+
+    ⚠️ The whole history is walked, with NO early exit. An earlier version broke
+    out on the first non-match after a match, on the theory that a version
+    occupies one contiguous run. That is true in time but FALSE in a path-limited
+    `git log`, where a PR's own commits and its merge commit interleave with the
+    mainline: the break stopped at the end of the first run and returned a commit
+    from a later release. Measured on this repo, 9 of 154 versions mis-resolved --
+    0.15.17 to a PR #234 feature commit that shipped in 0.16.0, and 0.15.18 to
+    that PR's merge commit. A full walk is ~1.1 s, so the break bought nothing.
+
+    ⚠️ `--first-parent` is load-bearing, for the same reason as the missing
+    break. `git log` orders by commit DATE, so commits merged in from a branch
+    interleave with the mainline and "last in the newest-first list" is not
+    topologically oldest -- measured, 6 of 151 versions then resolved to a
+    commit that is not even an ancestor of their bump. Restricting to the
+    mainline removes the interleaving at its source: 150 of 151 land exactly on
+    the `chore: bump ...` commit. The one exception (0.9.2) had its bump made on
+    a side branch, so first-parent resolves it to the merge that brought it onto
+    the mainline -- which still declares 0.9.2, so the label-matches-binary
+    invariant holds, which is the property that actually matters here.
+
+    ⚠️ The pathspec is `:(top)`-prefixed because a plain `-- <path>` is
+    CWD-RELATIVE. Run from a subdirectory -- which this script explicitly
+    supports -- it matches nothing and `git log` exits 0 with an EMPTY list, so
+    the returncode guard never fires and the caller silently falls back to the
+    branch head. (`show()` is unaffected: `<rev>:<path>` is always root-relative,
+    so nothing else looks wrong.)
+    """
+    r = run(["git", "log", "--format=%H", "--first-parent",
+             f"origin/{default_branch}", "--", f":(top){vpath}"])
+    if r.returncode:
+        return None
+    found = None
+    for sha in r.stdout.split():  # git log is newest-first
+        text = show(f"{sha}:{vpath}")
+        if not text:
+            continue
+        try:
+            if parse_version(kind, text) == version:
+                found = sha  # keep walking back; the last match is the oldest
+        except SystemExit:
+            # An older revision the current parser can't read: skip it rather
+            # than abort the publish.
+            continue
+    return found
 
 
 def prepared_tags(prefix):
@@ -194,10 +279,11 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="show what would happen, change nothing")
     ap.add_argument("--tag", help="publish a specific prepared tag instead of the newest one")
     ap.add_argument("--allow-version-mismatch", action="store_true",
-                    help="publish a NEW release even though the default branch's version is not "
-                         "this tag's. The build labels its assets from the tree, so the release "
-                         "workflow will refuse to attach them; use this only to get the notes up, "
-                         "and attach the assets later with a workflow_dispatch after bumping")
+                    help="publish a NEW release even though no commit declares its version and "
+                         "the branch head's differs. The build labels its assets from the tree, "
+                         "so the release workflow will refuse to attach them; use this only to "
+                         "get the notes up, and attach the assets later with a workflow_dispatch "
+                         "once the bump has merged")
     args = ap.parse_args()
 
     # Print UTF-8 (emoji in the notes) even on a cp1252 Windows console.
@@ -217,72 +303,126 @@ def main():
     # publish* — NOT the tree version, which drifts forward on every PR merge
     # (each merge auto-bumps the version, so the tree is usually ahead of the
     # prepared release by the time you publish). Pick the newest prepared tag.
+    prepared = prepared_tags(tag_prefix)
     if args.tag:
         tag = args.tag
-        notes = show(f"origin/release-notes:{tag}.md")
-        if not notes or not notes.strip():
-            die(f"no prepared notes for {tag} on the release-notes branch "
-                f"(expected release-notes:{tag}.md).")
     else:
-        prepared = prepared_tags(tag_prefix)
         if not prepared:
             die("no prepared release notes on the release-notes branch "
                 f"(no {tag_prefix}<X.Y.Z>.md files).\n"
                 "  Draft + stage them first with the polykybd-github-release skill.")
         tag = prepared[-1][1]
-        notes = show(f"origin/release-notes:{tag}.md")
         if len(prepared) > 1:
             others = ", ".join(t for _, t in prepared[:-1])
             print(f"note: newest prepared tag is {tag}. Others on the branch: {others}")
             print(f"      (use --tag to publish a specific one.)")
 
+    # One guard for both paths. prepared_tags() matches on FILENAME only, so an
+    # empty or unreadable <TAG>.md reaches here on the auto-select path too --
+    # where it used to raise IndexError on lines[0] (or AttributeError on a None
+    # from show()) instead of saying what was wrong.
+    notes = show(f"origin/release-notes:{tag}.md")
+    if not notes or not notes.strip():
+        die(f"no prepared notes for {tag} on the release-notes branch "
+            f"(expected release-notes:{tag}.md, non-empty).")
+
+    # Only the newest prepared tag becomes "Latest release". The notes branch is
+    # an append-only archive and --tag exists to publish an older one, so an
+    # unconditional make_latest would re-point /releases/latest -- and the tray
+    # updater that reads it -- at older firmware.
+    newest_tag = prepared[-1][1] if prepared else tag
+    is_latest = (tag == newest_tag)
+
+    # Tag the commit that DECLARES this version, not the branch head -- see
+    # commit_for_version(). Falls back to the head so a publish never becomes
+    # impossible, but says so loudly, because the fallback is the old broken
+    # behaviour and must not pass unnoticed.
+    version = tag[len(tag_prefix):]
+    target = commit_for_version(kind, vpath, default_branch, version)
+    pinned = target is not None
+    shallow = False
+    if not pinned:
+        shallow = (run(["git", "rev-parse", "--is-shallow-repository"])
+                   .stdout.strip() == "true")
+        print(f"WARNING: no commit on {default_branch} declares version {version}; "
+              f"falling back to the branch head.")
+        if shallow:
+            print("         This clone is SHALLOW, so the search saw truncated "
+                  "history. Run `git fetch origin --unshallow` and retry.")
+        else:
+            print("         The published binary may then report a different "
+                  "version than this tag's label. Check before announcing it.")
+        target = default_branch
+        target_desc = default_branch
+    else:
+        target_desc = f"{target[:10]} (declares {version})"
+
     owner, repo = owner_repo(root)
     token = get_token()
 
-    # ⚠️ The build labels its assets from the TREE, never from the tag: the
-    # version is read off the built exe (iscc's filename, the zip name, the
-    # About tab, the number Updater.cs compares against status.txt). So for a
-    # release that does not exist yet, any disagreement between the default
-    # branch's version and the tag is a release whose downloads carry the wrong
-    # number -- PK-0.9.19 shipped WinCompose-Setup-0.9.18.exe that way (issue
-    # #21), published 50 minutes before its bump merged. release.yml now refuses
-    # to attach mislabelled assets, which turns the same mistake into a release
-    # with NO downloads; this is the check that stops it before anything is
-    # published at all.
-    #
-    # Enforced only when the tag does not exist yet, i.e. when publishing would
-    # CREATE the release and therefore trigger a build. Re-applying notes to an
-    # already-published release re-runs nothing, so the tree's version is then
-    # irrelevant and a difference is just the post-prep merges.
+    # What the default branch declares right now. Read only to describe the
+    # drift or to refuse; the tag's own commit is what gets published.
     vtext = show(f"origin/{default_branch}:{vpath}")
+    tree_ver = None
     if vtext:
         try:
             tree_ver = parse_version(kind, vtext)
         except SystemExit:
-            tree_ver = None
-        tag_ver = tag[len(tag_prefix):]
+            pass
+
+    if pinned:
+        # Drift is normal and harmless here: every merge auto-bumps, so the tree
+        # is usually ahead of the prepared tag by the time you publish, and the
+        # later merges ship in the NEXT release rather than silently joining
+        # this one. The pin is what makes it harmless -- do NOT turn this into a
+        # refusal, or almost every legitimate firmware publish stops.
+        if tree_ver and tree_ver != version:
+            print(f"note: default branch has moved on to {tag_prefix}{tree_ver}; publishing "
+                  f"prepared {tag} at its own commit, so the drift is harmless.")
+    elif tree_ver and tree_ver != version:
+        # ⚠️ Here the pin found NOTHING and the head declares something else, so
+        # the branch head is what gets built and its version is what labels the
+        # assets. That is how PK-0.9.19 shipped WinCompose-Setup-0.9.18.exe
+        # (wincompose issue #21): published 50 minutes before its own bump
+        # merged, so no commit declared the new version and the pin had nothing
+        # to find. The release workflow asserts the built version against the
+        # tag now, which turns the same mistake into a published release with NO
+        # downloads at all -- this is the check that stops it before anything is
+        # published.
+        #
+        # Enforced only when publishing would CREATE the release, because that
+        # is what triggers a build. Re-applying notes to an already-published
+        # release re-runs nothing, so the tree's version is then irrelevant.
         exists = release_exists(owner, repo, tag, token)
         # Unknown counts as creating: the stricter case, since guessing the
         # other way is what publishes a release whose assets get refused.
         creating = exists is not True
-        if tree_ver and tree_ver != tag_ver:
-            where = "behind" if version_tuple(tree_ver) < version_tuple(tag_ver) else "ahead of"
-            msg = (f"{default_branch} is at {tree_ver}, {where} the prepared {tag}.\n"
-                   f"  The build reads its version from {vpath}, not from the tag, so the\n"
-                   f"  assets would be labelled {tree_ver} and release.yml will refuse them.\n"
-                   f"  Set {vpath} to {tag_ver} on {default_branch} first, then publish.")
-            if exists is None:
-                msg += (f"\n  (could not reach the API to check whether {tag} already exists,\n"
-                        f"  so this assumes it does not -- the stricter reading.)")
-            if creating and not args.allow_version_mismatch:
-                die(msg + "\n  (--allow-version-mismatch publishes the notes anyway, with no assets.)")
-            if creating:
-                print("warning: " + msg)
-                print("         --allow-version-mismatch given: expect a release with no assets,")
-                print("         and attach them with a workflow_dispatch once the bump has merged.")
-            else:
-                print(f"note: {default_branch} is at {tag_prefix}{tree_ver}; re-applying notes to the "
-                      f"existing {tag} (no build runs, so the difference does not matter).")
+        where = "behind" if version_tuple(tree_ver) < version_tuple(version) else "ahead of"
+        msg = (f"{default_branch} is at {tree_ver}, {where} the prepared {tag}, and no commit\n"
+               f"  on it declares {version}. The build reads its version from {vpath}, not\n"
+               f"  from the tag, so the assets would be labelled {tree_ver} and the release\n"
+               f"  workflow will refuse them. Merge the bump that sets {vpath} to {version}\n"
+               f"  on {default_branch}, then publish.")
+        if shallow:
+            # ⚠️ The search may simply not have SEEN the commit. Say so first:
+            # told to "merge the bump" for a version that was bumped months ago,
+            # the obvious next move is --allow-version-mismatch, which publishes
+            # the very release this is trying to prevent.
+            msg += ("\n  This clone is SHALLOW, so the search saw truncated history and the\n"
+                    "  commit may well exist. Run `git fetch origin --unshallow` and retry\n"
+                    "  BEFORE reaching for --allow-version-mismatch.")
+        if exists is None:
+            msg += (f"\n  (could not reach the API to check whether {tag} already exists, so\n"
+                    f"  this assumes it does not -- the stricter reading.)")
+        if creating and not args.allow_version_mismatch:
+            die(msg + "\n  (--allow-version-mismatch publishes the notes anyway, with no assets.)")
+        if creating:
+            print("warning: " + msg)
+            print("         --allow-version-mismatch given: expect a release with no assets,")
+            print("         and attach them with a workflow_dispatch once the bump has merged.")
+        else:
+            print(f"note: {default_branch} is at {tag_prefix}{tree_ver}; re-applying notes to the "
+                  f"existing {tag} (no build runs, so the difference does not matter).")
     lines = notes.splitlines()
     title = re.sub(r"^#\s*", "", lines[0]).strip()
     body = "\n".join(lines[1:]).strip("\n")
@@ -290,8 +430,10 @@ def main():
         die(f"{tag}.md has an empty title line (first line must be '# <title>').")
 
     print(f"repo    : {owner}/{repo}  ({kind})")
-    print(f"tag     : {tag}   target: {default_branch}")
+    print(f"tag     : {tag}   target: {target_desc}")
     print(f"title   : {title}")
+    if not is_latest:
+        print(f"latest  : NO — {newest_tag} is newer and keeps the Latest badge")
     print(f"body    : {len(body)} chars, {body.count(chr(10)) + 1} lines")
     print("-" * 60)
     print(body)
@@ -307,7 +449,7 @@ def main():
     status, rel = api(token, "GET", f"/repos/{owner}/{repo}/releases/tags/{tag}")
     if status == 200:
         st, res = api(token, "PATCH", f"/repos/{owner}/{repo}/releases/{rel['id']}",
-                      {"name": title, "body": body, "make_latest": "true", "draft": False})
+                      {"name": title, "body": body, "make_latest": str(is_latest).lower(), "draft": False})
         if st >= 300:
             die(f"updating existing release failed ({st}): {res.get('message')}")
         print(f"updated existing release {tag}")
@@ -318,10 +460,10 @@ def main():
 
     st, res = api(token, "POST", f"/repos/{owner}/{repo}/releases", {
         "tag_name": tag,
-        "target_commitish": default_branch,
+        "target_commitish": target,
         "name": title,
         "body": body,
-        "make_latest": "true",
+        "make_latest": str(is_latest).lower(),
         "draft": False,
         "prerelease": False,
     })
