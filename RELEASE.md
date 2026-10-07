@@ -130,9 +130,11 @@ Two ways out, and the first is better:
        git push --force origin refs/tags/PK-<version>
        python scripts/publish_release.py
 
-   `--dry-run` prints the commit to use — it is the `target:` line, and the
-   script's refusal names it too. Safe as long as no release exists on that tag
-   yet; check before force-pushing.
+   ⚠️ **Take the commit from the refusal, which names both** — where the tag is
+   and where it should be. That is the only place to read them: the tag check
+   runs before the script prints its summary, so a `--dry-run` on a misplaced
+   tag never reaches the `target:` line. Safe as long as no release exists on
+   that tag yet; check before force-pushing.
 2. **Dispatch the workflow** (below) to attach correct assets to the tag where it
    is. Quicker, but the tag keeps pointing at a tree declaring the *previous*
    version, so a later `git checkout <tag>` misleads — which is the kind of thing
