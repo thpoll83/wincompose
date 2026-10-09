@@ -352,6 +352,20 @@ before attaching anything, because the script is only one of three ways a
 release starts (a hand-pushed tag and a `workflow_dispatch` recovery do not go
 through it).
 
+⚠️ **An EXISTING tag beats the pin, and the pin's own report hides it.**
+`target_commitish` is documented as "Unused if the Git tag already exists" — a
+release never moves a tag — so the build comes from wherever the tag points while
+the script reports the commit it *wanted*. Reached by an ordinary sequence:
+publish early, delete the release, merge the bump, try again; the first attempt's
+tag is still on the pre-bump commit. **PK-0.9.20 sat exactly there** (tag on
+`6cb987cb1a` declaring 0.9.19, pin resolving `113093cfa2`), so the script would
+have printed the right commit and published the wrong one. It refuses now, and
+⚠️ **that check must fire even when the version gate passes** — there the pin
+found a correct commit and the mismatch gate sees nothing wrong. The fix is to
+**move the tag** and publish normally, not to dispatch: a dispatch attaches
+correct assets while leaving `git checkout <tag>` on a tree that declares the
+previous version. `RELEASE.md` → *If the tag is in the wrong place*.
+
 ⚠️ **Do NOT make the gate fire on the tree merely differing from the tag.** The
 firmware and host tree is normally *ahead* of a prepared tag — every merge
 auto-bumps — and the pin already makes that safe, so refusing there blocks

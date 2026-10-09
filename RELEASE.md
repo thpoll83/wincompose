@@ -95,7 +95,7 @@ exists *before* it bumps, and nothing looks again afterwards. So a release delet
 after the job has run leaves `Latest` naming a version with no release — the
 early-bump failure below, arriving by another route. Revert `status.txt` in the
 same breath as the deletion, or re-create the release (see *If the release build
-fails*). 0.9.20 was deleted and re-created on 7 October, and for the window in
+fails*). 0.9.20 was deleted and re-created on 7 October, and for the ~4 hours in
 between every install below 0.9.20 was offered the 0.9.19 download.
 
 It was a manual step until 0.9.20, and it went wrong in both directions. Early,
@@ -105,6 +105,40 @@ the version they already have and read it as the updater being broken (0.9.18, a
 20-minute window). Forgotten, no existing install ever learns the release
 happened and nothing about the release itself looks wrong (0.9.19, two weeks,
 reported from outside as "no notification").
+
+If the tag is in the wrong place
+--------------------------------
+
+⚠️ **Publishing never MOVES a tag.** `target_commitish` is documented as "Unused
+if the Git tag already exists", so when the tag is already there the build comes
+from wherever it points and the commit the script pins is only a claim.
+`publish_release.py` refuses to create a release in that case, naming both
+commits.
+
+That is reachable from an ordinary sequence: publish too early, delete the
+release, merge the bump, try again. The tag from the first attempt is still on
+the pre-bump commit. 0.9.20 did exactly this.
+
+Two ways out, and the first is better:
+
+1. **Move the tag to the commit that declares the version**, then publish
+   normally. The release then builds from a tree that reports the right version,
+   and `git checkout <tag>` gives you the source the release was made from:
+
+       git fetch origin main
+       git tag -f PK-<version> <commit declaring it>
+       git push --force origin refs/tags/PK-<version>
+       python scripts/publish_release.py
+
+   ⚠️ **Take the commit from the refusal, which names both** — where the tag is
+   and where it should be. That is the only place to read them: the tag check
+   runs before the script prints its summary, so a `--dry-run` on a misplaced
+   tag never reaches the `target:` line. Safe as long as no release exists on
+   that tag yet; check before force-pushing.
+2. **Dispatch the workflow** (below) to attach correct assets to the tag where it
+   is. Quicker, but the tag keeps pointing at a tree declaring the *previous*
+   version, so a later `git checkout <tag>` misleads — which is the kind of thing
+   that sends a bisect wrong.
 
 If the release build fails
 --------------------------
