@@ -15,7 +15,7 @@ It is a **fork of a fork**: samhocevar → ell1010 → thpoll83. Both upstreams 
 read-only from a session here; only `thpoll83/wincompose` can be pushed to.
 
 The **code-review conventions** and **branching rules** in
-[`../PolyKybdHost/CLAUDE.md`](../../PolyKybdHost/CLAUDE.md) apply here too — in
+[`polykybd-claude/CLAUDE.md`](../../polykybd-claude/CLAUDE.md) apply here too — in
 particular: start each piece of work on a fresh branch cut from the updated
 default (**`main`**), never keep committing to a branch whose PR has merged, and
 verify an AI reviewer's finding against the code before acting on it.
