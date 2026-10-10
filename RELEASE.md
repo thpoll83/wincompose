@@ -167,3 +167,114 @@ Building locally
 `make` in an MSYS2 shell builds the installer and the portable version; building
 the Visual Studio solution is not enough, since it only builds the installer. It
 needs GitVersion, Inno Setup 6 and gettext, and all Git submodules fetched.
+
+## Background: why the gates exist
+
+_Moved verbatim from `CLAUDE.md` on 2026-10-10. CLAUDE.md keeps a short pointer._
+
+
+**`RELEASE.md` is the authority** and is accurate; the
+`polykybd-github-release` skill drives the flow. Tags are `PK-<version>` (set by
+`GitVersion.yml` `tag-prefix`, so **never** tag `vX.Y.Z`), and a release is created
+by **publishing**, not by pushing a tag.
+
+⚠️ **The shipped version is HARDCODED in `src/wincompose/wincompose.csproj`, and
+the tag is chosen independently — so publishing before the bump has merged ships
+a release labelled with the PREVIOUS version, in four places at once.**
+`<AssemblyVersion>`/`<FileVersion>` is the only source: `iscc` reads it off the
+built exe for the installer filename, `release.yml` reads the same resource to
+name the zip, `Settings.Version` is `Assembly.GetExecutingAssembly()` so the About
+tab shows it, and `Updater.cs` compares *that* against `status.txt`. Which version
+to publish comes from the `release-notes` branch instead
+(`scripts/publish_release.py`), and the tag used to be created at `main`'s tip —
+which is the whole mechanism below.
+
+**Worked example, PK-0.9.19 (2026-10-02, issue #21).** Published 09:47 UTC; the
+bump `cf7e91e` was committed 09:45 but sat on the PR #23 branch and merged at
+10:35. So the tag landed on `3916815`, whose tree still said `0.9.18.0`:
+
+- the assets are `WinCompose-Setup-0.9.18.exe` and
+  `WinCompose-NoInstall-0.9.18.zip` — real 0.9.19 builds (installer 4,952,184 B
+  against 0.9.18's 4,949,128), just mislabelled, which is why the reporter saw the
+  new rotating tray icon in a file called 0.9.18;
+- the About tab reads 0.9.18;
+- `status.txt` could not be bumped **at all**: an install reporting 0.9.18 would
+  be offered an endless update to itself, and `releases/latest` would hand back
+  the same two files;
+- and three commits its own notes describe (the Check-for-Updates button and the
+  About-tab link regrouping) are not in the assets either, because they merged in
+  the same window.
+
+⚠️ **`publish_release.py` now tags the commit whose csproj DECLARES the version,
+not `main`'s tip** — and because `release.yml` checks out the tag, that is what
+makes the assets carry the right number. The sibling repos had this (it is
+`commit_for_version()`, with four hard-won traps in its docstring: oldest match
+not newest, no early exit, `--first-parent`, and a `:(top)` pathspec); this copy
+was taken from them in `e894a3a` before the pin existed, which is why #21
+happened here and not there. A later merge drifting the csproj forward is then
+harmless, and the script says so rather than warning.
+
+⚠️ **The pin cannot help when NO commit declares the version** — the bump has
+not merged, so there is nothing to pin to — and that is exactly #21. Creating
+the release is refused there. Only when creating: re-applying notes to an
+existing release runs no build, so the tree's version is then irrelevant, and
+`release_exists()` tells the two apart. ⚠️ **A tag existing is a different
+question** — a deleted release, a hand-pushed tag, or a build that died before
+`gh release create` each leave a tag with no release. Only a 404 counts as "no
+release"; anything else is treated as creating, the stricter reading, because an
+auth or network failure reading as success is how the check goes quiet.
+⚠️ **A shallow clone reaches the same refusal for a different reason** — the
+search could not see the commit — so unshallowing comes before
+`--allow-version-mismatch`, which publishes the release the gate exists to
+prevent. `release.yml` also asserts the built exe's version equals the tag
+before attaching anything, because the script is only one of three ways a
+release starts (a hand-pushed tag and a `workflow_dispatch` recovery do not go
+through it).
+
+⚠️ **An EXISTING tag beats the pin, and the pin's own report hides it.**
+`target_commitish` is documented as "Unused if the Git tag already exists" — a
+release never moves a tag — so the build comes from wherever the tag points while
+the script reports the commit it *wanted*. Reached by an ordinary sequence:
+publish early, delete the release, merge the bump, try again; the first attempt's
+tag is still on the pre-bump commit. **PK-0.9.20 sat exactly there** (tag on
+`6cb987cb1a` declaring 0.9.19, pin resolving `113093cfa2`), so the script would
+have printed the right commit and published the wrong one. It refuses now, and
+⚠️ **that check must fire even when the version gate passes** — there the pin
+found a correct commit and the mismatch gate sees nothing wrong. The fix is to
+**move the tag** and publish normally, not to dispatch: a dispatch attaches
+correct assets while leaving `git checkout <tag>` on a tree that declares the
+previous version. `RELEASE.md` → *If the tag is in the wrong place*.
+
+⚠️ **Do NOT make the gate fire on the tree merely differing from the tag.** The
+firmware and host tree is normally *ahead* of a prepared tag — every merge
+auto-bumps — and the pin already makes that safe, so refusing there blocks
+almost every legitimate publish. The condition is "no commit declares it", not
+"the numbers differ".
+
+**The GitVersion derivation is still the deeper answer, and still not done.**
+Deriving the exe's version from the tag would make a mislabelled release
+unrepresentable rather than merely refused. It is not done because there is no
+.NET toolchain in the container, so CI is the only compiler (a wrong guess costs
+a full round), and because GitVersion's output on an untagged commit would change
+what every development build's About tab reads.
+
+⚠️ **`scripts/publish_release.py` is byte-identical across `qmk_firmware`,
+`PolyKybdHost` and `wincompose`, and nothing checks it.** It had already
+diverged in both directions at once: the siblings held the pin and the
+`make_latest` correctness, this copy held the create-time gate, and each was
+the newer one for a different thing. `md5sum */scripts/publish_release.py` is
+the check.
+
+**`status.txt` is written by CI since 0.9.20** — the `status` job in `release.yml`,
+after the assets are attached, from the version resource of the binary it just
+shipped, never moving `Latest` backwards. It cannot name a release that does not
+exist, nor a version other than the one in the download. It was manual before
+that and went wrong in both directions, both quietly:
+
+- **Bumped early**, every install is told about a release that does not exist.
+  It does not 404: `Installer:`/`Portable:` resolve `releases/latest`, so the user
+  is quietly handed the version they already have. Cost a 20-minute window on
+  0.9.18 (2026-09-07) because the release skill said to bump it as prep.
+- **Left stale**, no existing install ever learns the release happened, the
+  release itself looks perfect, and testing it cannot reveal this — 0.9.19 sat
+  unannounced for two weeks and was reported from outside as "no notification".
