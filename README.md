@@ -3,10 +3,6 @@ WinCompose
 
 A compose key for Windows, free and open-source, created by Sam Hocevar.
 
-## AI-assisted development
-
-Since this fork was created in July 2026, the PolyKybd changes in this fork are written with AI assistance, mainly with Claude Code. CI and AI review bots check most pull requests, but not every change, and AI-written code can contain mistakes that these checks do not find. Please report problems as GitHub issues.
-
 A **compose key** allows to easily write special characters such as **é
 ž à ō û ø ☺ ¤ ∅ « ♯ ⸘ Ⓚ ㊷ ♪ ♬** using short and often
 very intuitive key combinations. For instance, **ö** is obtained using
@@ -151,3 +147,9 @@ Please report bugs or suggest improvements for **this fork** in its
 For the upstream projects, use
 [ell1010/wincompose](https://github.com/ell1010/wincompose/issues) or
 [samhocevar/wincompose](https://github.com/samhocevar/wincompose/issues).
+
+## AI-assisted development
+
+This fork started in July 2026. The PolyKybd changes in it are written with AI tools, so that I can move faster towards the vision of the PolyKybd project. The upstream WinCompose code is not affected.
+
+I decide on every change. I review the changes, test them myself, and write the summaries based on the results. AI-written code can still contain mistakes. Please report problems as GitHub issues. For security problems, see [SECURITY.md](SECURITY.md).
